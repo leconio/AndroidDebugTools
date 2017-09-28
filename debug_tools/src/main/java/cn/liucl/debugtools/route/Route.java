@@ -9,5 +9,5 @@ public interface Route {
     /**
      * 输出文件内容
      */
-    String getContent();
+    byte[] getContent();
 }

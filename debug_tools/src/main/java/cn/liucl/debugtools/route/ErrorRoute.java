@@ -7,7 +7,7 @@ package cn.liucl.debugtools.route;
 public class ErrorRoute implements Route {
 
     @Override
-    public String getContent() {
-        return null;
+    public byte[] getContent() {
+        return "<h1>:( 出错误了<h1>".getBytes();
     }
 }
