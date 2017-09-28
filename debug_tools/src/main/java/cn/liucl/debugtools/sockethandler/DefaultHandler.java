@@ -13,7 +13,7 @@ import java.net.Socket;
 import cn.liucl.debugtools.Utils;
 import cn.liucl.debugtools.route.RouteDispatcher;
 import cn.liucl.debugtools.server.HttpParamsParser;
-import cn.liucl.debugtools.server.Response;
+import cn.liucl.debugtools.server.resp.Response;
 
 import static cn.liucl.debugtools.DebugTools.TAG;
 

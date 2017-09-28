@@ -1,7 +1,9 @@
-package cn.liucl.debugtools.server;
+package cn.liucl.debugtools.server.resp;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import cn.liucl.debugtools.server.Result;
 
 /**
  * Created by spawn on 17-9-28.

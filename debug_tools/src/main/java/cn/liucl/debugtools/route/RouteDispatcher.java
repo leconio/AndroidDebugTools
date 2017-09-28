@@ -5,10 +5,10 @@ import android.content.Context;
 import java.io.IOException;
 
 import cn.liucl.debugtools.Utils;
-import cn.liucl.debugtools.server.ByteResponse;
+import cn.liucl.debugtools.server.resp.ByteResponse;
 import cn.liucl.debugtools.server.HttpParamsParser;
-import cn.liucl.debugtools.server.JsonResponse;
-import cn.liucl.debugtools.server.Response;
+import cn.liucl.debugtools.server.resp.JsonResponse;
+import cn.liucl.debugtools.server.resp.Response;
 import cn.liucl.debugtools.server.Result;
 
 /**
@@ -46,17 +46,13 @@ public class RouteDispatcher {
 
         // error-demo
         if (urlSplit[1].contains("error")) {
-            ErrorRoute errorRoute = new ErrorRoute();
+            Route errorRoute = new ErrorRoute();
             Result process = errorRoute.process();
             response = new JsonResponse(process);
             return response;
         }
 
         //资源处理
-        byte[] content = Utils.loadContent(requestURI, mContext.getAssets());
-        if (content != null) {
-            return new ByteResponse(content);
-        }
-        return null;
+        return new ByteResponse(Utils.loadContent(requestURI, mContext.getAssets()));
     }
 }

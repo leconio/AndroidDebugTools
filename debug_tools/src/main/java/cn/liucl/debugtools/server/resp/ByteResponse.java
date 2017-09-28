@@ -1,4 +1,4 @@
-package cn.liucl.debugtools.server;
+package cn.liucl.debugtools.server.resp;
 
 /**
  * Created by spawn on 17-9-28.

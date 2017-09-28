@@ -8,5 +8,10 @@ import cn.liucl.debugtools.server.Result;
 
 public interface Route {
 
+    /**
+     * 路由处理
+     *
+     * @return 结果
+     */
     Result process();
 }
