@@ -11,9 +11,9 @@ import java.io.PrintStream;
 import java.net.Socket;
 
 import cn.liucl.debugtools.Utils;
-import cn.liucl.debugtools.route.Route;
 import cn.liucl.debugtools.route.RouteDispatcher;
 import cn.liucl.debugtools.server.HttpParamsParser;
+import cn.liucl.debugtools.server.Response;
 
 import static cn.liucl.debugtools.DebugTools.TAG;
 
@@ -46,8 +46,8 @@ public class DefaultHandler implements Handler {
             output = new PrintStream(socket.getOutputStream());
             HttpParamsParser.Request parse = HttpParamsParser.parse(url);
             Log.i(TAG, "Url: " + parse);
-            Route route = RouteDispatcher.getInstance().dispatch(parse);
-            writeContent(output, route, parse.getRequestURI());
+            Response resp = RouteDispatcher.getInstance(mContext).dispatch(parse);
+            writeContent(output, resp, parse.getRequestURI());
         } finally {
             try {
                 if (null != output) {
@@ -66,13 +66,13 @@ public class DefaultHandler implements Handler {
      * 写入响应报文
      *
      * @param output 写入流
-     * @param routeProcess  写入内容
+     * @param resp  写入内容
      * @param route  访问路由信息
      * @throws IOException
      */
-    private void writeContent(PrintStream output, Route routeProcess, String route) throws IOException {
+    private void writeContent(PrintStream output, Response resp, String route) throws IOException {
         byte[] bytes = null;
-        if (routeProcess == null || null == (bytes = routeProcess.getContent())) {
+        if (resp == null || null == (bytes = resp.getContent())) {
             writeServerError(output);
             return;
         }
@@ -92,7 +92,7 @@ public class DefaultHandler implements Handler {
     }
 
     private void writeServerError(PrintStream output) throws IOException {
-        output.println("HTTP/1.0 500 Internal Server Error");
+        output.println("HTTP/1.0 404 Not Found");
         output.flush();
     }
 }
