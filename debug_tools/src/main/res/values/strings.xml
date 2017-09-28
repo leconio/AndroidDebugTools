@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">debug_tools</string>
+    <string name="PORT_NUMBER">8089</string>
+</resources>
