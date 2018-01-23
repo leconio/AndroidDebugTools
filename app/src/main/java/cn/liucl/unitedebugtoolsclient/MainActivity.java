@@ -5,9 +5,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 
+import java.io.File;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import cn.liucl.debugtools.DebugTools;
 import cn.liucl.debugtools.db.DefaultDatabaseHelper;
 import cn.liucl.unitedebugtoolsclient.database.CarDBHelper;
 import cn.liucl.unitedebugtoolsclient.database.ContactDBHelper;
@@ -15,7 +18,7 @@ import cn.liucl.unitedebugtoolsclient.database.ExtTestDBHelper;
 
 public class MainActivity extends AppCompatActivity {
 
-    public static final String TAG = MainActivity.class.getSimpleName();
+    public static final String TAG = DebugTools.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,13 +60,73 @@ public class MainActivity extends AppCompatActivity {
 
     public void queryTableName(View view) {
         DefaultDatabaseHelper ddh = new DefaultDatabaseHelper(this);
-//        HashMap<String, File> map = ddh.listAllDatabase();
-//        List<String> list = ddh.listAllTables("Car.db");
+        List<String> list = ddh.listAllTables("Car.db");
+        Log.i(TAG, "queryTableName: " + list);
+    }
 
+    public void queryDatabase(View view) {
+        DefaultDatabaseHelper ddh = new DefaultDatabaseHelper(this);
+        HashMap<String, File> map = ddh.listAllDatabase();
+        Log.i(TAG, "queryDatabase: " + map);
+    }
+
+    public void queryTest(View view) {
+        DefaultDatabaseHelper ddh = new DefaultDatabaseHelper(this);
         Map<String, String> condition = new HashMap<>();
-        condition.put("phone", "phone_0");
+        condition.put("phone", "phone_1");
         condition.put("name", "name_1");
         String contacts = ddh.queryData("Contact.db", "contacts", condition);
-        Log.i(TAG, "queryTableName: " + contacts);
+        Log.i(TAG, "queryTest: " + contacts);
+    }
+
+    public void updateTest(View view) {
+        DefaultDatabaseHelper ddh = new DefaultDatabaseHelper(this);
+        Map<String, String> condition = new HashMap<>();
+        condition.put("phone", "phone_1");
+        condition.put("name", "name_1");
+
+        Map<String, String> newValue = new HashMap<>();
+        newValue.put("phone", "phone_10000");
+        newValue.put("name", "name_10000");
+        ddh.updateData("Contact.db", "contacts", condition, newValue);
+
+
+        Map<String, String> queryCondition = new HashMap<>();
+        queryCondition.put("phone", "phone_10000");
+        queryCondition.put("name", "name_10000");
+        String contacts = ddh.queryData("Contact.db", "contacts", queryCondition);
+        Log.i(TAG, "updateTest: " + contacts);
+    }
+
+    public void insertTest(View view) {
+        DefaultDatabaseHelper ddh = new DefaultDatabaseHelper(this);
+        Map<String, String> condition = new HashMap<>();
+        condition.put("phone", "phone_9999");
+        condition.put("name", "name_9999");
+        condition.put("email", "email_9999");
+        condition.put("street", "street_9999");
+        ddh.insertData("Contact.db", "contacts", condition);
+
+
+        Map<String, String> queryCondition = new HashMap<>();
+        queryCondition.put("phone", "phone_9999");
+        queryCondition.put("name", "name_9999");
+        String contacts = ddh.queryData("Contact.db", "contacts", queryCondition);
+        Log.i(TAG, "insertTest: " + contacts);
+    }
+
+    public void deleteTest(View view) {
+        DefaultDatabaseHelper ddh = new DefaultDatabaseHelper(this);
+        Map<String, String> condition = new HashMap<>();
+        condition.put("phone", "phone_9999");
+        condition.put("name", "name_9999");
+        ddh.deleteData("Contact.db", "contacts", condition);
+
+
+        Map<String, String> queryCondition = new HashMap<>();
+        queryCondition.put("phone", "phone_9999");
+        queryCondition.put("name", "name_9999");
+        String contacts = ddh.queryData("Contact.db", "contacts", queryCondition);
+        Log.i(TAG, "insertTest: " + contacts);
     }
 }

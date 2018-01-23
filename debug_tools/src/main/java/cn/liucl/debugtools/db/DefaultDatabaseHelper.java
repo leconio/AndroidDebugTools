@@ -2,6 +2,7 @@ package cn.liucl.debugtools.db;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
@@ -62,7 +63,7 @@ public class DefaultDatabaseHelper implements DatabaseHelper {
     }
 
     @Override
-    public String queryData(String dbName, String tableName, Map<String, String> condition)  {
+    public String queryData(String dbName, String tableName, Map<String, String> condition) {
         SQLiteDatabase db =
                 SQLiteDatabase.openOrCreateDatabase(listAllDatabase().get(dbName).getAbsolutePath(), null);
         StringBuilder sql = new StringBuilder("SELECT * FROM " + tableName);
@@ -123,4 +124,118 @@ public class DefaultDatabaseHelper implements DatabaseHelper {
         cursor.close();
         return jsonList.toString();
     }
+
+    @Override
+    public void updateData(String dbName, String tableName, Map<String, String> condition, Map<String, String> newValue) {
+        SQLiteDatabase db =
+                SQLiteDatabase.openOrCreateDatabase(listAllDatabase().get(dbName).getAbsolutePath(), null);
+        StringBuilder sql = new StringBuilder("UPDATE " + tableName);
+        List<String> ion = new ArrayList<>();
+        if (newValue != null) {
+            sql.append(" SET ");
+            Set<String> keySet = newValue.keySet();
+            Iterator<String> iterator = keySet.iterator();
+            int j = 0;
+            while (iterator.hasNext()) {
+                j++;
+                String key = iterator.next();
+                if (key.contains("=")) {
+                    throw new SQLException("error params,must be not contain '='");
+                }
+                sql.append(key);
+                sql.append("=?");
+                ion.add(newValue.get(key));
+                if (j != keySet.size()) {
+                    sql.append(" , ");
+                }
+            }
+        }
+
+        if (condition != null) {
+            sql.append(" WHERE ");
+            Set<String> keySet = condition.keySet();
+            Iterator<String> iterator = keySet.iterator();
+            int i = 0;
+            while (iterator.hasNext()) {
+                i++;
+                String con = iterator.next();
+                if (con.contains("=")) {
+                    throw new SQLException("error params,must be not contain '='");
+                }
+                sql.append(con);
+                sql.append("=?");
+                ion.add(condition.get(con));
+                if (i != keySet.size()) {
+                    sql.append(" and ");
+                }
+            }
+        }
+        Log.i(TAG, "执行SQL: " + sql.toString());
+        db.execSQL(sql.toString(), ion.toArray(new String[ion.size()]));
+    }
+
+    @Override
+    public void insertData(String dbName, String tableName, Map<String, String> newValue) {
+        SQLiteDatabase db =
+                SQLiteDatabase.openOrCreateDatabase(listAllDatabase().get(dbName).getAbsolutePath(), null);
+        StringBuilder sql = new StringBuilder("INSERT INTO " + tableName);
+        List<String> ion = new ArrayList<>();
+        if (newValue != null) {
+            sql.append(" (");
+            Set<String> keySet = newValue.keySet();
+            Iterator<String> iterator = keySet.iterator();
+            int j = 0;
+            while (iterator.hasNext()) {
+                j++;
+                String key = iterator.next();
+                sql.append(key);
+                ion.add(newValue.get(key));
+                if (j != keySet.size()) {
+                    sql.append(",");
+                }
+            }
+            sql.append(") ");
+            sql.append("VALUES");
+            sql.append(" (");
+            for (int k = 0; k < newValue.size(); k++) {
+                sql.append('?');
+                if (k != newValue.size() - 1) {
+                    sql.append(",");
+                }
+            }
+            sql.append(")");
+        }
+        Log.i(TAG, "执行SQL: " + sql.toString());
+        db.execSQL(sql.toString(), ion.toArray(new String[ion.size()]));
+    }
+
+    @Override
+    public void deleteData(String dbName, String tableName, Map<String, String> condition) {
+        SQLiteDatabase db =
+                SQLiteDatabase.openOrCreateDatabase(listAllDatabase().get(dbName).getAbsolutePath(), null);
+        StringBuilder sql = new StringBuilder("DELETE FROM " + tableName);
+        List<String> ion = new ArrayList<>();
+        if (condition != null) {
+            sql.append(" WHERE ");
+            Set<String> keySet = condition.keySet();
+            Iterator<String> iterator = keySet.iterator();
+            int i = 0;
+            while (iterator.hasNext()) {
+                i++;
+                String con = iterator.next();
+                if (con.contains("=")) {
+                    throw new SQLException("error params,must be not contain '='");
+                }
+                sql.append(con);
+                sql.append("=?");
+                ion.add(condition.get(con));
+                if (i != keySet.size()) {
+                    sql.append(" and ");
+                }
+            }
+        }
+        Log.i(TAG, "执行SQL: " + sql.toString());
+        db.execSQL(sql.toString(), ion.toArray(new String[ion.size()]));
+    }
+
 }

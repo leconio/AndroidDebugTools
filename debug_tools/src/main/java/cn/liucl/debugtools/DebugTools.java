@@ -14,7 +14,6 @@ public class DebugTools {
     public static final String TAG = DebugTools.class.getSimpleName();
     private static final int DEFAULT_PORT = 8080;
     private static ClientServer clientServer;
-    private static String addressLog = "not available";
 
     private DebugTools() {
         // This class in not publicly instantiable
@@ -33,13 +32,6 @@ public class DebugTools {
 
         clientServer = new ClientServer(context, portNumber);
         clientServer.start();
-        addressLog = Utils.getAddressLog(context, portNumber);
-        Log.d(TAG, addressLog);
-    }
-
-    public static String getAddressLog() {
-        Log.d(TAG, addressLog);
-        return addressLog;
     }
 
     public static void shutDown() {

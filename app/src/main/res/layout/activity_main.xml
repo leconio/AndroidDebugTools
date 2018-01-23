@@ -18,4 +18,34 @@
         android:text="测试列出数据库表名"
         android:onClick="queryTableName"
         android:layout_height="wrap_content" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:text="测试列出数据库"
+        android:onClick="queryDatabase"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:text="测试Query"
+        android:onClick="queryTest"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:text="测试Update"
+        android:onClick="updateTest"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:text="测试Insert"
+        android:onClick="insertTest"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:text="测试Delete"
+        android:onClick="deleteTest"
+        android:layout_height="wrap_content" />
 </LinearLayout>

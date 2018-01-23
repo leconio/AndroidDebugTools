@@ -1,9 +1,6 @@
 package cn.liucl.debugtools;
 
-import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.res.AssetManager;
-import android.net.wifi.WifiManager;
 import android.webkit.MimeTypeMap;
 
 import java.io.ByteArrayOutputStream;
@@ -19,18 +16,6 @@ public class Utils {
 
     private Utils() {
 
-    }
-
-    public static String getAddressLog(Context context, int port) {
-        WifiManager wifiManager = (WifiManager) context.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
-        int ipAddress = wifiManager.getConnectionInfo().getIpAddress();
-        @SuppressLint("DefaultLocale")
-        final String formattedIpAddress = String.format("%d.%d.%d.%d",
-                (ipAddress & 0xff),
-                (ipAddress >> 8 & 0xff),
-                (ipAddress >> 16 & 0xff),
-                (ipAddress >> 24 & 0xff));
-        return "Open http://" + formattedIpAddress + ":" + port + " in your browser";
     }
 
     public static String getMimeType(final String file) {
