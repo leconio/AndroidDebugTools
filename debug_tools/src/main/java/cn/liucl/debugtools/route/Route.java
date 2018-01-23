@@ -1,5 +1,6 @@
 package cn.liucl.debugtools.route;
 
+import cn.liucl.debugtools.server.HttpParamsParser;
 import cn.liucl.debugtools.server.Result;
 
 /**
@@ -12,6 +13,7 @@ public interface Route {
      * 路由处理
      *
      * @return 结果
+     * @param request
      */
-    Result process();
+    Result process(HttpParamsParser.Request request);
 }

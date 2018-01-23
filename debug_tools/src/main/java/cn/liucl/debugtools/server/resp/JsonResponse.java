@@ -1,7 +1,11 @@
 package cn.liucl.debugtools.server.resp;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.json.JSONStringer;
+
+import java.io.UnsupportedEncodingException;
 
 import cn.liucl.debugtools.server.Result;
 
@@ -18,9 +22,13 @@ public class JsonResponse implements Response {
         try {
             mJsonObject.put("success", result.isSuccessful());
             mJsonObject.put("message", result.getMessage());
-            mJsonObject.put("obj", new JSONObject(new String(result.getContent())));
+            mJsonObject.put("obj", new JSONObject(result.getObj()));
         } catch (JSONException e) {
-            e.printStackTrace();
+            try {
+                mJsonObject.put("obj", new JSONArray(result.getObj()));
+            } catch (JSONException e1) {
+                e1.printStackTrace();
+            }
         }
 
     }

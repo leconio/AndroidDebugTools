@@ -9,7 +9,7 @@ public class Result {
     public static final String OK = "ok";
 
     private boolean isSuccessful;
-    private byte[] content;
+    private String obj;
     private String message;
 
     public boolean isSuccessful() {
@@ -20,12 +20,12 @@ public class Result {
         isSuccessful = successful;
     }
 
-    public byte[] getContent() {
-        return content;
+    public String getObj() {
+        return obj;
     }
 
-    public void setContent(byte[] content) {
-        this.content = content;
+    public void setObj(String obj) {
+        this.obj = obj;
     }
 
     public String getMessage() {

@@ -36,9 +36,9 @@ public class RouteDispatcher {
         return sRouteDispatcher;
     }
 
-    public Response dispatch(HttpParamsParser.Request parse) throws IOException {
+    public Response dispatch(HttpParamsParser.Request request) throws IOException {
         Response response = null;
-        String requestURI = parse.getRequestURI();
+        String requestURI = request.getRequestURI();
         String[] urlSplit = requestURI.split("/");
         if (urlSplit.length == 1 || urlSplit[1].contains("debug")) {
             return null;
@@ -47,9 +47,21 @@ public class RouteDispatcher {
         // error-demo
         if (urlSplit[1].contains("error")) {
             Route errorRoute = new ErrorRoute();
-            Result process = errorRoute.process();
+            Result process = errorRoute.process(request);
             response = new JsonResponse(process);
             return response;
+        }
+
+        if (urlSplit[1].contains("db")) {
+            Route dbRoute = new DbRoute(mContext);
+            Result process = dbRoute.process(request);
+            response = new JsonResponse(process);
+            return response;
+        }
+
+        //SimpleHTTPServer
+        if (urlSplit[1].contains("SimpleHTTPServer")) {
+
         }
 
         //资源处理
