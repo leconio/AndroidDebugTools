@@ -13,6 +13,14 @@
             android:enabled="true"
             android:name=".DebugInitProvider" />
 
+        <activity android:name=".SettingActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:host="pan" android:scheme="unite" android:path="/setting" />
+            </intent-filter>
+        </activity>
+
     </application>
 
 </manifest>
