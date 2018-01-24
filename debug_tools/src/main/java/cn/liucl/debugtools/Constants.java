@@ -9,22 +9,25 @@ import android.content.SharedPreferences;
 
 public class Constants {
 
-    public static final String HOST = getHost();
-    public static final String PORT = getPORT();
-
-    private static Context context;
+    private static Context sContext;
 
     public static void init(Context context){
-        Constants.context = context;
+        sContext = context;
+        initHost();
+        initPort();
     }
 
-    private static String getPORT() {
-        SharedPreferences sharedPreferences = context.getSharedPreferences(SettingActivity.UNITE_PAN, Context.MODE_PRIVATE);
-        return sharedPreferences.getString(SettingActivity.UNITE_PAN_IP, "7896");    }
+    public static String HOST;
+    public static String PORT;
 
-    private static String getHost(){
-        SharedPreferences sharedPreferences = context.getSharedPreferences(SettingActivity.UNITE_PAN, Context.MODE_PRIVATE);
-        return sharedPreferences.getString(SettingActivity.UNITE_PAN_PORT, "127.0.0.1");
+    private static void initPort() {
+        SharedPreferences sharedPreferences = sContext.getSharedPreferences(SettingActivity.UNITE_PAN, Context.MODE_PRIVATE);
+        HOST = sharedPreferences.getString(SettingActivity.UNITE_PAN_IP, "7896");
+    }
+
+    private static void initHost(){
+        SharedPreferences sharedPreferences = sContext.getSharedPreferences(SettingActivity.UNITE_PAN, Context.MODE_PRIVATE);
+        PORT = sharedPreferences.getString(SettingActivity.UNITE_PAN_PORT, "127.0.0.1");
     }
 
 }

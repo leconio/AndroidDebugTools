@@ -1,5 +1,6 @@
 package cn.liucl.unitedebugtoolsclient;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -11,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 import cn.liucl.debugtools.DebugTools;
+import cn.liucl.debugtools.SettingActivity;
 import cn.liucl.debugtools.db.DefaultDatabaseHelper;
 import cn.liucl.unitedebugtoolsclient.database.CarDBHelper;
 import cn.liucl.unitedebugtoolsclient.database.ContactDBHelper;
@@ -24,6 +26,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        startActivity(new Intent(this, SettingActivity.class));
+
     }
 
     public void addToDatabase(View view) {
