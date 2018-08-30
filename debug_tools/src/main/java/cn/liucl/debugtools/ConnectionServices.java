@@ -2,7 +2,6 @@ package cn.liucl.debugtools;
 
 import android.app.IntentService;
 import android.content.Intent;
-import android.os.Handler;
 import android.util.Log;
 
 import java.io.DataInputStream;
@@ -62,6 +61,11 @@ public class ConnectionServices extends IntentService {
         });
     }
 
+    /**
+     * 处理服务器返回的结果
+     *
+     * @param ret 结果内容
+     */
     private void processResult(String ret) {
         // 如接收到 "action" 则断开连接
         if (ret.contains("action")) {
@@ -80,6 +84,12 @@ public class ConnectionServices extends IntentService {
         }
     }
 
+    /**
+     * 发送Socket
+     *
+     * @param outStr   发送内容
+     * @param callback 回调
+     */
     private void handleSocket(String outStr, Callback callback) {
         Socket socket = null;
         try {
