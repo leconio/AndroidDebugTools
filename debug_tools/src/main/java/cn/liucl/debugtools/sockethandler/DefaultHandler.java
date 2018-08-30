@@ -79,16 +79,18 @@ public class DefaultHandler implements Handler {
             return;
         }
 
+        String contentType = "Content-Type: " + Utils.getMimeType(route);
+
         // Send out the content.
         output.println("HTTP/1.0 200 OK");
 
         if (route.contains("downloadFile")) {
-            output.println("Content-Type: " + Utils.getMimeType(route));
             output.println("Content-Disposition: attachment; filename=" + route.substring(route.lastIndexOf("/") + 1));
         } else {
-            output.println("Content-Type: application/json");
+            contentType = "Content-Type: application/json";
             output.println("Content-Length: " + bytes.length);
         }
+        output.println(contentType);
         output.println();
         output.write(bytes);
         output.flush();

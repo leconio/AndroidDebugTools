@@ -60,7 +60,7 @@ public class RouteDispatcher {
         }
 
         //SimpleHTTPServer
-        if (urlSplit[1].contains("SimpleHTTPServer")) {
+        if (urlSplit[1].contains("sdcard")) {
 
         }
 

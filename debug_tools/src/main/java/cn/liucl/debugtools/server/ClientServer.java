@@ -12,6 +12,9 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import cn.liucl.debugtools.Utils;
 import cn.liucl.debugtools.sockethandler.DefaultHandler;
@@ -29,6 +32,8 @@ public class ClientServer implements Runnable {
 
     private final DefaultHandler mRequestHandler;
 
+    private static ExecutorService cachedThreadPool = Executors.newCachedThreadPool();
+
     public ClientServer(Context context, int port) {
         mContext = context;
         mRequestHandler = new DefaultHandler(context);
@@ -37,7 +42,7 @@ public class ClientServer implements Runnable {
 
     public void start() {
         mIsRunning = true;
-        new Thread(this).start();
+        cachedThreadPool.submit(this);
     }
 
     public void stop() {
@@ -56,7 +61,7 @@ public class ClientServer implements Runnable {
     public void run() {
         try {
             mServerSocket = new ServerSocket(mPort);
-            Log.i(TAG, "StartServer Ip: http://" + Utils.getIP(mContext));
+            Log.i(TAG, "StartServer Ip: http://" + Utils.getIP(mContext) + ":" + mPort);
             while (mIsRunning) {
                 Socket socket = mServerSocket.accept();
                 mRequestHandler.handle(socket);
