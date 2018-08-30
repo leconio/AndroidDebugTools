@@ -35,4 +35,13 @@ public class Result {
     public void setMessage(String message) {
         this.message = message;
     }
+
+    @Override
+    public String toString() {
+        return "Result{" +
+                "isSuccessful=" + isSuccessful +
+                ", obj='" + obj + '\'' +
+                ", message='" + message + '\'' +
+                '}';
+    }
 }

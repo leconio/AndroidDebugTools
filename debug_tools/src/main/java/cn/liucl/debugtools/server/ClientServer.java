@@ -13,6 +13,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
 
+import cn.liucl.debugtools.Utils;
 import cn.liucl.debugtools.sockethandler.DefaultHandler;
 
 public class ClientServer implements Runnable {
@@ -20,6 +21,7 @@ public class ClientServer implements Runnable {
     private static final String TAG = "ClientServer";
 
     private final int mPort;
+    private final Context mContext;
 
     private boolean mIsRunning;
 
@@ -28,6 +30,7 @@ public class ClientServer implements Runnable {
     private final DefaultHandler mRequestHandler;
 
     public ClientServer(Context context, int port) {
+        mContext = context;
         mRequestHandler = new DefaultHandler(context);
         mPort = port;
     }
@@ -53,6 +56,7 @@ public class ClientServer implements Runnable {
     public void run() {
         try {
             mServerSocket = new ServerSocket(mPort);
+            Log.i(TAG, "StartServer Ip: http://" + Utils.getIP(mContext));
             while (mIsRunning) {
                 Socket socket = mServerSocket.accept();
                 mRequestHandler.handle(socket);

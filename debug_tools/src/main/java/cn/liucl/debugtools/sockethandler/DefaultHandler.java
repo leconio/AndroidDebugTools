@@ -48,6 +48,8 @@ public class DefaultHandler implements Handler {
             Log.i(TAG, "Url: " + parse);
             Response resp = RouteDispatcher.getInstance(mContext).dispatch(parse);
             writeContent(output, resp, parse.getRequestURI());
+        } catch (Exception e) {
+            e.printStackTrace();
         } finally {
             try {
                 if (null != output) {
@@ -66,7 +68,7 @@ public class DefaultHandler implements Handler {
      * 写入响应报文
      *
      * @param output 写入流
-     * @param resp  写入内容
+     * @param resp   写入内容
      * @param route  访问路由信息
      * @throws IOException
      */
@@ -79,11 +81,12 @@ public class DefaultHandler implements Handler {
 
         // Send out the content.
         output.println("HTTP/1.0 200 OK");
-        output.println("Content-Type: " + Utils.getMimeType(route));
 
         if (route.contains("downloadFile")) {
+            output.println("Content-Type: " + Utils.getMimeType(route));
             output.println("Content-Disposition: attachment; filename=" + route.substring(route.lastIndexOf("/") + 1));
         } else {
+            output.println("Content-Type: application/json");
             output.println("Content-Length: " + bytes.length);
         }
         output.println();

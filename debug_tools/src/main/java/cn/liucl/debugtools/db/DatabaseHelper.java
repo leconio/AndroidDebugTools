@@ -66,4 +66,11 @@ public interface DatabaseHelper {
      * @return 返回结果 json格式
      */
     void deleteData(String dbName, String tableName, Map<String, String> where);
+
+    /**
+     * 直接对数据库执行sql
+     * @param dbName 数据库名
+     * @param sql 要执行的sql
+     */
+    void sql(String dbName, String sql);
 }

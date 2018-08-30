@@ -17,12 +17,12 @@ public class JsonResponse implements Response {
 
     private final JSONObject mJsonObject;
 
-    public JsonResponse(Result result){
+    public JsonResponse(Result result) {
         mJsonObject = new JSONObject();
         try {
             mJsonObject.put("success", result.isSuccessful());
             mJsonObject.put("message", result.getMessage());
-            mJsonObject.put("obj", new JSONObject(result.getObj()));
+            mJsonObject.put("obj", result.getObj() == null ? "null" : new JSONObject(result.getObj()));
         } catch (JSONException e) {
             try {
                 mJsonObject.put("obj", new JSONArray(result.getObj()));

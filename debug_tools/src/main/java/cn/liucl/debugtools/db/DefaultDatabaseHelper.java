@@ -46,9 +46,13 @@ public class DefaultDatabaseHelper implements DatabaseHelper {
     }
 
     @Override
-    public List<String> listAllTables(String dbName) {
+    public List<String> listAllTables(String dbName) throws SQLException {
+        File dbFile = listAllDatabase().get(dbName);
+        if (dbFile == null) {
+            throw new IllegalArgumentException("Cannot find dbName :" + dbName);
+        }
         SQLiteDatabase db =
-                SQLiteDatabase.openOrCreateDatabase(listAllDatabase().get(dbName).getAbsolutePath(), null);
+                SQLiteDatabase.openOrCreateDatabase(dbFile.getAbsolutePath(), null);
         List<String> tableName = new ArrayList<>();
         Cursor c = db.rawQuery("SELECT name FROM sqlite_master WHERE type='table' OR type='view'", null);
         if (c.moveToFirst()) {
@@ -63,9 +67,13 @@ public class DefaultDatabaseHelper implements DatabaseHelper {
     }
 
     @Override
-    public String queryData(String dbName, String tableName, Map<String, String> condition) {
+    public String queryData(String dbName, String tableName, Map<String, String> condition) throws SQLException {
+        File dbFile = listAllDatabase().get(dbName);
+        if (dbFile == null) {
+            throw new IllegalArgumentException("Cannot find dbName :" + dbName);
+        }
         SQLiteDatabase db =
-                SQLiteDatabase.openOrCreateDatabase(listAllDatabase().get(dbName).getAbsolutePath(), null);
+                SQLiteDatabase.openOrCreateDatabase(dbFile.getAbsolutePath(), null);
         StringBuilder sql = new StringBuilder("SELECT * FROM " + tableName);
         List<String> ion = new ArrayList<>();
         if (condition != null) {
@@ -126,9 +134,13 @@ public class DefaultDatabaseHelper implements DatabaseHelper {
     }
 
     @Override
-    public void updateData(String dbName, String tableName, Map<String, String> condition, Map<String, String> newValue) {
+    public void updateData(String dbName, String tableName, Map<String, String> condition, Map<String, String> newValue) throws SQLException {
+        File dbFile = listAllDatabase().get(dbName);
+        if (dbFile == null) {
+            throw new IllegalArgumentException("Cannot find dbName :" + dbName);
+        }
         SQLiteDatabase db =
-                SQLiteDatabase.openOrCreateDatabase(listAllDatabase().get(dbName).getAbsolutePath(), null);
+                SQLiteDatabase.openOrCreateDatabase(dbFile.getAbsolutePath(), null);
         StringBuilder sql = new StringBuilder("UPDATE " + tableName);
         List<String> ion = new ArrayList<>();
         if (newValue != null) {
@@ -175,9 +187,13 @@ public class DefaultDatabaseHelper implements DatabaseHelper {
     }
 
     @Override
-    public void insertData(String dbName, String tableName, Map<String, String> newValue) {
+    public void insertData(String dbName, String tableName, Map<String, String> newValue) throws SQLException {
+        File dbFile = listAllDatabase().get(dbName);
+        if (dbFile == null) {
+            throw new IllegalArgumentException("Cannot find dbName :" + dbName);
+        }
         SQLiteDatabase db =
-                SQLiteDatabase.openOrCreateDatabase(listAllDatabase().get(dbName).getAbsolutePath(), null);
+                SQLiteDatabase.openOrCreateDatabase(dbFile.getAbsolutePath(), null);
         StringBuilder sql = new StringBuilder("INSERT INTO " + tableName);
         List<String> ion = new ArrayList<>();
         if (newValue != null) {
@@ -210,9 +226,13 @@ public class DefaultDatabaseHelper implements DatabaseHelper {
     }
 
     @Override
-    public void deleteData(String dbName, String tableName, Map<String, String> condition) {
+    public void deleteData(String dbName, String tableName, Map<String, String> condition) throws SQLException {
+        File dbFile = listAllDatabase().get(dbName);
+        if (dbFile == null) {
+            throw new IllegalArgumentException("Cannot find dbName :" + dbName);
+        }
         SQLiteDatabase db =
-                SQLiteDatabase.openOrCreateDatabase(listAllDatabase().get(dbName).getAbsolutePath(), null);
+                SQLiteDatabase.openOrCreateDatabase(dbFile.getAbsolutePath(), null);
         StringBuilder sql = new StringBuilder("DELETE FROM " + tableName);
         List<String> ion = new ArrayList<>();
         if (condition != null) {
@@ -236,6 +256,18 @@ public class DefaultDatabaseHelper implements DatabaseHelper {
         }
         Log.i(TAG, "执行SQL: " + sql.toString());
         db.execSQL(sql.toString(), ion.toArray(new String[ion.size()]));
+    }
+
+    @Override
+    public void sql(String dbName, String sql) throws SQLException {
+        File dbFile = listAllDatabase().get(dbName);
+        if (dbFile == null) {
+            throw new IllegalArgumentException("Cannot find dbName :" + dbName);
+        }
+        SQLiteDatabase db =
+                SQLiteDatabase.openOrCreateDatabase(dbFile.getAbsolutePath(), null);
+        Log.i(TAG, "执行SQL: " + sql);
+        db.execSQL(sql);
     }
 
 }
