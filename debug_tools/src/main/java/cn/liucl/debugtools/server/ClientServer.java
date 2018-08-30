@@ -12,12 +12,11 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
-import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import cn.liucl.debugtools.Utils;
-import cn.liucl.debugtools.sockethandler.DefaultHandler;
+import cn.liucl.debugtools.sockethandler.ActionHandler;
 
 public class ClientServer implements Runnable {
 
@@ -30,13 +29,13 @@ public class ClientServer implements Runnable {
 
     private ServerSocket mServerSocket;
 
-    private final DefaultHandler mRequestHandler;
+    private final ActionHandler mRequestHandler;
 
     private static ExecutorService cachedThreadPool = Executors.newCachedThreadPool();
 
     public ClientServer(Context context, int port) {
         mContext = context;
-        mRequestHandler = new DefaultHandler(context);
+        mRequestHandler = new ActionHandler(context);
         mPort = port;
     }
 

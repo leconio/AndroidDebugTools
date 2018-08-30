@@ -169,7 +169,5 @@ public class HttpParamsParser {
             buf.append("}\n}");
             return buf.toString();
         }
-        //  剩下的函数,自己根据需求实现了,一般返回0或者null即可
-        //  这里就不贴了,HttpServletRequest的接口方法也太多了
     }
 }

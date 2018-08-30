@@ -46,7 +46,7 @@ public class HttpUpload {
         // 构建请求
         URL url = new URL(httpUrl);
         String hostAddress = url.getHost();
-        int port = Integer.parseInt(Constants.PORT);
+        int port = Constants.PORT;
         Socket socket = new Socket(InetAddress.getByName(hostAddress), port);
         //数据由Android应用传到服务器，所以构建输出流
 //        OutputStream outStream = System.out;

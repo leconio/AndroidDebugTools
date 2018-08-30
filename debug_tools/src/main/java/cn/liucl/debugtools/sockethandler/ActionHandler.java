@@ -7,6 +7,7 @@ import android.util.Log;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.PrintStream;
 import java.net.Socket;
 
@@ -21,11 +22,11 @@ import static cn.liucl.debugtools.DebugTools.TAG;
  * Created by spawn on 17-9-28.
  */
 
-public class DefaultHandler implements Handler {
+public class ActionHandler implements Handler {
 
     private Context mContext;
 
-    public DefaultHandler(Context context) {
+    public ActionHandler(Context context) {
         mContext = context;
     }
 
@@ -65,12 +66,24 @@ public class DefaultHandler implements Handler {
     }
 
     /**
+     * 主动模式使用
+     * @param os 写回去
+     * @param url actionUrl
+     */
+    public void handle(OutputStream os,String url) throws IOException {
+        PrintStream output = new PrintStream(os);
+        HttpParamsParser.Request parse = HttpParamsParser.parse(url);
+        Log.i(TAG, "Url: " + parse);
+        Response resp = RouteDispatcher.getInstance(mContext).dispatch(parse);
+        writeContent(output, resp, parse.getRequestURI());
+    }
+
+    /**
      * 写入响应报文
      *
      * @param output 写入流
      * @param resp   写入内容
      * @param route  访问路由信息
-     * @throws IOException
      */
     private void writeContent(PrintStream output, Response resp, String route) throws IOException {
         byte[] bytes = null;

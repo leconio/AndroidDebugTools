@@ -18,16 +18,16 @@ public class Constants {
     }
 
     public static String HOST;
-    public static String PORT;
+    public static int PORT;
 
     private static void initPort() {
         SharedPreferences sharedPreferences = sContext.getSharedPreferences(SettingActivity.UNITE_PAN, Context.MODE_PRIVATE);
-        HOST = sharedPreferences.getString(SettingActivity.UNITE_PAN_IP, "7896");
+        PORT = sharedPreferences.getInt(SettingActivity.UNITE_PAN_PORT, 8089);
     }
 
     private static void initHost(){
         SharedPreferences sharedPreferences = sContext.getSharedPreferences(SettingActivity.UNITE_PAN, Context.MODE_PRIVATE);
-        PORT = sharedPreferences.getString(SettingActivity.UNITE_PAN_PORT, "127.0.0.1");
+        HOST = sharedPreferences.getString(SettingActivity.UNITE_PAN_IP, "127.0.0.1");
     }
 
 }

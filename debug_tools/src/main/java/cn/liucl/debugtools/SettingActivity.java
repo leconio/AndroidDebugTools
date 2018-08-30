@@ -2,8 +2,10 @@ package cn.liucl.debugtools;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.provider.SyncStateContract;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -47,10 +49,10 @@ public class SettingActivity extends Activity {
             @Override
             public void onClick(View v) {
                 String ipText = mEditIpView.getText().toString();
-                String port = mEditPortView.getText().toString();
+                int port = Integer.parseInt(mEditPortView.getText().toString());
                 if (checkIp(ipText) && checkPort(port)) {
                     saveToSp(ipText, port);
-                    processConnect(ipText);
+                    processConnect(ipText,port);
                 } else {
                     Toast.makeText(SettingActivity.this, "格式错误", Toast.LENGTH_SHORT).show();
                 }
@@ -58,10 +60,9 @@ public class SettingActivity extends Activity {
         });
     }
 
-    private boolean checkPort(String portText) {
+    private boolean checkPort(int port) {
         try {
-            int port = Integer.parseInt(portText);
-            if (port > 0 && port < 65536) {
+            if (port > 1000 && port < 65536) {
                 return true;
             }
         } catch (Exception e) {
@@ -75,10 +76,10 @@ public class SettingActivity extends Activity {
         return matcher.matches();
     }
 
-    private void saveToSp(String ipText, String portText) {
+    private void saveToSp(String ipText, int portText) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(UNITE_PAN_IP, ipText);
-        editor.putString(UNITE_PAN_PORT, portText);
+        editor.putInt(UNITE_PAN_PORT, portText);
         editor.apply();
     }
 
@@ -86,15 +87,21 @@ public class SettingActivity extends Activity {
      * 开始连接
      *
      * @param ipText
+     * @param port
      */
-    private void processConnect(String ipText) {
-
+    private void processConnect(String ipText, int port) {
+        Intent startIntent = new Intent(this, ConnectionServices.class);
+        startIntent.putExtra(ConnectionServices.CONNECT_IP, ipText);
+        startIntent.putExtra(ConnectionServices.CONNECT_PORT, port);
+        startService(startIntent);
     }
 
     private void assignsView() {
         mConnectBtn = findViewById(R.id.connect);
         mEditIpView = findViewById(R.id.edit_ip);
         mEditPortView = findViewById(R.id.edit_port);
+        mEditIpView.setText(Constants.HOST);
+        mEditPortView.setText(String.valueOf(Constants.PORT));
     }
 
 

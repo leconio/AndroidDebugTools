@@ -27,7 +27,7 @@ public class DebugTools {
         } catch (NumberFormatException ex) {
             Log.e(TAG, "PORT_NUMBER should be integer", ex);
             portNumber = DEFAULT_PORT;
-            Log.i(TAG, "Using DefaultHandler port : " + DEFAULT_PORT);
+            Log.i(TAG, "Using ActionHandler port : " + DEFAULT_PORT);
         }
 
         clientServer = new ClientServer(context, portNumber);
