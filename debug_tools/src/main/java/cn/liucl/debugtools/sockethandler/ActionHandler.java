@@ -96,6 +96,8 @@ public class ActionHandler implements Handler {
 
         // Send out the content.
         output.println("HTTP/1.0 200 OK");
+        output.println("Access-Control-Allow-Origin: *");
+        output.println("Access-Control-Allow-Credentials: true");
 
         if (route.contains("downloadFile")) {
             output.println("Content-Disposition: attachment; filename=" + route.substring(route.lastIndexOf("/") + 1));

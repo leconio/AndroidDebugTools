@@ -21,8 +21,6 @@ import java.util.regex.Pattern;
 
 public class SettingActivity extends Activity {
 
-    public static boolean CONNECT_STATE = false;
-
     public static final String UNITE_PAN = "unite_pan";
     public static final String UNITE_PAN_IP = "unite_pan_ip";
     public static final String UNITE_PAN_PORT = "unite_pan_port";
@@ -61,14 +59,7 @@ public class SettingActivity extends Activity {
     }
 
     private boolean checkPort(int port) {
-        try {
-            if (port > 1000 && port < 65536) {
-                return true;
-            }
-        } catch (Exception e) {
-            return false;
-        }
-        return false;
+        return port > 1000 && port < 65536;
     }
 
     private boolean checkIp(String ip) {

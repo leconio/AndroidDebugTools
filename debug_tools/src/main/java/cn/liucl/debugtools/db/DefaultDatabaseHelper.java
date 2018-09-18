@@ -67,7 +67,7 @@ public class DefaultDatabaseHelper implements DatabaseHelper {
     }
 
     @Override
-    public String queryData(String dbName, String tableName, Map<String, String> condition) throws SQLException {
+    public String queryData(String dbName, String tableName, Map<String, String> condition, String limit, String offset) {
         File dbFile = listAllDatabase().get(dbName);
         if (dbFile == null) {
             throw new IllegalArgumentException("Cannot find dbName :" + dbName);
@@ -94,6 +94,18 @@ public class DefaultDatabaseHelper implements DatabaseHelper {
                     sql.append(" and ");
                 }
             }
+        }
+        try {
+            int l = Integer.parseInt(limit);
+            if (l != 0) {
+                sql.append(" LIMIT ").append(l);
+            }
+            int o = Integer.parseInt(offset);
+            if (o != 0) {
+                sql.append(" OFFSET ").append(o);
+            }
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
         }
         Log.i(TAG, "执行SQL: " + sql.toString());
         Cursor cursor = db.rawQuery(sql.toString(), ion.toArray(new String[ion.size()]));
@@ -131,6 +143,11 @@ public class DefaultDatabaseHelper implements DatabaseHelper {
         db.close();
         cursor.close();
         return jsonList.toString();
+    }
+
+    @Override
+    public String queryData(String dbName, String tableName, Map<String, String> condition) throws SQLException {
+        return queryData(dbName, tableName, condition, "0", "0");
     }
 
     @Override
@@ -269,5 +286,4 @@ public class DefaultDatabaseHelper implements DatabaseHelper {
         Log.i(TAG, "执行SQL: " + sql);
         db.execSQL(sql);
     }
-
 }

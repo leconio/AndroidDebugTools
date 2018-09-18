@@ -73,4 +73,15 @@ public interface DatabaseHelper {
      * @param sql 要执行的sql
      */
     void sql(String dbName, String sql);
+
+    /**
+     * 分页
+     * 查询数据
+     *
+     * @param dbName    数据库名
+     * @param tableName 表名
+     * @param where     查询条件
+     * @return 返回结果 json格式
+     */
+    String queryData(String dbName, String tableName, Map<String, String> where, String limit, String offset);
 }

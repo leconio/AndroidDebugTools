@@ -2,7 +2,6 @@ package cn.liucl.debugtools.route;
 
 import android.content.Context;
 import android.text.TextUtils;
-import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -16,8 +15,6 @@ import java.util.Map;
 import cn.liucl.debugtools.db.DefaultDatabaseHelper;
 import cn.liucl.debugtools.server.HttpParamsParser;
 import cn.liucl.debugtools.server.Result;
-
-import static cn.liucl.debugtools.DebugTools.TAG;
 
 /**
  * Created by spawn on 17-9-28.
@@ -57,7 +54,9 @@ public class DbRoute implements Route {
                     condition = request.getParameter("condition");
                     tableName = request.getParameter("tableName");
                     dbName = request.getParameter("dbName");
-                    String jsonData = helper.queryData(dbName, tableName, buildParamMap(condition));
+                    String limit = request.getParameter("limit");
+                    String offset = request.getParameter("offset");
+                    String jsonData = helper.queryData(dbName, tableName, buildParamMap(condition), limit, offset);
                     result.setObj(jsonData);
                     break;
                 case "delete":
@@ -91,7 +90,7 @@ public class DbRoute implements Route {
                 case "sql":
                     dbName = request.getParameter("dbName");
                     String sql = request.getParameter("sql");
-                    helper.sql(dbName,sql);
+                    helper.sql(dbName, sql);
                     break;
             }
         } catch (Exception e) {
