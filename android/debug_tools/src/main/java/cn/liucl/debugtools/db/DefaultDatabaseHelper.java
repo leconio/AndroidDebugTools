@@ -37,7 +37,9 @@ public class DefaultDatabaseHelper implements DatabaseHelper {
         HashMap<String, File> databaseFiles = new HashMap<>();
         try {
             for (String databaseName : mContext.databaseList()) {
-                databaseFiles.put(databaseName, mContext.getDatabasePath(databaseName));
+                if (!databaseName.contains("journal")) {
+                    databaseFiles.put(databaseName, mContext.getDatabasePath(databaseName));
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -57,7 +59,10 @@ public class DefaultDatabaseHelper implements DatabaseHelper {
         Cursor c = db.rawQuery("SELECT name FROM sqlite_master WHERE type='table' OR type='view'", null);
         if (c.moveToFirst()) {
             while (!c.isAfterLast()) {
-                tableName.add(c.getString(0));
+                String item = c.getString(0);
+                if (!"android_metadata".equals(item) && !"transaction".equals(item)) {
+                    tableName.add(item);
+                }
                 c.moveToNext();
             }
         }
@@ -143,6 +148,20 @@ public class DefaultDatabaseHelper implements DatabaseHelper {
         db.close();
         cursor.close();
         return jsonList.toString();
+    }
+
+    @Override
+    public String countData(String dbName, String tableName, Map<String, String> where) {
+        String data = queryData(dbName, tableName, where);
+        JSONObject jsonObject = new JSONObject();
+        try {
+            JSONArray jsonArray = new JSONArray(data);
+            int count = jsonArray.length();
+            jsonObject.put("count", count);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return jsonObject.toString();
     }
 
     @Override

@@ -28,6 +28,12 @@ public class JsonResponse implements Response {
                 mJsonObject.put("obj", new JSONArray(result.getObj()));
             } catch (JSONException e1) {
                 e1.printStackTrace();
+                try {
+                    mJsonObject.put("success", false);
+                    mJsonObject.put("message", "JsonResponse 错误");
+                } catch (JSONException e2) {
+                    e2.printStackTrace();
+                }
             }
         }
 

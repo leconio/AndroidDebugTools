@@ -59,6 +59,13 @@ public class DbRoute implements Route {
                     String jsonData = helper.queryData(dbName, tableName, buildParamMap(condition), limit, offset);
                     result.setObj(jsonData);
                     break;
+                case "count":
+                    condition = request.getParameter("condition");
+                    tableName = request.getParameter("tableName");
+                    dbName = request.getParameter("dbName");
+                    jsonData = helper.countData(dbName, tableName, buildParamMap(condition));
+                    result.setObj(jsonData);
+                    break;
                 case "delete":
                     condition = request.getParameter("condition");
                     tableName = request.getParameter("tableName");

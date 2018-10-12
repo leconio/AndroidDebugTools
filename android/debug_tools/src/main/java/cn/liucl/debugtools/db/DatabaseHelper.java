@@ -55,7 +55,7 @@ public interface DatabaseHelper {
      * @param newValue  新值
      * @return 返回结果 json格式
      */
-    void insertData(String dbName, String tableName,Map<String, String> newValue);
+    void insertData(String dbName, String tableName, Map<String, String> newValue);
 
     /**
      * 删除一条数据
@@ -84,4 +84,15 @@ public interface DatabaseHelper {
      * @return 返回结果 json格式
      */
     String queryData(String dbName, String tableName, Map<String, String> where, String limit, String offset);
+
+    /**
+     * 查询个数
+     *
+     * @param dbName    数据库名
+     * @param tableName 表名
+     * @param where     查询条件
+     * @return 返回结果 json格式
+     */
+    String countData(String dbName, String tableName, Map<String, String> where);
+
 }
