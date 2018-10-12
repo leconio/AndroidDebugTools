@@ -11,30 +11,35 @@ import {RouterModule, Routes} from '@angular/router';
 import {DatabaseItemComponent} from './database-item/database-item.component';
 import {DatabaseMainComponent} from './database-main/database-main.component';
 import {PaginationComponent} from './pagination/pagination.component';
+import {MessageService} from './services/message.service';
+import {HttpErrorHandler} from './http-error-handler.service';
 
 const routes: Routes = [
-  {path: 'app', component: AppComponent}
+    {path: 'database', component: MainComponent}
 ];
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    HeaderComponent,
-    AsideComponent,
-    MainComponent,
-    DatabaseItemComponent,
-    DatabaseMainComponent,
-    PaginationComponent
-  ],
-  imports: [
-    BrowserModule,
-    BrowserAnimationsModule,
-    ElModule.forRoot(),
-    RouterModule.forRoot(routes)
+    declarations: [
+        AppComponent,
+        HeaderComponent,
+        AsideComponent,
+        MainComponent,
+        DatabaseItemComponent,
+        DatabaseMainComponent,
+        PaginationComponent
+    ],
+    imports: [
+        BrowserModule,
+        BrowserAnimationsModule,
+        ElModule.forRoot(),
+        RouterModule.forRoot(routes)
 
-  ],
-  providers: [],
-  bootstrap: [AppComponent]
+    ],
+    providers: [
+        MessageService,
+        HttpErrorHandler,
+    ],
+    bootstrap: [AppComponent]
 })
 export class AppModule {
 }

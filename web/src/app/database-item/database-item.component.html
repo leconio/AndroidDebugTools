@@ -1,9 +1,5 @@
-<el-collapse-item label="一致性 Consistency" value="1">
-
-  <ng-template #label>
-    一致性 Consistency<i class="header-icon el-icon-information"></i>
-  </ng-template>
-
-  <div>与现实生活一致：与现实生活的流程、逻辑保持一致，遵循用户习惯的语言和概念；</div>
-  <div>在界面中一致：所有的元素和结构需保持一致，比如：设计样式、图标和文本、元素的位置等。</div>
+<el-collapse-item label="{{database.name}}" value="{{index}} " [el-class]="'expand-item-content'">
+    <a class="table-item" *ngFor="let table of tables" [routerLink]="['database']">
+        {{table}}
+    </a>
 </el-collapse-item>
