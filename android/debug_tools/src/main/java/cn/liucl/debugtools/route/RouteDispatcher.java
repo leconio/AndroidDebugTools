@@ -41,6 +41,14 @@ public class RouteDispatcher {
         String requestURI = request.getRequestURI();
         String[] urlSplit = requestURI.split("/");
         if (urlSplit.length == 1 || urlSplit[1].contains("debug")) {
+            if ("OPTIONS".equals(request.getMethod())) {
+                return new Response() {
+                    @Override
+                    public byte[] getContent() {
+                        return new byte[0];
+                    }
+                };
+            }
             return null;
         }
 

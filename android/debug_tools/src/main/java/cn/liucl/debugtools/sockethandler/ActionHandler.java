@@ -111,6 +111,9 @@ public class ActionHandler implements Handler {
         output.println("HTTP/1.0 200 OK");
         output.println("Access-Control-Allow-Origin: *");
         output.println("Access-Control-Allow-Credentials: true");
+        output.println("Access-Control-Allow-Methods: *");
+        output.println("Access-Control-Allow-Headers: Content-Type,Access-Token");
+        output.println("Access-Control-Expose-Headers: *");
 
         if (route.contains("file") || route.contains("asset")) {
             output.println("Content-Disposition: attachment; filename=" + route.substring(route.lastIndexOf("/") + 1));

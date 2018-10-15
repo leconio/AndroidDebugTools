@@ -17,6 +17,7 @@ import java.util.Map;
  */
 
 public class HttpParamsParser {
+
     /**
      * 分析url字符串,采用utf-8解码
      *
@@ -60,16 +61,20 @@ public class HttpParamsParser {
                         paramsMap.put(key, jsonObject.get(key));
                     }
                     request = new Request(url, getParamsMap(queryString, enc), paramsMap);
+                    request.setMethod("POST");
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
         } else if (body.startsWith("GET")) {
             request = new Request(url, getParamsMap(queryString, enc));
+            request.setMethod("GET");
+        } else if(body.startsWith("OPTIONS")) {
+            request = new Request();
+            request.setMethod("OPTIONS");
         } else {
             request = new Request("/error");
             request.setParameter("msg","Unsupported Method");
-
         }
         return request;
     }
@@ -118,6 +123,7 @@ public class HttpParamsParser {
      * @date Jun 21, 2009 2:17:31 PM
      */
     public static class Request {
+        private String method;
         private String requestURI;
         private Map<String, String[]> parameterMap;
         private Map<String, Object> bodyParamterMap;
@@ -127,7 +133,6 @@ public class HttpParamsParser {
         }
 
         public Request(String requestURI) {
-
             this.requestURI = requestURI;
             parameterMap = new HashMap<String, String[]>();
         }
@@ -147,6 +152,14 @@ public class HttpParamsParser {
             if (parameterMap!=null) {
                 parameterMap.put(name, new String[]{msg});
             }
+        }
+
+        public String getMethod() {
+            return method;
+        }
+
+        public void setMethod(String method) {
+            this.method = method;
         }
 
         /**
