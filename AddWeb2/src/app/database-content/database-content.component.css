@@ -1,0 +1,15 @@
+.db-table-content {
+  padding-top: 20px;
+}
+
+.db-version {
+  margin-right: 20px;
+}
+
+.db-version span {
+  margin-right: 20px;
+}
+
+.editable-row-operations a {
+  margin-right: 8px;
+}

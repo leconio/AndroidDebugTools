@@ -1,9 +1,0 @@
-<el-menu mode="vertical" [el-class]="'menuStyle'">
-    <el-collapse [accordion]="true" #itemChange>
-        <app-database-item
-                [itemChange]="itemChange"
-                *ngFor="let item of databaseList;let index = index"
-                [database]="item"
-                [index]="index"></app-database-item>
-    </el-collapse>
-</el-menu>

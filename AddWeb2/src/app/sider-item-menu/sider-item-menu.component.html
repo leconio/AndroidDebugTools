@@ -1,0 +1,11 @@
+<li nz-submenu (nzOpenChange)="openChange($event)">
+  <span title><i class="anticon anticon-laptop"></i>{{database.name}}</span>
+
+  <ul>
+    <li nz-menu-item *ngIf="tableList.length === 0">
+      <nz-spin></nz-spin>
+    </li>
+    <li nz-menu-item *ngFor="let name of tableList"><a [routerLink]="['database',database.name,name,database.path]">{{name}}</a>
+    </li>
+  </ul>
+</li>
