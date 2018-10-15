@@ -16,11 +16,20 @@
             [nzFrontPagination]="false"
             [nzPageSize]="pageSize"
             [nzTotal]="count"
+            [nzScroll]="{ x:'130%' }"
             [nzShowQuickJumper]="true"
             (nzPageIndexChange)="pageIndexChange($event)">
     <thead>
     <tr>
-      <th *ngFor="let label of columns">{{label}}</th>
+      <th *ngFor="let label of columns">{{label}}
+        <nz-dropdown nzTrigger="click" [nzClickHide]="false">
+          <i class="anticon anticon-smile-o ant-table-filter-icon" nz-dropdown></i>
+          <div class="custom-filter-dropdown">
+            <input type="text" nz-input placeholder="Search name" [(ngModel)]="searchValue">
+            <button nz-button [nzType]="'primary'" (click)="search(label)">Search</button>
+          </div>
+        </nz-dropdown>
+      </th>
       <th>操作</th>
     </tr>
     </thead>

@@ -24,6 +24,7 @@ export class DatabaseContentComponent implements OnInit {
   count: number;
   pageIndex: number;
   editCache = {};
+  searchValue: string;
 
   constructor(private route: ActivatedRoute, private apiServices: ApiServices) {
 
@@ -95,6 +96,11 @@ export class DatabaseContentComponent implements OnInit {
         this.pageIndex = 1;
         this.query(0);
       });
+  }
+
+  search(column) {
+    console.log(this.searchValue);
+    console.log(column);
   }
 
   /**
