@@ -1,11 +1,15 @@
 package cn.liucl.debugtools.server;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -16,32 +20,55 @@ public class HttpParamsParser {
     /**
      * 分析url字符串,采用utf-8解码
      *
-     * @param urlString
+     * @param body
      * @return
      */
-    public static Request parse(String urlString) {
-        return parse(urlString, "utf-8");
+    public static Request parse(String body) {
+        return parse(body, "utf-8");
     }
 
     /**
      * 分析url字符串,指定字符集进行解码
      *
-     * @param urlString
+     * @param body
      * @param enc
      * @return
      */
-    public static Request parse(String urlString, String enc) {
-        if (urlString == null || urlString.length() == 0) {
+    public static Request parse(String body, String enc) {
+        Request request = null;
+        if (body == null || body.length() == 0) {
             return new Request();
         }
-        int questIndex = urlString.indexOf('?');
+        int questIndex = body.indexOf('?');
         if (questIndex == -1) {
-            return new Request(urlString);
+            return new Request(body);
         }
-        String url = urlString.substring(0, questIndex);
-        String queryString = urlString.substring(questIndex + 1, urlString.length());
-        return new Request(url, getParamsMap(queryString, enc));
+        String url = body.substring(0, questIndex);
+        String queryString = body.substring(questIndex + 1, body.length());
+        //POST 仅支持JSON方式
+        if (body.startsWith("POST")) {
+            String[] split = body.split("\r\n\r\n");
+            if (split.length > 1) {
+                String bodyEntry = split[1];
+                try {
+                    JSONObject jsonObject = new JSONObject(bodyEntry);
+                    Iterator<String> keys = jsonObject.keys();
+                    Map<String, Object> paramsMap = new HashMap<>();
+                    while (keys.hasNext()) {
+                        String key = keys.next();
+                        paramsMap.put(key, jsonObject.get(key));
+                    }
+                    request = new Request(url, getParamsMap(queryString, enc), paramsMap);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        } else {
+            request = new Request(url, getParamsMap(queryString, enc));
+        }
+        return request;
     }
+
 
     private static Map<String, String[]> getParamsMap(String queryString, String enc) {
         Map<String, String[]> paramsMap = new HashMap<String, String[]>();
@@ -88,6 +115,7 @@ public class HttpParamsParser {
     public static class Request {
         private String requestURI;
         private Map<String, String[]> parameterMap;
+        private Map<String, Object> bodyParamterMap;
 
         public Request() {
             this("");
@@ -103,19 +131,36 @@ public class HttpParamsParser {
             this.parameterMap = parameterMap;
         }
 
+        public Request(String requestURI, Map<String, String[]> parameterMap, Map<String, Object> bodyParamterMap) {
+            this.requestURI = requestURI;
+            this.parameterMap = parameterMap;
+            this.bodyParamterMap = bodyParamterMap;
+        }
+
         /**
          * 获得指定名称的参数
          *
          * @param name
          * @return
          */
-        public String getParameter(String name) {
+        public String getGetParameter(String name) {
             String[] values = parameterMap.get(name);
             if (values != null && values.length > 0) {
                 return values[0];
             }
             return null;
         }
+
+        /**
+         * 获得指定名称的参数
+         *
+         * @param name
+         * @return
+         */
+        public Object getPostParameter(String name) {
+            return bodyParamterMap.get(name);
+        }
+
 
         /**
          * 获得所有的参数名称

@@ -38,42 +38,42 @@ public class DbRoute implements Route {
             result.setSuccessful(true);
             switch (action) {
                 case "update":
-                    String dbName = request.getParameter("dbName");
-                    String tableName = request.getParameter("tableName");
-                    String condition = request.getParameter("condition");
-                    String newValue = request.getParameter("newValue");
+                    String dbName = request.getGetParameter("dbName");
+                    String tableName = request.getGetParameter("tableName");
+                    String condition = (String) request.getPostParameter("condition");
+                    String newValue = (String) request.getPostParameter("newValue");
                     helper.updateData(dbName, tableName, buildParamMap(condition), buildParamMap(newValue));
                     break;
                 case "insert":
-                    newValue = request.getParameter("newValue");
-                    dbName = request.getParameter("dbName");
-                    tableName = request.getParameter("tableName");
+                    newValue = (String) request.getPostParameter("newValue");
+                    dbName = request.getGetParameter("dbName");
+                    tableName = request.getGetParameter("tableName");
                     helper.insertData(dbName, tableName, buildParamMap(newValue));
                     break;
                 case "query":
-                    condition = request.getParameter("condition");
-                    tableName = request.getParameter("tableName");
-                    dbName = request.getParameter("dbName");
-                    String limit = request.getParameter("limit");
-                    String offset = request.getParameter("offset");
+                    condition = request.getGetParameter("condition");
+                    tableName = request.getGetParameter("tableName");
+                    dbName = request.getGetParameter("dbName");
+                    String limit = request.getGetParameter("limit");
+                    String offset = request.getGetParameter("offset");
                     String jsonData = helper.queryData(dbName, tableName, buildParamMap(condition), limit, offset);
                     result.setObj(jsonData);
                     break;
                 case "count":
-                    condition = request.getParameter("condition");
-                    tableName = request.getParameter("tableName");
-                    dbName = request.getParameter("dbName");
+                    condition = request.getGetParameter("condition");
+                    tableName = request.getGetParameter("tableName");
+                    dbName = request.getGetParameter("dbName");
                     jsonData = helper.countData(dbName, tableName, buildParamMap(condition));
                     result.setObj(jsonData);
                     break;
                 case "delete":
-                    condition = request.getParameter("condition");
-                    tableName = request.getParameter("tableName");
-                    dbName = request.getParameter("dbName");
+                    condition = request.getGetParameter("condition");
+                    tableName = request.getGetParameter("tableName");
+                    dbName = request.getGetParameter("dbName");
                     helper.deleteData(dbName, tableName, buildParamMap(condition));
                     break;
                 case "listTable":
-                    dbName = request.getParameter("dbName");
+                    dbName = request.getGetParameter("dbName");
                     List<String> tables = helper.listAllTables(dbName);
                     JSONArray jsonArray = new JSONArray();
                     for (String table : tables) {
@@ -95,8 +95,8 @@ public class DbRoute implements Route {
                     result.setObj(jsonArray.toString());
                     break;
                 case "sql":
-                    dbName = request.getParameter("dbName");
-                    String sql = request.getParameter("sql");
+                    dbName = request.getGetParameter("dbName");
+                    String sql = request.getGetParameter("sql");
                     helper.sql(dbName, sql);
                     break;
             }

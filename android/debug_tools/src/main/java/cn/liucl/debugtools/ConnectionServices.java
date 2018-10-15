@@ -123,6 +123,7 @@ public class ConnectionServices extends IntentService {
 
     /**
      * 执行操作函数
+     * // FIXME
      *
      * @param action
      */

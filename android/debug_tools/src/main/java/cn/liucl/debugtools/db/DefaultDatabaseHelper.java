@@ -151,12 +151,36 @@ public class DefaultDatabaseHelper implements DatabaseHelper {
             }
             respObj.put("list", jsonList);
             respObj.put("columns", columnList);
+            respObj.put("pageInfo", countTableData(dbName, tableName));
         } catch (JSONException e) {
             e.printStackTrace();
         }
         db.close();
         cursor.close();
         return respObj.toString();
+    }
+
+    @Override
+    public JSONObject countTableData(String dbName, String tableName) {
+        File dbFile = listAllDatabase().get(dbName);
+        if (dbFile == null) {
+            throw new IllegalArgumentException("Cannot find dbName :" + dbName);
+        }
+        SQLiteDatabase db =
+                SQLiteDatabase.openOrCreateDatabase(dbFile.getAbsolutePath(), null);
+        StringBuilder sql = new StringBuilder("SELECT count(*) FROM " + tableName);
+        Log.i(TAG, "执行SQL: " + sql.toString());
+        Cursor cursor = db.rawQuery(sql.toString(), new String[]{});
+        JSONObject jsonObject = new JSONObject();
+        if (cursor.moveToFirst()) {
+            int count = cursor.getInt(0);
+            try {
+                jsonObject.put("count", count);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        return jsonObject;
     }
 
     @Override

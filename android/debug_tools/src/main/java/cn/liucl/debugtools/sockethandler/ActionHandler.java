@@ -6,6 +6,7 @@ import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintStream;
@@ -31,21 +32,16 @@ public class ActionHandler implements Handler {
     }
 
     @Override
-    public void handle(Socket socket) throws IOException {
-        BufferedReader reader = null;
+    public void handle(Socket socket) {
+        InputStream is = null;
         PrintStream output = null;
         try {
             // 解析HTTP请求
-            reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            String line;
-            String url = "";
-            while (!TextUtils.isEmpty(line = reader.readLine())) {
-                String[] firstLine = line.split(" ");
-                url = firstLine[1];
-                break;
-            }
+            is = socket.getInputStream();
+            byte[] bytes = readStream(is);
+            String body = new String(bytes);
             output = new PrintStream(socket.getOutputStream());
-            HttpParamsParser.Request parse = HttpParamsParser.parse(url);
+            HttpParamsParser.Request parse = HttpParamsParser.parse(body);
             Log.i(TAG, "Url: " + parse);
             Response resp = RouteDispatcher.getInstance(mContext).dispatch(parse);
             writeContent(output, resp, parse.getRequestURI());
@@ -56,8 +52,8 @@ public class ActionHandler implements Handler {
                 if (null != output) {
                     output.close();
                 }
-                if (null != reader) {
-                    reader.close();
+                if (null != is) {
+                    is.close();
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -66,7 +62,24 @@ public class ActionHandler implements Handler {
     }
 
     /**
+     * @功能 读取流
+     * @param inStream
+     * @return 字节数组
+     * @throws Exception
+     */
+    public static byte[] readStream(InputStream inStream) throws IOException {
+        int count = 0;
+        while (count == 0) {
+            count = inStream.available();
+        }
+        byte[] b = new byte[count];
+        inStream.read(b);
+        return b;
+    }
+
+    /**
      * 主动模式使用
+     * //FIXME
      * @param os 写回去
      * @param url actionUrl
      */
@@ -99,7 +112,7 @@ public class ActionHandler implements Handler {
         output.println("Access-Control-Allow-Origin: *");
         output.println("Access-Control-Allow-Credentials: true");
 
-        if (route.contains("downloadFile")) {
+        if (route.contains("file") || route.contains("asset")) {
             output.println("Content-Disposition: attachment; filename=" + route.substring(route.lastIndexOf("/") + 1));
         } else {
             contentType = "Content-Type: application/json";

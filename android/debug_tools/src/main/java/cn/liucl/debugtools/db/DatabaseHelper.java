@@ -1,5 +1,7 @@
 package cn.liucl.debugtools.db;
 
+import org.json.JSONObject;
+
 import java.io.File;
 import java.util.HashMap;
 import java.util.List;
@@ -84,6 +86,14 @@ public interface DatabaseHelper {
      * @return 返回结果 json格式
      */
     String queryData(String dbName, String tableName, Map<String, String> where, String limit, String offset);
+
+    /**
+     * 此表有多少条数据
+     * @param dbName 数据库名
+     * @param tableName 表名
+     * @return
+     */
+    JSONObject countTableData(String dbName, String tableName);
 
     /**
      * 查询个数

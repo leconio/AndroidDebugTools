@@ -5,11 +5,11 @@ import android.content.Context;
 import java.io.IOException;
 
 import cn.liucl.debugtools.Utils;
-import cn.liucl.debugtools.server.resp.ByteResponse;
 import cn.liucl.debugtools.server.HttpParamsParser;
+import cn.liucl.debugtools.server.Result;
+import cn.liucl.debugtools.server.resp.ByteResponse;
 import cn.liucl.debugtools.server.resp.JsonResponse;
 import cn.liucl.debugtools.server.resp.Response;
-import cn.liucl.debugtools.server.Result;
 
 /**
  * Created by spawn on 17-9-28.
@@ -60,11 +60,15 @@ public class RouteDispatcher {
         }
 
         //SimpleHTTPServer
-        if (urlSplit[1].contains("sdcard")) {
+        if (urlSplit[1].contains("file")) {
+            return new ByteResponse(Utils.loadFileContent(requestURI.split("file")[1]));
+        }
 
+        if (urlSplit[1].contains("asset")) {
+            return new ByteResponse(Utils.loadAssetContent(requestURI, mContext.getAssets()));
         }
 
         //资源处理
-        return new ByteResponse(Utils.loadContent(requestURI, mContext.getAssets()));
+        return new JsonResponse(Result.ERROR_RESULT);
     }
 }
