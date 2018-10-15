@@ -114,9 +114,12 @@ public class DefaultDatabaseHelper implements DatabaseHelper {
         }
         Log.i(TAG, "执行SQL: " + sql.toString());
         Cursor cursor = db.rawQuery(sql.toString(), ion.toArray(new String[ion.size()]));
+        JSONObject respObj = new JSONObject();
         JSONArray jsonList = new JSONArray();
         try {
+            JSONArray columnList = new JSONArray();
             if (cursor.moveToFirst()) {
+                boolean isReadyColumnList = false;
                 do {
                     JSONObject jsonObject = new JSONObject();
                     for (int j = 0; j < cursor.getColumnCount(); j++) {
@@ -138,16 +141,22 @@ public class DefaultDatabaseHelper implements DatabaseHelper {
                                 jsonObject.put(cursor.getColumnName(j),
                                         cursor.getString(cursor.getColumnIndex(cursor.getColumnName(j))));
                         }
+                        if (!isReadyColumnList) {
+                            columnList.put(cursor.getColumnName(j));
+                        }
                     }
+                    isReadyColumnList = true;
                     jsonList.put(jsonObject);
                 } while (cursor.moveToNext());
             }
+            respObj.put("list", jsonList);
+            respObj.put("columns", columnList);
         } catch (JSONException e) {
             e.printStackTrace();
         }
         db.close();
         cursor.close();
-        return jsonList.toString();
+        return respObj.toString();
     }
 
     @Override
