@@ -30,7 +30,7 @@
           </div>
         </nz-dropdown>
       </th>
-      <th>操作</th>
+      <th nzWidth="150px">操作</th>
     </tr>
     </thead>
     <tbody>
@@ -43,7 +43,7 @@
           <input type="text" nz-input [(ngModel)]="editCache[data[this.key]].data[label]">
         </ng-container>
       </td>
-      <td>
+      <td nzRight="0px">
         <div class="editable-row-operations">
           <ng-container *ngIf="!editCache[data[this.key]].edit ">
             <a (click)="startEdit(data[this.key])" nzType="primary">Edit</a>
