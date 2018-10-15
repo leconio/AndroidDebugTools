@@ -39,12 +39,13 @@ public class HttpParamsParser {
         if (body == null || body.length() == 0) {
             return new Request();
         }
-        int questIndex = body.indexOf('?');
+        String urlBody = body.split("\r\n")[0].split(" ")[1];
+        int questIndex = urlBody.indexOf('?');
         if (questIndex == -1) {
-            return new Request(body);
+            return new Request(urlBody);
         }
-        String url = body.substring(0, questIndex);
-        String queryString = body.substring(questIndex + 1, body.length());
+        String url = urlBody.substring(0, questIndex);
+        String queryString = urlBody.substring(questIndex + 1, urlBody.length());
         //POST 仅支持JSON方式
         if (body.startsWith("POST")) {
             String[] split = body.split("\r\n\r\n");
@@ -63,8 +64,12 @@ public class HttpParamsParser {
                     e.printStackTrace();
                 }
             }
-        } else {
+        } else if (body.startsWith("GET")) {
             request = new Request(url, getParamsMap(queryString, enc));
+        } else {
+            request = new Request("/error");
+            request.setParameter("msg","Unsupported Method");
+
         }
         return request;
     }
@@ -122,6 +127,7 @@ public class HttpParamsParser {
         }
 
         public Request(String requestURI) {
+
             this.requestURI = requestURI;
             parameterMap = new HashMap<String, String[]>();
         }
@@ -135,6 +141,12 @@ public class HttpParamsParser {
             this.requestURI = requestURI;
             this.parameterMap = parameterMap;
             this.bodyParamterMap = bodyParamterMap;
+        }
+
+        public void setParameter(String name,String msg) {
+            if (parameterMap!=null) {
+                parameterMap.put(name, new String[]{msg});
+            }
         }
 
         /**

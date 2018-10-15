@@ -40,7 +40,7 @@ public class DbRoute implements Route {
                 case "update":
                     String dbName = request.getGetParameter("dbName");
                     String tableName = request.getGetParameter("tableName");
-                    String condition = (String) request.getPostParameter("condition");
+                    String condition = request.getGetParameter("condition");
                     String newValue = (String) request.getPostParameter("newValue");
                     helper.updateData(dbName, tableName, buildParamMap(condition), buildParamMap(newValue));
                     break;

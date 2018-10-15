@@ -11,12 +11,10 @@ public class ErrorRoute implements Route {
 
     @Override
     public Result process(HttpParamsParser.Request request) {
-//        String html = "{\"info\":\"<h1>:) 美好的一天</h1>\"}";
-//        Result result = new Result();
-//        result.setContent(html.getBytes());
-//        result.setSuccessful(true);
-//        result.setMessage("ok");
-        return null;
+        Result result = new Result();
+        result.setSuccessful(false);
+        result.setMessage(request.getGetParameter("msg"));
+        return result;
     }
 
 }
