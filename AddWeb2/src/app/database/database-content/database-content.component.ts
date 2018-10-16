@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
-import {ApiServices, Urls} from '../services/api-services.service';
+import {ApiServices, Urls} from '../../services/api-services.service';
 
 @Component({
   selector: 'app-database-content',

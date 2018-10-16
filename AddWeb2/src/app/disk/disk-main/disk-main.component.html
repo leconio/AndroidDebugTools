@@ -1,0 +1,13 @@
+<nz-layout class="layout-height">
+  <nz-header>
+    <app-header></app-header>
+  </nz-header>
+  <nz-layout class="layout-height">
+    <nz-sider [nzWidth]="200"  class="sider layout-height">
+      <app-disk-sider></app-disk-sider>
+    </nz-sider>
+    <nz-layout class="content">
+      <router-outlet></router-outlet>
+    </nz-layout>
+  </nz-layout>
+</nz-layout>

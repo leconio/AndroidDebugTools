@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {ApiServices} from '../services/api-services.service';
-import {DatabaseObj} from '../services/pojo/DatabaseListObj';
+import {ApiServices} from '../../services/api-services.service';
+import {DatabaseObj} from '../../services/pojo/DatabaseListObj';
 
 @Component({
   selector: 'app-database-sider',

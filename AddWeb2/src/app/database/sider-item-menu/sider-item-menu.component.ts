@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {DatabaseObj} from '../services/pojo/DatabaseListObj';
-import {ApiServices} from '../services/api-services.service';
+import {DatabaseObj} from '../../services/pojo/DatabaseListObj';
+import {ApiServices} from '../../services/api-services.service';
 
 @Component({
   selector: 'app-sider-item-menu',
