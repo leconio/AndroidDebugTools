@@ -42,10 +42,8 @@ describe('ApiServices', () => {
     });
     const databaseListObj: DatabaseListObj = null;
     it('shoule be list database', () => {
-        console.log('asd');
         apiService.getDatabase().subscribe(
             database => {
-                console.log(database);
                 expect(database).toEqual(databaseListObj, 'nottt');
             },
             fail

@@ -19,7 +19,6 @@ export class SiderItemMenuComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log(this.database);
   }
 
   openChange(isOpen: boolean) {
@@ -27,7 +26,6 @@ export class SiderItemMenuComponent implements OnInit {
       this.apiServices.getTables(this.database.name).subscribe(tables => {
         if (tables.success) {
           this.tableList = tables.obj;
-          console.log(this.tableList);
         }
       });
     }

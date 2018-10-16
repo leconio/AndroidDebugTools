@@ -26,3 +26,15 @@ a:visited {
   color: black;
   text-decoration: none;
 }
+
+.content {
+  padding: 24px;
+}
+
+.sider {
+  background:#fff;
+}
+
+.layout-height {
+  height: 100%;
+}

@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { MainComponent } from './main.component';
+import { DatabaseMainComponent } from './database-main.component';
 
-describe('MainComponent', () => {
-  let component: MainComponent;
-  let fixture: ComponentFixture<MainComponent>;
+describe('DatabaseMainComponent', () => {
+  let component: DatabaseMainComponent;
+  let fixture: ComponentFixture<DatabaseMainComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ MainComponent ]
+      declarations: [ DatabaseMainComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(MainComponent);
+    fixture = TestBed.createComponent(DatabaseMainComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

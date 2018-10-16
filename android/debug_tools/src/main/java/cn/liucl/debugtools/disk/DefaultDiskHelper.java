@@ -31,6 +31,16 @@ public class DefaultDiskHelper implements DiskHelper {
         }
     }
 
+    @Override
+    public void delete(String type, String path) {
+
+    }
+
+    @Override
+    public void rename(String type, String path, String newName) {
+
+    }
+
     private String getFromInner(String path) throws DiskException {
         File file = new File(mContext.getFilesDir(), path);
         return listFiles(file).toString();

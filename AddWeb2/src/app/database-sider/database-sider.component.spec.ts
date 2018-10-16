@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SiderComponent } from './sider.component';
+import { DatabaseSiderComponent } from './database-sider.component';
 
-describe('SiderComponent', () => {
-  let component: SiderComponent;
-  let fixture: ComponentFixture<SiderComponent>;
+describe('DatabaseSiderComponent', () => {
+  let component: DatabaseSiderComponent;
+  let fixture: ComponentFixture<DatabaseSiderComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SiderComponent ]
+      declarations: [ DatabaseSiderComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(SiderComponent);
+    fixture = TestBed.createComponent(DatabaseSiderComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

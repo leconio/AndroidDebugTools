@@ -3,7 +3,6 @@ package cn.liucl.debugtools.route;
 import android.content.Context;
 
 import cn.liucl.debugtools.disk.DefaultDiskHelper;
-import cn.liucl.debugtools.disk.DiskException;
 import cn.liucl.debugtools.disk.DiskHelper;
 import cn.liucl.debugtools.server.HttpParamsParser;
 import cn.liucl.debugtools.server.Result;
@@ -30,12 +29,21 @@ public class DiskRoute implements Route {
             result.setMessage("ok");
             result.setSuccessful(true);
             switch (action) {
-                case "zipFolderDownload":
+                case "delete":
+                    String path = request.getGetParameter("path");
+                    String type = request.getGetParameter("type");
+                    helper.delete(type, path);
+                    break;
+                case "rename":
+                    path = request.getGetParameter("path");
+                    String newName = request.getGetParameter("newName");
+                    type = request.getGetParameter("type");
+                    helper.rename(type, path, newName);
                     break;
                 case "list":
                 default:
-                    String path = request.getGetParameter("path");
-                    String type = request.getGetParameter("type");
+                    path = request.getGetParameter("path");
+                    type = request.getGetParameter("type");
                     String folderList = helper.getFolderList(type, path);
                     result.setObj(folderList);
             }

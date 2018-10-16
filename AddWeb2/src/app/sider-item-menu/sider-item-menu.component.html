@@ -5,7 +5,8 @@
     <li nz-menu-item *ngIf="tableList.length === 0">
       <nz-spin></nz-spin>
     </li>
-    <li nz-menu-item *ngFor="let name of tableList"><a [routerLink]="['database',database.name,name,database.path]">{{name}}</a>
+    <li nz-menu-item *ngFor="let name of tableList">
+      <a [routerLink]="['./',database.name,name,database.path]">{{name}}</a>
     </li>
   </ul>
 </li>
