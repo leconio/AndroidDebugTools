@@ -67,6 +67,13 @@ public class RouteDispatcher {
             return response;
         }
 
+        if (urlSplit[1].contains("disk")) {
+            Route diskRoute = new DiskRoute(mContext);
+            Result process = diskRoute.process(request);
+            response = new JsonResponse(process);
+            return response;
+        }
+
         //SimpleHTTPServer
         if (urlSplit[1].contains("file")) {
             return new ByteResponse(Utils.loadFileContent(requestURI.split("file")[1]));
@@ -77,6 +84,6 @@ public class RouteDispatcher {
         }
 
         //资源处理
-        return new JsonResponse(Result.ERROR_RESULT);
+        return new JsonResponse(Result.RESULT_ERROR);
     }
 }

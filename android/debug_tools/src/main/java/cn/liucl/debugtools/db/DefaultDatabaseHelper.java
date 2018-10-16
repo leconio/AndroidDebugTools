@@ -198,6 +198,20 @@ public class DefaultDatabaseHelper implements DatabaseHelper {
     }
 
     @Override
+    public int version(String dbName) {
+        int version = -1;
+        File dbFile = listAllDatabase().get(dbName);
+        if (dbFile == null) {
+            throw new IllegalArgumentException("Cannot find dbName :" + dbName);
+        }
+        SQLiteDatabase db =
+                SQLiteDatabase.openOrCreateDatabase(dbFile.getAbsolutePath(), null);
+        version = db.getVersion();
+        db.close();
+        return version;
+    }
+
+    @Override
     public String queryData(String dbName, String tableName, Map<String, String> condition) throws SQLException {
         return queryData(dbName, tableName, condition, "0", "0");
     }

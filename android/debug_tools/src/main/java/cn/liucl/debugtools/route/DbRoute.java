@@ -99,6 +99,13 @@ public class DbRoute implements Route {
                     String sql = request.getGetParameter("sql");
                     helper.sql(dbName, sql);
                     break;
+                case "version":
+                    dbName = request.getGetParameter("dbName");
+                    int version = helper.version(dbName);
+                    JSONObject jsonObject = new JSONObject();
+                    jsonObject.put("version", version);
+                    result.setObj(jsonObject.toString());
+                    break;
             }
         } catch (Exception e) {
             e.printStackTrace();

@@ -29,12 +29,12 @@ export class Urls {
 })
 export class ApiServices {
 
-  PAGE_SIZE = 20;
-  private handleError: HandleError;
+  PAGE_SIZE = 15;
+  private readonly handleError: HandleError;
 
   constructor(
     private http: HttpClient,
-    httpErrorHandler: HttpErrorHandler
+    private httpErrorHandler: HttpErrorHandler
   ) {
     this.handleError = httpErrorHandler.createHandleError('ApiServices');
   }
@@ -77,7 +77,7 @@ export class ApiServices {
       .set('tableName', tableName);
     return this.http.post<BaseResponse>(Urls.UPDATE + '?' + params.toString(), body, httpOptions)
       .pipe(
-        catchError(this.handleError('query', new BaseResponse()))
+        catchError(this.handleError('update', new BaseResponse()))
       );
   }
 

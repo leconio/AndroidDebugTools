@@ -105,4 +105,12 @@ public interface DatabaseHelper {
      */
     String countData(String dbName, String tableName, Map<String, String> where);
 
+    /**
+     * 查询数据库版本
+     *
+     * @param dbName    数据库名
+     * @return 返回结果 json格式
+     */
+    int version(String dbName);
+
 }

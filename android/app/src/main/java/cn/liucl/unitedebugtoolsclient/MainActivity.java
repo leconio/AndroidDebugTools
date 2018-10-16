@@ -1,10 +1,14 @@
 package cn.liucl.unitedebugtoolsclient;
 
-import android.content.Intent;
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import java.io.File;
 import java.util.HashMap;
@@ -12,7 +16,6 @@ import java.util.List;
 import java.util.Map;
 
 import cn.liucl.debugtools.DebugTools;
-import cn.liucl.debugtools.SettingActivity;
 import cn.liucl.debugtools.db.DefaultDatabaseHelper;
 import cn.liucl.unitedebugtoolsclient.database.CarDBHelper;
 import cn.liucl.unitedebugtoolsclient.database.ContactDBHelper;
@@ -27,7 +30,19 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 //        startActivity(new Intent(this, SettingActivity.class));
+    }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String[] permissions,
+                                           int[] grantResults) {
+        if (requestCode == 124) {
+            if ((grantResults.length > 0) && (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                Toast.makeText(this, "授权成功", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, "授权失败", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
     public void addToDatabase(View view) {
@@ -132,5 +147,17 @@ public class MainActivity extends AppCompatActivity {
         queryCondition.put("name", "name_9999");
         String contacts = ddh.queryData("Contact.db", "contacts", queryCondition);
         Log.i(TAG, "insertTest: " + contacts);
+    }
+
+    public void reqPermission(View view) {
+        int permissionCheck1 = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE);
+        int permissionCheck2 = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        if (permissionCheck1 != PackageManager.PERMISSION_GRANTED || permissionCheck2 != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                            Manifest.permission.READ_EXTERNAL_STORAGE},
+                    124);
+
+        }
     }
 }

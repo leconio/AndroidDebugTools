@@ -48,4 +48,10 @@
         android:text="测试Delete"
         android:onClick="deleteTest"
         android:layout_height="wrap_content" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:text="获取SD卡权限"
+        android:onClick="reqPermission"
+        android:layout_height="wrap_content" />
 </LinearLayout>

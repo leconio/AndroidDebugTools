@@ -54,5 +54,6 @@ public class Result {
                 '}';
     }
 
-    static public Result ERROR_RESULT = new Result(false, "unknow error", "unknow error");
+    static public Result RESULT_ERROR = new Result(false, "unknow error", "unknow error");
+    static public Result RESULT_404 = new Result(false, null, "404");
 }
