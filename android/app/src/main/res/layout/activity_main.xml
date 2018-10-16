@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="cn.liucl.unitedebugtoolsclient.MainActivity">
+    tools:context="io.lecon.unitedebugtoolsclient.MainActivity">
 
     <Button
         android:layout_width="match_parent"

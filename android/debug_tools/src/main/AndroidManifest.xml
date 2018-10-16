@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
 
-    package="cn.liucl.debugtools">
+    package="io.lecon.debugtools">
 
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -13,12 +13,12 @@
         android:supportsRtl="true">
 
         <provider
-            android:name=".DebugInitProvider"
+            android:name="io.lecon.debugtools.DebugInitProvider"
             android:authorities="${applicationId}.DebugDBInitProvider"
             android:enabled="true"
             android:exported="false" />
 
-        <activity android:name=".SettingActivity">
+        <activity android:name="io.lecon.debugtools.SettingActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -31,7 +31,7 @@
             </intent-filter>
         </activity>
 
-        <service android:name=".ConnectionServices" />
+        <service android:name="io.lecon.debugtools.ConnectionServices" />
     </application>
 
 </manifest>
