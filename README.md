@@ -4,9 +4,11 @@
 ## AddWeb2
 web项目 使用angular框架
 
-## android android端，java实现
+## android 
+android端，java实现
 
-## server 服务端（可选），待实现
+## server 服务端（可选）
+待实现
 
 # 状态
 android端实现数据库和SD卡功能
