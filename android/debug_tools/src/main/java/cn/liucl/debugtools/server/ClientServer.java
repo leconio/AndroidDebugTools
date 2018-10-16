@@ -60,7 +60,7 @@ public class ClientServer implements Runnable {
     public void run() {
         try {
             mServerSocket = new ServerSocket(mPort);
-            Log.i(TAG, "StartServer Ip: http://" + Utils.getIP(mContext) + ":" + mPort);
+            Log.i(TAG, "StartServer Ip: http://" + Utils.getIP() + ":" + mPort);
             while (mIsRunning) {
                 Socket socket = mServerSocket.accept();
                 mRequestHandler.handle(socket);

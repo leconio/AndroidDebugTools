@@ -42,7 +42,6 @@ public class Utils {
      * 先压缩在写回
      */
     public static byte[] loadFileContent(String filePath) throws IOException {
-        InputStream input = null;
         try {
             ZipCompress zipCompress = new ZipCompress(filePath);
             ByteArrayOutputStream output = new ByteArrayOutputStream();
@@ -78,7 +77,7 @@ public class Utils {
         }
     }
 
-    public static String getIP(Context context){
+    public static String getIP(){
 
         try {
             for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements();) {

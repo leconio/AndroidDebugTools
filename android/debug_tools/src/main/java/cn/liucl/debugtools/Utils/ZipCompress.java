@@ -44,7 +44,7 @@ public class ZipCompress {
 
         //创建zip输出流
         ZipOutputStream out = new ZipOutputStream(new FileOutputStream(zipFileName));
-
+        out.setLevel(ZipOutputStream.STORED);
         //创建缓冲输出流
         BufferedOutputStream bos = new BufferedOutputStream(out);
 
