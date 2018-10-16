@@ -4,7 +4,7 @@ import android.content.Context;
 
 import java.io.IOException;
 
-import cn.liucl.debugtools.Utils;
+import cn.liucl.debugtools.Utils.Utils;
 import cn.liucl.debugtools.server.HttpParamsParser;
 import cn.liucl.debugtools.server.Result;
 import cn.liucl.debugtools.server.resp.ByteResponse;

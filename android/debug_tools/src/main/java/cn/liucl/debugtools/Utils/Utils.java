@@ -1,14 +1,10 @@
-package cn.liucl.debugtools;
+package cn.liucl.debugtools.Utils;
 
 import android.content.Context;
 import android.content.res.AssetManager;
-import android.util.Log;
 import android.webkit.MimeTypeMap;
 
-import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -17,8 +13,6 @@ import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.util.Enumeration;
-
-import static cn.liucl.debugtools.DebugTools.TAG;
 
 /**
  * Created by spawn on 17-9-28.
@@ -44,28 +38,18 @@ public class Utils {
         return suffix;
     }
 
+    /**
+     * 先压缩在写回
+     */
     public static byte[] loadFileContent(String filePath) throws IOException {
         InputStream input = null;
         try {
+            ZipCompress zipCompress = new ZipCompress(filePath);
             ByteArrayOutputStream output = new ByteArrayOutputStream();
-            input = new BufferedInputStream(new FileInputStream(new File(filePath)));
-            byte[] buffer = new byte[1024];
-            int size;
-            while (-1 != (size = input.read(buffer))) {
-                output.write(buffer, 0, size);
-            }
-            output.flush();
+            zipCompress.zip(output);
             return output.toByteArray();
         } catch (FileNotFoundException e) {
             return null;
-        } finally {
-            try {
-                if (null != input) {
-                    input.close();
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
         }
     }
 

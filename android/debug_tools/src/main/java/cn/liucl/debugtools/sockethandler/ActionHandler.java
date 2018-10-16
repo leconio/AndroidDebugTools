@@ -1,18 +1,15 @@
 package cn.liucl.debugtools.sockethandler;
 
 import android.content.Context;
-import android.text.TextUtils;
 import android.util.Log;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.net.Socket;
 
-import cn.liucl.debugtools.Utils;
+import cn.liucl.debugtools.Utils.Utils;
 import cn.liucl.debugtools.route.RouteDispatcher;
 import cn.liucl.debugtools.server.HttpParamsParser;
 import cn.liucl.debugtools.server.resp.Response;
@@ -62,10 +59,10 @@ public class ActionHandler implements Handler {
     }
 
     /**
-     * @功能 读取流
      * @param inStream
      * @return 字节数组
      * @throws Exception
+     * @功能 读取流
      */
     public static byte[] readStream(InputStream inStream) throws IOException {
         int count = 0;
@@ -80,10 +77,11 @@ public class ActionHandler implements Handler {
     /**
      * 主动模式使用
      * //FIXME
-     * @param os 写回去
+     *
+     * @param os  写回去
      * @param url actionUrl
      */
-    public void handle(OutputStream os,String url) throws IOException {
+    public void handle(OutputStream os, String url) throws IOException {
         PrintStream output = new PrintStream(os);
         HttpParamsParser.Request parse = HttpParamsParser.parse(url);
         Log.i(TAG, "Url: " + parse);
@@ -115,7 +113,9 @@ public class ActionHandler implements Handler {
         output.println("Access-Control-Allow-Headers: Content-Type,Access-Token");
         output.println("Access-Control-Expose-Headers: *");
 
-        if (route.contains("file") || route.contains("asset")) {
+        if (route.contains("file")) {
+            output.println("Content-Disposition: attachment; filename=" + route.substring(route.lastIndexOf("/") + 1) + ".zip");
+        } else if (route.contains("asset")) {
             output.println("Content-Disposition: attachment; filename=" + route.substring(route.lastIndexOf("/") + 1));
         } else {
             contentType = "Content-Type: application/json";

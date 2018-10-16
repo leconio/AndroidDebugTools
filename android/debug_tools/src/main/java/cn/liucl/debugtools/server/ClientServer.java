@@ -15,7 +15,7 @@ import java.net.SocketException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import cn.liucl.debugtools.Utils;
+import cn.liucl.debugtools.Utils.Utils;
 import cn.liucl.debugtools.sockethandler.ActionHandler;
 
 public class ClientServer implements Runnable {
