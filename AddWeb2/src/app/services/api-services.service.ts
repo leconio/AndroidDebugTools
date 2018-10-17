@@ -7,6 +7,7 @@ import {catchError} from 'rxjs/operators';
 import {TableListObj} from './pojo/TableListObj';
 import {QueryBeanResp} from './pojo/QueryBeanResp';
 import {BaseResponse} from './pojo/BaseResponse';
+import {FileListObj} from './pojo/FileListObj';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -16,12 +17,15 @@ const httpOptions = {
 
 export class Urls {
   static baseUrl = 'http://127.0.0.1:8089/';
-  static url = Urls.baseUrl + 'db/';
-  static LIST_DATABSE = Urls.url + 'listDatabase';
-  static LIST_TABLE = Urls.url + 'listTable?dbName=';
-  static QUERY = Urls.url + 'query';
-  static UPDATE = Urls.url + 'update';
-  static DELETE = Urls.url + 'delete';
+  static dbUrl = Urls.baseUrl + 'db/';
+  static diskUrl = Urls.baseUrl + 'disk/';
+  static LIST_DATABSE = Urls.dbUrl + 'listDatabase';
+  static LIST_TABLE = Urls.dbUrl + 'listTable?dbName=';
+  static QUERY = Urls.dbUrl + 'query';
+  static UPDATE = Urls.dbUrl + 'update';
+  static DELETE = Urls.dbUrl + 'delete';
+
+  static FILE_LIST = Urls.diskUrl + 'list';
 }
 
 @Injectable({
@@ -89,6 +93,17 @@ export class ApiServices {
     return this.http.get<BaseResponse>(Urls.DELETE, {params})
       .pipe(
         catchError(this.handleError('delete', new BaseResponse()))
+      );
+  }
+
+
+  getFileList(type: string, path: string) {
+    const params = new HttpParams()
+      .set('path', path)
+      .set('type', type);
+    return this.http.get<FileListObj>(Urls.FILE_LIST, {params})
+      .pipe(
+        catchError(this.handleError('file_list', new FileListObj()))
       );
   }
 }

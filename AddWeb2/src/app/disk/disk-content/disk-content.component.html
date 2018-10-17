@@ -1,3 +1,59 @@
-<div>
+<nz-card>
 
-</div>
+  <div>
+    <button nz-button nzType="primary">上传</button>
+  </div>
+
+  <nz-divider></nz-divider>
+
+  <nz-breadcrumb nz-col class="disk-folder">
+    <nz-breadcrumb-item (click)="rootClick()">Root</nz-breadcrumb-item>
+    <nz-breadcrumb-item *ngFor="let f of folder;let index = index" (click)="folderClick(index)">{{f}}
+    </nz-breadcrumb-item>
+  </nz-breadcrumb>
+
+  <div class="disk-table-content">
+    <nz-table
+      #rowSelectionTable
+      [nzData]="dataSet"
+      [nzFrontPagination]="false"
+      [nzShowPagination]="false"
+      (nzCurrentPageDataChange)="currentPageDataChange($event)">
+      <thead>
+      <tr>
+        <th nzShowCheckbox [(nzChecked)]="allChecked" [nzIndeterminate]="indeterminate"
+            (nzCheckedChange)="checkAll($event)"></th>
+        <th>文件名</th>
+        <th>权限</th>
+        <th>大小</th>
+        <th>操作</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let data of rowSelectionTable.data;let index = index">
+        <td nzShowCheckbox [(nzChecked)]="data.checked"
+            (nzCheckedChange)="refreshStatus()"></td>
+        <td (click)="nextLevel(data.filename,data.isFolder)"><i class="anticon anticon-folder" *ngIf="data.isFolder"><i
+          class="anticon anticon-file"
+          *ngIf="!data.isFolder"></i></i>&nbsp;&nbsp;{{data.filename}}
+        </td>
+        <td>{{data.permission}}</td>
+        <td>{{bytesToSize(data.size)}}</td>
+        <td nzRight="0px">
+          <div class="editable-row-operations">
+            <ng-container>
+
+              <a nzType="primary" (click)="download(data.realPath)">下载</a>
+              <nz-divider nzType="vertical"></nz-divider>
+              <ng-container>
+                <nz-popconfirm [nzTitle]="'Sure to delete?'" (nzOnConfirm)="sureDel(data.realPath)">
+                  <a nz-popconfirm>删除</a>
+                </nz-popconfirm>
+              </ng-container>
+            </ng-container>
+          </div>
+      </tr>
+      </tbody>
+    </nz-table>
+  </div>
+</nz-card>

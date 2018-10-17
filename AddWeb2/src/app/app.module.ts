@@ -27,11 +27,13 @@ const databaseRoutes: Routes = [
 ];
 
 const diskRoutes: Routes = [
-  {path: ':type', component: DiskContentComponent}
+  {path: ':type', component: DiskContentComponent},
+  {path: '', redirectTo: 'innder', pathMatch: 'full'}
 ];
 
 
 const routes: Routes = [
+  {path: '', redirectTo: 'database', pathMatch: 'full'},
   {path: 'database', component: DatabaseMainComponent, children: databaseRoutes},
   {path: 'disk', component: DiskMainComponent, children: diskRoutes},
 ];

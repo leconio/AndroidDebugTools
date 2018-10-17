@@ -93,6 +93,7 @@ public class DefaultDiskHelper implements DiskHelper {
             jsonObject.put("isFolder", isFolder);
             jsonObject.put("size", size);
             jsonObject.put("permission", permission.toString());
+            jsonObject.put("realPath", file.getPath());
         } catch (JSONException e) {
             e.printStackTrace();
         }

@@ -64,7 +64,7 @@ public class ActionHandler implements Handler {
      * @throws Exception
      * @功能 读取流
      */
-    public static byte[] readStream(InputStream inStream) throws IOException {
+    private static byte[] readStream(InputStream inStream) throws IOException {
         int count = 0;
         while (count == 0) {
             count = inStream.available();
