@@ -83,7 +83,7 @@ export class DiskContentComponent implements OnInit {
   }
 
   download(path: string) {
-    window.location.href = Urls.baseUrl + 'file/' + path;
+    this.apiServices.downloadFile(path);
   }
 
   bytesToSize(bytes: number) {

@@ -106,4 +106,25 @@ export class ApiServices {
         catchError(this.handleError('file_list', new FileListObj()))
       );
   }
+
+  downloadFile(path: string) {
+    const aPath = path.split('/');
+    const fileName = aPath[aPath.length - 1];
+    this.http.get(Urls.baseUrl + 'file' + path, {
+      responseType: 'blob'
+    }).subscribe((data) => {
+      const blob: Blob = new Blob([data], {
+        type: 'application/octet-stream'
+      });
+      const url: string = URL.createObjectURL(blob);
+      const link: HTMLElement = document.createElement('a');
+      link.setAttribute('href', url);
+      link.setAttribute('download', fileName + '.zip');
+      link.style.visibility = 'hidden';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    });
+
+  }
 }

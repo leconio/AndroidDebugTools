@@ -57,7 +57,7 @@ export class DatabaseContentComponent implements OnInit {
   }
 
   downloadClick(dbPath: string) {
-    window.location.href = Urls.baseUrl + 'file' + dbPath;
+    this.apiServices.downloadFile(dbPath);
   }
 
   updateEditCache(): void {

@@ -103,7 +103,14 @@ public class ActionHandler implements Handler {
             return;
         }
 
-        String contentType = "Content-Type: " + Utils.getMimeType(route);
+        String contentType;
+        String[] split = route.split("/");
+        String filename = split[split.length - 1];
+        if (!filename.contains(".")) {
+            contentType = "Content-Type: application/octet-stream";
+        } else {
+            contentType = "Content-Type: " + Utils.getMimeType(route);
+        }
 
         // Send out the content.
         output.println("HTTP/1.0 200 OK");
