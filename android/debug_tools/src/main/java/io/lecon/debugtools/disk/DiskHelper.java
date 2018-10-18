@@ -13,7 +13,7 @@ public interface DiskHelper {
     /**
      * 删除文件
      */
-    void delete(String type, String path);
+    void delete(String type, String path) throws DiskException;
 
     /**
      * 重命名

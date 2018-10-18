@@ -1,9 +1,10 @@
-package io.lecon.debugtools.Utils;
+package io.lecon.debugtools.utils;
 
 import android.content.res.AssetManager;
 import android.webkit.MimeTypeMap;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -76,24 +77,71 @@ public class Utils {
         }
     }
 
-    public static String getIP(){
+    public static String getIP() {
 
         try {
-            for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements();) {
+            for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements(); ) {
                 NetworkInterface intf = en.nextElement();
-                for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements();)
-                {
+                for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements(); ) {
                     InetAddress inetAddress = enumIpAddr.nextElement();
-                    if (!inetAddress.isLoopbackAddress() && (inetAddress instanceof Inet4Address))
-                    {
+                    if (!inetAddress.isLoopbackAddress() && (inetAddress instanceof Inet4Address)) {
                         return inetAddress.getHostAddress();
                     }
                 }
             }
-        }
-        catch (SocketException ex){
+        } catch (SocketException ex) {
             ex.printStackTrace();
         }
         return null;
+    }
+
+    /***
+     * 删除指定文件夹下所有文件
+     *
+     * @param path 文件夹完整绝对路径
+     * @return
+     */
+    public static boolean delAllFile(String path) {
+        boolean flag = false;
+        File file = new File(path);
+        if (!file.exists()) {
+            return false;
+        }
+        if (!file.isDirectory()) {
+            return false;
+        }
+        String[] tempList = file.list();
+        File temp;
+        for (String t : tempList) {
+            if (path.endsWith(File.separator)) {
+                temp = new File(path + t);
+            } else {
+                temp = new File(path + File.separator + t);
+            }
+            if (temp.isFile()) {
+                temp.delete();
+            }
+            if (temp.isDirectory()) {
+                delAllFile(path + "/" + t);// 先删除文件夹里面的文件
+                delete(path + "/" + t);// 再删除空文件夹
+                flag = true;
+            }
+        }
+        return flag;
+    }
+
+    /***
+     * 删除文件夹
+     *
+     * @param folderPath 文件夹完整绝对路径
+     */
+    public static void delete(String folderPath) {
+        try {
+            delAllFile(folderPath); // 删除完里面所有内容
+            File myFilePath = new File(folderPath);
+            myFilePath.delete(); // 删除空文件夹
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

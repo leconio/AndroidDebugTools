@@ -9,6 +9,8 @@ import org.json.JSONObject;
 
 import java.io.File;
 
+import io.lecon.debugtools.utils.Utils;
+
 public class DefaultDiskHelper implements DiskHelper {
 
     private static final String INNDER_STORAGE = "inner";
@@ -23,17 +25,23 @@ public class DefaultDiskHelper implements DiskHelper {
     @Override
     public String getFolderList(String type, String path) throws DiskException {
         if (SDCARD_STORAGE.equals(type)) {
-            return getFromSDCard(path);
+            return listFiles(getFromSDCard(path)).toString();
         } else if (INNDER_STORAGE.equals(type)) {
-            return getFromInner(path);
+            return listFiles(getFromInner(path)).toString();
         } else {
             return null;
         }
     }
 
     @Override
-    public void delete(String type, String path) {
-
+    public void delete(String type, String path) throws DiskException {
+        if (SDCARD_STORAGE.equals(type)) {
+            File fromSDCard = getFromSDCard(path);
+            Utils.delete(fromSDCard.getPath());
+        } else if (INNDER_STORAGE.equals(type)) {
+            File fromInner = getFromInner(path);
+            Utils.delete(fromInner.getPath());
+        }
     }
 
     @Override
@@ -41,17 +49,15 @@ public class DefaultDiskHelper implements DiskHelper {
 
     }
 
-    private String getFromInner(String path) throws DiskException {
-        File file = new File(mContext.getFilesDir(), path);
-        return listFiles(file).toString();
+    private File getFromInner(String path) throws DiskException {
+        return new File(mContext.getFilesDir(), path);
     }
 
-    private String getFromSDCard(String path) throws DiskException {
+    private File getFromSDCard(String path) throws DiskException {
         if (!isExternalStorageWritable()) {
             throw DiskException.NO_PERMISSION;
         }
-        File file = new File(Environment.getExternalStorageDirectory().getPath(), path);
-        return listFiles(file).toString();
+        return new File(Environment.getExternalStorageDirectory().getPath(), path);
     }
 
     private JSONArray listFiles(File file) throws DiskException {

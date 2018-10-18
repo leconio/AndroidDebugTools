@@ -1,4 +1,4 @@
-package io.lecon.debugtools.Utils;
+package io.lecon.debugtools.utils;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
