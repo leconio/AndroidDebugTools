@@ -71,8 +71,9 @@ public interface DatabaseHelper {
 
     /**
      * 直接对数据库执行sql
+     *
      * @param dbName 数据库名
-     * @param sql 要执行的sql
+     * @param sql    要执行的sql
      */
     void sql(String dbName, String sql);
 
@@ -89,9 +90,9 @@ public interface DatabaseHelper {
 
     /**
      * 此表有多少条数据
-     * @param dbName 数据库名
+     *
+     * @param dbName    数据库名
      * @param tableName 表名
-     * @return
      */
     JSONObject countTableData(String dbName, String tableName);
 
@@ -108,7 +109,7 @@ public interface DatabaseHelper {
     /**
      * 查询数据库版本
      *
-     * @param dbName    数据库名
+     * @param dbName 数据库名
      * @return 返回结果 json格式
      */
     int version(String dbName);

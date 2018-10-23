@@ -35,7 +35,7 @@ export class Urls {
 })
 export class ApiServices {
 
-  PAGE_SIZE = 15;
+  PAGE_SIZE = 10;
   private readonly handleError: HandleError;
 
   constructor(

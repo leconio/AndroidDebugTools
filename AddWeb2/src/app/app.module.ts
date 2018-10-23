@@ -28,7 +28,7 @@ const databaseRoutes: Routes = [
 
 const diskRoutes: Routes = [
   {path: ':type', component: DiskContentComponent},
-  {path: '', redirectTo: 'innder', pathMatch: 'full'}
+  {path: '', redirectTo: 'inner', pathMatch: 'full'}
 ];
 
 

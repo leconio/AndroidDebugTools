@@ -29,3 +29,9 @@
 .highlight {
   color: #f50;
 }
+
+th, td {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

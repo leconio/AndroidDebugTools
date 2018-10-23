@@ -14,7 +14,7 @@
 
         <provider
             android:name="io.lecon.debugtools.DebugInitProvider"
-            android:authorities="${applicationId}.DebugDBInitProvider"
+            android:authorities="${applicationId}.DebugInitProvider"
             android:enabled="true"
             android:exported="false" />
 

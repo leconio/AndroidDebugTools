@@ -35,7 +35,13 @@ export class DiskContentComponent implements OnInit {
   getFileList(path: string) {
     this.apiServices.getFileList(this.type, path)
       .subscribe((fileList) => {
-        this.dataSet = fileList.obj;
+        this.dataSet = fileList.obj.sort((left: FileListBean, right: FileListBean) => {
+          if (left.isFolder && right.isFolder) {
+            return -1;
+          } else {
+            return 1;
+          }
+        });
         this.refreshStatus();
       });
   }
