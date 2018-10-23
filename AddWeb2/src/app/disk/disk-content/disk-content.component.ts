@@ -22,6 +22,10 @@ export class DiskContentComponent implements OnInit {
 
   folder = [''];
 
+  isVisible = false;
+  isConfirmLoading = false;
+  downloadPath: string;
+
   constructor(private route: ActivatedRoute, private apiServices: ApiServices, private modalService: NzModalService) {
   }
 
@@ -90,12 +94,20 @@ export class DiskContentComponent implements OnInit {
   }
 
   download(path: string) {
-    this.modalService.info({
-      nzTitle: '确定下载？',
-      nzContent: '<p>手机性能有限，文件需压缩后下载，下载可能需要一点时间</p><p style="color: red">点击确定后可能无法进行任何操作，耐心等待</p>',
-      nzOnOk: () => this.apiServices.downloadFile(path),
-      nzCancelText: '取消',
+    this.downloadPath = path;
+    this.isVisible = true;
+  }
+
+  handleOk(): void {
+    this.isConfirmLoading = true;
+    this.apiServices.downloadFile(this.downloadPath, () => {
+      this.isConfirmLoading = false;
+      this.isVisible = false;
     });
+  }
+
+  handleCancel(): void {
+    this.isVisible = false;
   }
 
   bytesToSize(bytes: number) {

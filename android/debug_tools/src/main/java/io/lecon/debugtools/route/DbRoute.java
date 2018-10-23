@@ -123,9 +123,11 @@ public class DbRoute implements Route {
             return null;
         }
         Map<String, String> condMap = new HashMap<>();
-        String[] conditionOne = condition.split(";");
+        // 字段与字段
+        String[] conditionOne = condition.split("驫羴");
         for (String cond : conditionOne) {
-            String[] split = cond.split(":");
+            // 字段内
+            String[] split = cond.split("靐龘");
             String key = split[0];
             String val = "";
             if (split.length != 1) {

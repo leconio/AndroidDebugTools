@@ -5,6 +5,7 @@
       <nz-breadcrumb-item>{{tableName}}</nz-breadcrumb-item>
     </nz-breadcrumb>
     <div nz-col class="db-version">
+      <input nz-input placeholder="Query Search" (input)="onQuerySearch($event.target?.value)">
       <span>Version:{{version}}</span>
       <button nz-button nzType="primary" (click)="downloadClick(dbPath)">Export</button>
     </div>

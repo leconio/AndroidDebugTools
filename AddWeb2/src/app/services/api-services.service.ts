@@ -109,7 +109,7 @@ export class ApiServices {
       );
   }
 
-  downloadFile(path: string) {
+  downloadFile(path: string, callback: any) {
     const aPath = path.split('/');
     const fileName = aPath[aPath.length - 1];
     this.http.get(Urls.baseUrl + 'file' + path, {
@@ -126,6 +126,7 @@ export class ApiServices {
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
+      callback();
     });
 
   }

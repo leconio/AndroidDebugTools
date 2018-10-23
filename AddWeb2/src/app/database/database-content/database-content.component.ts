@@ -25,6 +25,7 @@ export class DatabaseContentComponent implements OnInit {
   pageIndex: number;
   editCache = {};
   searchValue: string;
+  searchQuery: string;
 
   constructor(private route: ActivatedRoute, private apiServices: ApiServices) {
 
@@ -40,6 +41,10 @@ export class DatabaseContentComponent implements OnInit {
       this.query(0);
       this.getVersion();
     });
+  }
+
+  onQuerySearch(value: string): void {
+
   }
 
   query(page: number) {
@@ -60,7 +65,8 @@ export class DatabaseContentComponent implements OnInit {
   }
 
   downloadClick(dbPath: string) {
-    this.apiServices.downloadFile(dbPath);
+    this.apiServices.downloadFile(dbPath, () => {
+    });
   }
 
   updateEditCache(): void {
@@ -107,6 +113,7 @@ export class DatabaseContentComponent implements OnInit {
 
   /**
    * 把item变成访问数据库的condition，（除了key）
+   * TODO :冲突问题
    * @param body item
    */
   private toCondition(body: any): string {
@@ -119,19 +126,19 @@ export class DatabaseContentComponent implements OnInit {
         } else {
           content = '';
         }
-        cond += (col + ':' + content + ';');
+        cond += (col + '靐龘' + content + '驫羴');
       }
     });
     return cond;
   }
 
   private getDelCondtion(id: number) {
-    return 'id:' + id;
+    return 'id靐龘' + id;
   }
 
   private getUpdateBody(id: number, newVal: string) {
     return {
-      'condition': 'id:' + id,
+      'condition': 'id靐龘' + id,
       'newValue': newVal
     };
   }
