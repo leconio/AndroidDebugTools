@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
-import {ApiServices, Urls} from '../../services/api-services.service';
+import {ApiServices} from '../../services/api-services.service';
+import {subscribeOn} from 'rxjs/operators';
 import {async} from 'rxjs/internal/scheduler/async';
 
 @Component({
@@ -46,16 +47,21 @@ export class DatabaseContentComponent implements OnInit {
   onQuerySearch(keywords: string): void {
     if (keywords) {
       this.apiServices.queryByKeyword(this.dbName, this.tableName)
+        .pipe(subscribeOn(async))
         .subscribe((result) => {
-          if (result.success) {
+          if (result && result.success) {
             this.dataSet = result.obj.list.filter((value) => {
               return JSON.stringify(value).indexOf(keywords) !== -1;
-            });
+            }).slice(0, this.apiServices.PAGE_SIZE);
             this.columns = result.obj.columns;
             this.count = this.dataSet.length;
             this.updateEditCache();
           }
         });
+    } else {
+      this.pageIndex = 1;
+      this.dataSet = [];
+      this.query(0);
     }
   }
 

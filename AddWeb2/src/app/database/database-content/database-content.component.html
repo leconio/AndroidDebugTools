@@ -27,7 +27,7 @@
                 (nzPageIndexChange)="pageIndexChange($event)">
         <thead>
         <tr>
-          <th *ngFor="let label of columns" [nzWidth]="150">{{label}}
+          <th *ngFor="let label of columns">{{label}}
             <nz-dropdown nzTrigger="click" [nzClickHide]="false">
               <i class="anticon anticon-smile-o ant-table-filter-icon" nz-dropdown></i>
               <div class="custom-filter-dropdown">
@@ -36,7 +36,7 @@
               </div>
             </nz-dropdown>
           </th>
-          <th [nzWidth]="150">操作</th>
+          <th nzWidth="50px" nzRight="0px">操作</th>
         </tr>
         </thead>
         <tbody>
