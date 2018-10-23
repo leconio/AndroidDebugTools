@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {ApiServices, Urls} from '../../services/api-services.service';
 import {FileListBean} from '../../services/pojo/FileListObj';
+import {NzModalService} from 'ng-zorro-antd';
 
 @Component({
   selector: 'app-disk-content',
@@ -21,7 +22,7 @@ export class DiskContentComponent implements OnInit {
 
   folder = [''];
 
-  constructor(private route: ActivatedRoute, private apiServices: ApiServices) {
+  constructor(private route: ActivatedRoute, private apiServices: ApiServices, private modalService: NzModalService) {
   }
 
   ngOnInit() {
@@ -89,7 +90,12 @@ export class DiskContentComponent implements OnInit {
   }
 
   download(path: string) {
-    this.apiServices.downloadFile(path);
+    this.modalService.info({
+      nzTitle: '确定下载？',
+      nzContent: '<p>手机性能有限，文件需压缩后下载，下载可能需要一点时间</p><p style="color: red">点击确定后可能无法进行任何操作，耐心等待</p>',
+      nzOnOk: () => this.apiServices.downloadFile(path),
+      nzCancelText: '取消',
+    });
   }
 
   bytesToSize(bytes: number) {

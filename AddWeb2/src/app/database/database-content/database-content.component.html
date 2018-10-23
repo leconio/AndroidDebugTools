@@ -11,61 +11,66 @@
   </div>
 
   <div class="db-table-content">
-    <nz-table #basicTable
-              [nzPageIndex]="pageIndex"
-              [nzData]="dataSet"
-              [nzFrontPagination]="false"
-              [nzPageSize]="pageSize"
-              [nzTotal]="count"
-              [nzScroll]="{ x:'130%' }"
-              [nzShowQuickJumper]="true"
-              (nzPageIndexChange)="pageIndexChange($event)">
-      <thead>
-      <tr>
-        <th *ngFor="let label of columns" [nzWidth]="150">{{label}}
-          <nz-dropdown nzTrigger="click" [nzClickHide]="false">
-            <i class="anticon anticon-smile-o ant-table-filter-icon" nz-dropdown></i>
-            <div class="custom-filter-dropdown">
-              <input type="text" nz-input placeholder="Search name" [(ngModel)]="searchValue">
-              <button nz-button [nzType]="'primary'" (click)="search(label)">Search</button>
-            </div>
-          </nz-dropdown>
-        </th>
-        <th [nzWidth]="150">操作</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr *ngFor="let data of basicTable.data">
-        <td *ngFor="let label of columns">
-          <ng-container *ngIf="!editCache[data[this.key]].edit">
-            {{data[label]}}
-          </ng-container>
-          <ng-container *ngIf="editCache[data[this.key]].edit">
-            <input type="text" nz-input [(ngModel)]="editCache[data[this.key]].data[label]">
-          </ng-container>
-        </td>
-        <td nzRight="0px">
-          <div class="editable-row-operations">
-            <ng-container *ngIf="!editCache[data[this.key]].edit ">
-              <a (click)="startEdit(data[this.key])" nzType="primary">Edit</a>
-              <nz-divider nzType="vertical"></nz-divider>
-              <ng-container>
-                <nz-popconfirm [nzTitle]="'Sure to delete?'" (nzOnConfirm)="sureDel(data[this.key])">
-                  <a nz-popconfirm>Delete</a>
-                </nz-popconfirm>
-              </ng-container>
+    <div *ngIf="dataSet.length == 0">
+      <nz-spin></nz-spin>
+    </div>
+    <div  *ngIf="dataSet.length != 0">
+      <nz-table #basicTable
+                [nzPageIndex]="pageIndex"
+                [nzData]="dataSet"
+                [nzFrontPagination]="false"
+                [nzPageSize]="pageSize"
+                [nzTotal]="count"
+                [nzScroll]="{ x:'130%' }"
+                [nzShowQuickJumper]="true"
+                (nzPageIndexChange)="pageIndexChange($event)">
+        <thead>
+        <tr>
+          <th *ngFor="let label of columns" [nzWidth]="150">{{label}}
+            <nz-dropdown nzTrigger="click" [nzClickHide]="false">
+              <i class="anticon anticon-smile-o ant-table-filter-icon" nz-dropdown></i>
+              <div class="custom-filter-dropdown">
+                <input type="text" nz-input placeholder="Search name" [(ngModel)]="searchValue">
+                <button nz-button [nzType]="'primary'" (click)="search(label)">Search</button>
+              </div>
+            </nz-dropdown>
+          </th>
+          <th [nzWidth]="150">操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let data of basicTable.data">
+          <td *ngFor="let label of columns">
+            <ng-container *ngIf="!editCache[data[this.key]].edit">
+              {{data[label]}}
             </ng-container>
             <ng-container *ngIf="editCache[data[this.key]].edit">
-              <a (click)="saveEdit(data[this.key])">Save</a>
-              <nz-popconfirm [nzTitle]="'Sure to cancel?'" (nzOnConfirm)="cancelEdit(data[this.key])">
-                <a nz-popconfirm>Cancel</a>
-              </nz-popconfirm>
+              <input type="text" nz-input [(ngModel)]="editCache[data[this.key]].data[label]">
             </ng-container>
-          </div>
-        </td>
-      </tr>
-      </tbody>
-    </nz-table>
+          </td>
+          <td nzRight="0px">
+            <div class="editable-row-operations">
+              <ng-container *ngIf="!editCache[data[this.key]].edit ">
+                <a (click)="startEdit(data[this.key])" nzType="primary">Edit</a>
+                <nz-divider nzType="vertical"></nz-divider>
+                <ng-container>
+                  <nz-popconfirm [nzTitle]="'Sure to delete?'" (nzOnConfirm)="sureDel(data[this.key])">
+                    <a nz-popconfirm>Delete</a>
+                  </nz-popconfirm>
+                </ng-container>
+              </ng-container>
+              <ng-container *ngIf="editCache[data[this.key]].edit">
+                <a (click)="saveEdit(data[this.key])">Save</a>
+                <nz-popconfirm [nzTitle]="'Sure to cancel?'" (nzOnConfirm)="cancelEdit(data[this.key])">
+                  <a nz-popconfirm>Cancel</a>
+                </nz-popconfirm>
+              </ng-container>
+            </div>
+          </td>
+        </tr>
+        </tbody>
+      </nz-table>
+    </div>
   </div>
 
 </nz-card>

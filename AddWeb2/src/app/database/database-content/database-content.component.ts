@@ -36,6 +36,7 @@ export class DatabaseContentComponent implements OnInit {
       this.tableName = params['tableName'];
       this.dbPath = params['dbPath'];
       this.pageIndex = 1;
+      this.dataSet = [];
       this.query(0);
       this.getVersion();
     });
