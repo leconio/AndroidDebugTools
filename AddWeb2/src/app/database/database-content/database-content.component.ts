@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {ApiServices, Urls} from '../../services/api-services.service';
+import {async} from 'rxjs/internal/scheduler/async';
 
 @Component({
   selector: 'app-database-content',
@@ -25,7 +26,6 @@ export class DatabaseContentComponent implements OnInit {
   pageIndex: number;
   editCache = {};
   searchValue: string;
-  searchQuery: string;
 
   constructor(private route: ActivatedRoute, private apiServices: ApiServices) {
 
@@ -43,8 +43,20 @@ export class DatabaseContentComponent implements OnInit {
     });
   }
 
-  onQuerySearch(value: string): void {
-
+  onQuerySearch(keywords: string): void {
+    if (keywords) {
+      this.apiServices.queryByKeyword(this.dbName, this.tableName)
+        .subscribe((result) => {
+          if (result.success) {
+            this.dataSet = result.obj.list.filter((value) => {
+              return JSON.stringify(value).indexOf(keywords) !== -1;
+            });
+            this.columns = result.obj.columns;
+            this.count = this.dataSet.length;
+            this.updateEditCache();
+          }
+        });
+    }
   }
 
   query(page: number) {
@@ -133,12 +145,12 @@ export class DatabaseContentComponent implements OnInit {
   }
 
   private getDelCondtion(id: number) {
-    return 'id靐龘' + id;
+    return this.key + '靐龘' + id;
   }
 
   private getUpdateBody(id: number, newVal: string) {
     return {
-      'condition': 'id靐龘' + id,
+      'condition': this.key + '靐龘' + id,
       'newValue': newVal
     };
   }

@@ -3,12 +3,15 @@ import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {HandleError, HttpErrorHandler} from '../http-error-handler.service';
 import {Observable} from 'rxjs';
 import {DatabaseListObj} from './pojo/DatabaseListObj';
-import {catchError} from 'rxjs/operators';
+import {catchError, filter, map} from 'rxjs/operators';
 import {TableListObj} from './pojo/TableListObj';
 import {QueryBeanResp} from './pojo/QueryBeanResp';
 import {BaseResponse} from './pojo/BaseResponse';
 import {FileListObj} from './pojo/FileListObj';
 import {VersionObj} from './pojo/VersionObj';
+import {from} from 'rxjs';
+import {subscribeTo} from 'rxjs/internal-compatibility';
+import {async} from 'rxjs/internal/scheduler/async';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -34,6 +37,11 @@ export class Urls {
   providedIn: 'root'
 })
 export class ApiServices {
+
+  cache = {
+    key: '',
+    body: null
+  };
 
   PAGE_SIZE = 10;
   private readonly handleError: HandleError;
@@ -71,6 +79,21 @@ export class ApiServices {
       .pipe(
         catchError(this.handleError('query', new QueryBeanResp()))
       );
+  }
+
+  queryByKeyword(dbName: string, tableName: string) {
+    let a;
+    if (this.cache.key === dbName + tableName) {
+      a = Observable.create((subscribe) => {
+        subscribe.next(this.cache.body);
+        subscribe.complete();
+      });
+    } else {
+      this.cache.key = dbName + tableName;
+      a = this.query(dbName, tableName, null, 0, 0)
+        .pipe(map(value => this.cache.body = value));
+    }
+    return a;
   }
 
   queryByPage(dbName: string, tableName: string, page: number = 0, condition: string = ''): Observable<QueryBeanResp> {

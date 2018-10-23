@@ -119,7 +119,7 @@ public class DbRoute implements Route {
      * 把字符串分割成map
      */
     private Map<String, String> buildParamMap(String condition) {
-        if (TextUtils.isEmpty(condition)) {
+        if (TextUtils.isEmpty(condition) || "null".equals(condition)) {
             return null;
         }
         Map<String, String> condMap = new HashMap<>();
