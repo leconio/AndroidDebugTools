@@ -15,6 +15,7 @@ import io.lecon.debugtools.server.HttpParamsParser;
 import io.lecon.debugtools.server.resp.Response;
 
 import static io.lecon.debugtools.DebugTools.TAG;
+import static io.lecon.debugtools.route.RouteDispatcher.WEB_FOLDER;
 
 /**
  * Created by spawn on 17-9-28.
@@ -102,16 +103,6 @@ public class ActionHandler implements Handler {
             writeServerError(output);
             return;
         }
-
-        String contentType;
-        String[] split = route.split("/");
-        String filename = split[split.length - 1];
-        if (!filename.contains(".")) {
-            contentType = "Content-Type: application/octet-stream";
-        } else {
-            contentType = "Content-Type: " + Utils.getMimeType(route);
-        }
-
         // Send out the content.
         output.println("HTTP/1.0 200 OK");
         output.println("Access-Control-Allow-Origin: *");
@@ -120,14 +111,16 @@ public class ActionHandler implements Handler {
         output.println("Access-Control-Allow-Headers: Content-Type,Access-Token");
         output.println("Access-Control-Expose-Headers: *");
 
+
+        String contentType = "Content-Type: application/json";
+        String[] split = route.split("/");
         if (route.contains("file")) {
             output.println("Content-Disposition: attachment; filename=" + route.substring(route.lastIndexOf("/") + 1) + ".zip");
-        } else if (route.contains("asset")) {
-            output.println("Content-Disposition: attachment; filename=" + route.substring(route.lastIndexOf("/") + 1));
-        } else {
-            contentType = "Content-Type: application/json";
-            output.println("Content-Length: " + bytes.length);
+            contentType = "Content-Type: application/octet-stream";
+        } else if (split[split.length - 1].contains(".")) {
+            contentType = "Content-Type: " + Utils.getMimeType(route);
         }
+
         output.println(contentType);
         output.println();
         output.write(bytes);

@@ -4,18 +4,20 @@ import android.content.Context;
 
 import java.io.IOException;
 
-import io.lecon.debugtools.utils.Utils;
 import io.lecon.debugtools.server.HttpParamsParser;
 import io.lecon.debugtools.server.Result;
 import io.lecon.debugtools.server.resp.ByteResponse;
 import io.lecon.debugtools.server.resp.JsonResponse;
 import io.lecon.debugtools.server.resp.Response;
+import io.lecon.debugtools.utils.Utils;
 
 /**
  * Created by spawn on 17-9-28.
  */
 
 public class RouteDispatcher {
+
+    public static final String WEB_FOLDER = "/debug-web";
 
     private Context mContext;
 
@@ -39,6 +41,12 @@ public class RouteDispatcher {
     public Response dispatch(HttpParamsParser.Request request) throws IOException {
         Response response = null;
         String requestURI = request.getRequestURI();
+
+        if ("/".equals(requestURI)) {
+            requestURI = "/index.html";
+            request.setRequestURI(requestURI);
+        }
+
         String[] urlSplit = requestURI.split("/");
         if (urlSplit.length == 1 || urlSplit[1].contains("debug")) {
             if ("OPTIONS".equals(request.getMethod())) {
@@ -49,7 +57,6 @@ public class RouteDispatcher {
                     }
                 };
             }
-            return null;
         }
 
         // error-demo
@@ -79,11 +86,7 @@ public class RouteDispatcher {
             return new ByteResponse(Utils.loadFileContent(requestURI.split("file")[1]));
         }
 
-        if (urlSplit[1].contains("asset")) {
-            return new ByteResponse(Utils.loadAssetContent(requestURI, mContext.getAssets()));
-        }
-
         //资源处理
-        return new JsonResponse(Result.RESULT_ERROR);
+        return new ByteResponse(Utils.loadAssetContent(WEB_FOLDER + requestURI, mContext.getAssets()));
     }
 }

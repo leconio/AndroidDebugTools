@@ -206,6 +206,10 @@ public class HttpParamsParser {
             return parameterMap.get(name);
         }
 
+        public void setRequestURI(String requestURI) {
+            this.requestURI = requestURI;
+        }
+
         /**
          * 获得请求的url地址
          *
