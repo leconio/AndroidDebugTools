@@ -1,9 +1,5 @@
 package io.lecon.debugtools.server;
 
-/**
- * Created by spawn on 15/11/16.
- */
-
 
 import android.content.Context;
 import android.util.Log;
@@ -15,9 +11,12 @@ import java.net.SocketException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import io.lecon.debugtools.utils.Utils;
 import io.lecon.debugtools.sockethandler.ActionHandler;
+import io.lecon.debugtools.utils.Utils;
 
+/**
+ * Created by spawn on 15/11/16.
+ */
 public class ClientServer implements Runnable {
 
     private static final String TAG = "ClientServer";

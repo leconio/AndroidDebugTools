@@ -12,6 +12,7 @@ export class DatabaseContentComponent implements OnInit {
   dbName: string;
   dbPath: string;
   tableName: string;
+  version: string;
 
   /**
    * 服务器必须有个唯一标识字段
@@ -36,6 +37,7 @@ export class DatabaseContentComponent implements OnInit {
       this.dbPath = params['dbPath'];
       this.pageIndex = 1;
       this.query(0);
+      this.getVersion();
     });
   }
 
@@ -110,7 +112,13 @@ export class DatabaseContentComponent implements OnInit {
     let cond = '';
     this.columns.forEach((col) => {
       if (col !== this.key) {
-        cond += col + ':' + body[col] + ';';
+        let content;
+        if (body[col]) {
+          content = body[col];
+        } else {
+          content = '';
+        }
+        cond += (col + ':' + content + ';');
       }
     });
     return cond;
@@ -125,5 +133,14 @@ export class DatabaseContentComponent implements OnInit {
       'condition': 'id:' + id,
       'newValue': newVal
     };
+  }
+
+  private getVersion() {
+    this.apiServices.version(this.dbName)
+      .subscribe((result) => {
+        if (result.success) {
+          this.version = result.obj.version;
+        }
+      });
   }
 }

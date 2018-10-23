@@ -8,6 +8,7 @@ import {TableListObj} from './pojo/TableListObj';
 import {QueryBeanResp} from './pojo/QueryBeanResp';
 import {BaseResponse} from './pojo/BaseResponse';
 import {FileListObj} from './pojo/FileListObj';
+import {VersionObj} from './pojo/VersionObj';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -24,6 +25,7 @@ export class Urls {
   static QUERY = Urls.dbUrl + 'query';
   static UPDATE = Urls.dbUrl + 'update';
   static DELETE = Urls.dbUrl + 'delete';
+  static VERSION = Urls.dbUrl + 'version';
 
   static FILE_LIST = Urls.diskUrl + 'list';
 }
@@ -126,5 +128,13 @@ export class ApiServices {
       document.body.removeChild(link);
     });
 
+  }
+
+  version(dbName: string) {
+    const params = new HttpParams()
+      .set('dbName', dbName);
+    return this.http.get<VersionObj>(Urls.VERSION, {params}).pipe(
+      catchError(this.handleError('file_list', new VersionObj())
+      ));
   }
 }

@@ -109,7 +109,7 @@ public class DbRoute implements Route {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            result.setMessage(e.getMessage());
+            result.setMessage(e.toString());
             result.setSuccessful(false);
         }
         return result;
@@ -127,8 +127,12 @@ public class DbRoute implements Route {
         for (String cond : conditionOne) {
             String[] split = cond.split(":");
             String key = split[0];
-            String val = split[1];
+            String val = "";
+            if (split.length != 1) {
+                val = split[1];
+            }
             condMap.put(key, val);
+
         }
         return condMap;
     }
