@@ -11,10 +11,6 @@ import {NzModalService} from 'ng-zorro-antd';
 })
 export class DiskContentComponent implements OnInit {
 
-  /**
-   * 存储器类型 内部和外部
-   */
-  type: string;
   allChecked = false;
   indeterminate = false;
   displayData = [];
@@ -24,7 +20,14 @@ export class DiskContentComponent implements OnInit {
 
   isVisible = false;
   isConfirmLoading = false;
-  downloadPath: string;
+  isLoading: boolean;
+
+  /**
+   * 存储器类型 内部和外部
+   */
+  private type: string;
+  private downloadPath: string;
+  private isFolder: boolean;
 
   constructor(private route: ActivatedRoute, private apiServices: ApiServices, private modalService: NzModalService) {
   }
@@ -38,6 +41,7 @@ export class DiskContentComponent implements OnInit {
   }
 
   getFileList(path: string) {
+    this.isLoading = true;
     this.apiServices.getFileList(this.type, path)
       .subscribe((fileList) => {
         this.dataSet = fileList.obj.sort((left: FileListBean, right: FileListBean) => {
@@ -61,6 +65,7 @@ export class DiskContentComponent implements OnInit {
     const allUnChecked = this.displayData.filter(value => !value.disabled).every(value => !value.checked);
     this.allChecked = allChecked;
     this.indeterminate = (!allChecked) && (!allUnChecked);
+    this.isLoading = false;
   }
 
   checkAll(value: boolean): void {
@@ -93,14 +98,15 @@ export class DiskContentComponent implements OnInit {
     console.log(path);
   }
 
-  download(path: string) {
+  download(isFolder: boolean, path: string) {
+    this.isFolder = isFolder;
     this.downloadPath = path;
     this.isVisible = true;
   }
 
-  handleOk(): void {
+  handleDownloadOk(): void {
     this.isConfirmLoading = true;
-    this.apiServices.downloadFile(this.downloadPath, () => {
+    this.apiServices.downloadFile(this.isFolder, this.downloadPath, () => {
       this.isConfirmLoading = false;
       this.isVisible = false;
     });

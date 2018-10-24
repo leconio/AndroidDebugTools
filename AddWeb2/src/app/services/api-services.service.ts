@@ -132,7 +132,7 @@ export class ApiServices {
       );
   }
 
-  downloadFile(path: string, callback: any) {
+  downloadFile(isFolder: boolean, path: string, callback: any) {
     const aPath = path.split('/');
     const fileName = aPath[aPath.length - 1];
     this.http.get(Urls.baseUrl + 'file' + path, {
@@ -144,7 +144,11 @@ export class ApiServices {
       const url: string = URL.createObjectURL(blob);
       const link: HTMLElement = document.createElement('a');
       link.setAttribute('href', url);
-      link.setAttribute('download', fileName + '.zip');
+      if (isFolder) {
+        link.setAttribute('download', fileName + '.zip');
+      } else {
+        link.setAttribute('download', fileName);
+      }
       link.style.visibility = 'hidden';
       document.body.appendChild(link);
       link.click();

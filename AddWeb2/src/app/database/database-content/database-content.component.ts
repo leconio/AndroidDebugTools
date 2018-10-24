@@ -27,6 +27,7 @@ export class DatabaseContentComponent implements OnInit {
   pageIndex: number;
   editCache = {};
   searchValue: string;
+  isLoading: boolean;
 
   constructor(private route: ActivatedRoute, private apiServices: ApiServices) {
 
@@ -39,20 +40,22 @@ export class DatabaseContentComponent implements OnInit {
       this.dbPath = params['dbPath'];
       this.pageIndex = 1;
       this.dataSet = [];
+      this.editCache = {};
       this.query(0);
       this.getVersion();
     });
   }
 
   onQuerySearch(keywords: string): void {
+    this.isLoading = true;
     if (keywords) {
       this.apiServices.queryByKeyword(this.dbName, this.tableName)
         .pipe(subscribeOn(async))
         .subscribe((result) => {
           if (result && result.success) {
-            this.dataSet = result.obj.list.filter((value) => {
-              return JSON.stringify(value).indexOf(keywords) !== -1;
-            }).slice(0, this.apiServices.PAGE_SIZE);
+            this.dataSet = result.obj.list
+              .filter((value) => JSON.stringify(value).indexOf(keywords) !== -1)
+              .slice(0, this.apiServices.PAGE_SIZE);
             this.columns = result.obj.columns;
             this.count = this.dataSet.length;
             this.updateEditCache();
@@ -66,6 +69,7 @@ export class DatabaseContentComponent implements OnInit {
   }
 
   query(page: number) {
+    this.isLoading = true;
     this.apiServices.queryByPage(this.dbName, this.tableName, page)
       .subscribe((result) => {
         if (result.success) {
@@ -83,11 +87,12 @@ export class DatabaseContentComponent implements OnInit {
   }
 
   downloadClick(dbPath: string) {
-    this.apiServices.downloadFile(dbPath, () => {
+    this.apiServices.downloadFile(false, dbPath, () => {
     });
   }
 
   updateEditCache(): void {
+    this.isLoading = false;
     this.dataSet.forEach(item => {
       if (!this.editCache[item[this.key]]) {
         this.editCache[item[this.key]] = {

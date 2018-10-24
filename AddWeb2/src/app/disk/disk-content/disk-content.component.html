@@ -16,6 +16,7 @@
     <nz-table
       #rowSelectionTable
       [nzData]="dataSet"
+      [nzLoading]="isLoading"
       [nzFrontPagination]="false"
       [nzShowPagination]="false"
       (nzCurrentPageDataChange)="currentPageDataChange($event)">
@@ -43,7 +44,7 @@
           <div class="editable-row-operations">
             <ng-container>
 
-              <a nzType="primary" (click)="download(data.realPath)">下载</a>
+              <a nzType="primary" (click)="download(data.isFolder,data.realPath)">下载</a>
               <nz-divider nzType="vertical"></nz-divider>
               <ng-container>
                 <nz-popconfirm [nzTitle]="'Sure to delete?'" (nzOnConfirm)="sureDel(data.realPath)">
@@ -76,6 +77,6 @@
 
   <ng-template #modalFooter>
     <button nz-button nzType="default" (click)="handleCancel()">取消</button>
-    <button nz-button nzType="primary" (click)="handleOk()" [nzLoading]="isConfirmLoading">确定</button>
+    <button nz-button nzType="primary" (click)="handleDownloadOk()" [nzLoading]="isConfirmLoading">确定</button>
   </ng-template>
 </nz-modal>
