@@ -10,6 +10,8 @@ import android.content.SharedPreferences;
 public class Constants {
 
     private static Context sContext;
+    public static final String PK = "pk";
+    public static final String NAME = "name";
 
     public static void init(Context context){
         sContext = context;

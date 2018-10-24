@@ -18,6 +18,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import io.lecon.debugtools.Constants;
+
 import static io.lecon.debugtools.DebugTools.TAG;
 
 /**
@@ -71,6 +73,50 @@ public class DefaultDatabaseHelper implements DatabaseHelper {
         return tableName;
     }
 
+    public static class TableInfo {
+        public String columnName;
+        public boolean isPrimary;
+    }
+
+    /**
+     * 获取表信息
+     */
+    private static List<TableInfo> getTableInfo(SQLiteDatabase db, String pragmaQuery) {
+        Cursor cursor;
+        try {
+            cursor = db.rawQuery(pragmaQuery, null);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+        if (cursor != null) {
+            List<TableInfo> tableInfoList = new ArrayList<>();
+            cursor.moveToFirst();
+            if (cursor.getCount() > 0) {
+                do {
+                    TableInfo tableInfo = new TableInfo();
+                    for (int i = 0; i < cursor.getColumnCount(); i++) {
+                        final String columnName = cursor.getColumnName(i);
+
+                        switch (columnName) {
+                            case Constants.PK:
+                                tableInfo.isPrimary = cursor.getInt(i) == 1;
+                                break;
+                            case Constants.NAME:
+                                tableInfo.columnName = cursor.getString(i);
+                                break;
+                            default:
+                        }
+                    }
+                    tableInfoList.add(tableInfo);
+                } while (cursor.moveToNext());
+            }
+            cursor.close();
+            return tableInfoList;
+        }
+        return null;
+    }
+
     @Override
     public String queryData(String dbName, String tableName, Map<String, String> condition, String limit, String offset) {
         File dbFile = listAllDatabase().get(dbName);
@@ -79,6 +125,7 @@ public class DefaultDatabaseHelper implements DatabaseHelper {
         }
         SQLiteDatabase db =
                 SQLiteDatabase.openOrCreateDatabase(dbFile.getAbsolutePath(), null);
+
         StringBuilder sql = new StringBuilder("SELECT * FROM " + tableName);
         List<String> ion = new ArrayList<>();
         if (condition != null) {
@@ -117,9 +164,7 @@ public class DefaultDatabaseHelper implements DatabaseHelper {
         JSONObject respObj = new JSONObject();
         JSONArray jsonList = new JSONArray();
         try {
-            JSONArray columnList = new JSONArray();
             if (cursor.moveToFirst()) {
-                boolean isReadyColumnList = false;
                 do {
                     JSONObject jsonObject = new JSONObject();
                     for (int j = 0; j < cursor.getColumnCount(); j++) {
@@ -141,16 +186,26 @@ public class DefaultDatabaseHelper implements DatabaseHelper {
                                 jsonObject.put(cursor.getColumnName(j),
                                         cursor.getString(cursor.getColumnIndex(cursor.getColumnName(j))));
                         }
-                        if (!isReadyColumnList) {
-                            columnList.put(cursor.getColumnName(j));
-                        }
                     }
-                    isReadyColumnList = true;
                     jsonList.put(jsonObject);
                 } while (cursor.moveToNext());
             }
+            if (tableName != null) {
+                // 获取主键
+                final String pragmaQuery = "PRAGMA table_info(" + tableName + ")";
+                List<TableInfo> tableInfos = getTableInfo(db, pragmaQuery);
+                if (tableInfos != null) {
+                    JSONArray jsonArray = new JSONArray();
+                    for (TableInfo tableInfo : tableInfos) {
+                        JSONObject jsonObject = new JSONObject();
+                        jsonObject.put("columnName", tableInfo.columnName);
+                        jsonObject.put("isPrimary", tableInfo.isPrimary);
+                        jsonArray.put(jsonObject);
+                    }
+                    respObj.put("columns", jsonArray);
+                }
+            }
             respObj.put("list", jsonList);
-            respObj.put("columns", columnList);
             respObj.put("pageInfo", countTableData(dbName, tableName));
         } catch (JSONException e) {
             e.printStackTrace();
