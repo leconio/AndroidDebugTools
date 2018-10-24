@@ -3,6 +3,7 @@ import {ActivatedRoute} from '@angular/router';
 import {ApiServices} from '../../services/api-services.service';
 import {subscribeOn} from 'rxjs/operators';
 import {async} from 'rxjs/internal/scheduler/async';
+import {ColumnsInfo} from '../../services/pojo/QueryBeanResp';
 
 @Component({
   selector: 'app-database-content',
@@ -19,9 +20,9 @@ export class DatabaseContentComponent implements OnInit {
   /**
    * 服务器必须有个唯一标识字段
    */
-  key = 'id';
+  pk = 'id';
   dataSet: any[] = [];
-  columns: string[] = [];
+  columns: ColumnsInfo[] = [];
   pageSize: number = this.apiServices.PAGE_SIZE;
   count: number;
   pageIndex: number;
@@ -57,6 +58,11 @@ export class DatabaseContentComponent implements OnInit {
               .filter((value) => JSON.stringify(value).indexOf(keywords) !== -1)
               .slice(0, this.apiServices.PAGE_SIZE);
             this.columns = result.obj.columns;
+            this.columns.forEach((colInfo) => {
+              if (colInfo.isPrimary) {
+                this.pk = colInfo.columnName;
+              }
+            });
             this.count = this.dataSet.length;
             this.updateEditCache();
           }
@@ -75,6 +81,11 @@ export class DatabaseContentComponent implements OnInit {
         if (result.success) {
           this.dataSet = result.obj.list;
           this.columns = result.obj.columns;
+          this.columns.forEach((colInfo) => {
+            if (colInfo.isPrimary) {
+              this.pk = colInfo.columnName;
+            }
+          });
           this.count = result.obj.pageInfo.count;
           this.updateEditCache();
         }
@@ -94,8 +105,8 @@ export class DatabaseContentComponent implements OnInit {
   updateEditCache(): void {
     this.isLoading = false;
     this.dataSet.forEach(item => {
-      if (!this.editCache[item[this.key]]) {
-        this.editCache[item[this.key]] = {
+      if (!this.editCache[item[this.pk]]) {
+        this.editCache[item[this.pk]] = {
           edit: false,
           data: {...item}
         };
@@ -112,9 +123,9 @@ export class DatabaseContentComponent implements OnInit {
   }
 
   saveEdit(id: string): void {
-    const index = this.dataSet.findIndex(item => item[this.key] === id);
+    const index = this.dataSet.findIndex(item => item[this.pk] === id);
     Object.assign(this.dataSet[index], this.editCache[id].data);
-    this.apiServices.update(this.dbName, this.tableName, this.getUpdateBody(Number(id), this.toCondition(this.dataSet[index])))
+    this.apiServices.update(this.dbName, this.tableName, this.getUpdateBody(id, this.toCondition(this.dataSet[index])))
       .subscribe((result) => {
         this.editCache[id].edit = false;
       });
@@ -122,7 +133,7 @@ export class DatabaseContentComponent implements OnInit {
 
   sureDel(id: string) {
     this.editCache[id].del = false;
-    this.apiServices.delete(this.dbName, this.tableName, this.getDelCondtion(Number(id)))
+    this.apiServices.delete(this.dbName, this.tableName, this.getDelCondition(id))
       .subscribe((resp) => {
         this.pageIndex = 1;
         this.query(0);
@@ -136,32 +147,31 @@ export class DatabaseContentComponent implements OnInit {
 
   /**
    * 把item变成访问数据库的condition，（除了key）
-   * TODO :冲突问题
    * @param body item
    */
   private toCondition(body: any): string {
     let cond = '';
     this.columns.forEach((col) => {
-      if (col !== this.key) {
+      if (!col.isPrimary) {
         let content;
-        if (body[col]) {
-          content = body[col];
+        if (body[col.columnName]) {
+          content = body[col.columnName];
         } else {
           content = '';
         }
-        cond += (col + '靐龘' + content + '驫羴');
+        cond += (col.columnName + '靐龘' + content + '驫羴');
       }
     });
     return cond;
   }
 
-  private getDelCondtion(id: number) {
-    return this.key + '靐龘' + id;
+  private getDelCondition(pk: string) {
+    return this.pk + '靐龘' + pk;
   }
 
-  private getUpdateBody(id: number, newVal: string) {
+  private getUpdateBody(pk: string, newVal: string) {
     return {
-      'condition': this.key + '靐龘' + id,
+      'condition': this.pk + '靐龘' + pk,
       'newValue': newVal
     };
   }

@@ -6,8 +6,13 @@ export class QueryBeanResp extends BaseResponse {
 
 export class QueryBean {
   list: any[];
-  columns: string[];
+  columns: ColumnsInfo[];
   pageInfo: PageInfo;
+}
+
+export class ColumnsInfo {
+  columnName: string;
+  isPrimary: boolean;
 }
 
 export class PageInfo {
