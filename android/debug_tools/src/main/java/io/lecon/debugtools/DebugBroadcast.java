@@ -17,6 +17,9 @@ public class DebugBroadcast extends BroadcastReceiver {
             DebugTools.shutDown();
         } else if ("io.lecon.dissmiss_notificaton".equals(intent.getAction())) {
             DebugTools.cleanNotification();
+        } else if("io.lecon.restart_server".equals(intent.getAction())) {
+            DebugTools.shutDown();
+            DebugTools.initialize(context);
         }
     }
 

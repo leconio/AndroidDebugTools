@@ -35,6 +35,7 @@ public class DebugTools {
     }
 
     public static void initialize(Context context) {
+        Constants.init(context);
         DebugTools.context = context;
         try {
             portNumber = Integer.valueOf(context.getString(R.string.PORT_NUMBER));
@@ -72,13 +73,19 @@ public class DebugTools {
             Intent stopIntent = new Intent("io.lecon.stop_server");
             PendingIntent stopPendingIntent = PendingIntent.getBroadcast(context, 0, stopIntent, 0);
 
+            Intent restartIntent = new Intent("io.lecon.restart_server");
+            PendingIntent restartPendingIntent = PendingIntent.getBroadcast(context, 0, restartIntent, 0);
+
+
             Intent dismissIntent = new Intent("io.lecon.dissmiss_notificaton");
             PendingIntent dismissPendingIntent = PendingIntent.getBroadcast(context, 0, dismissIntent, 0);
 
             Notification.Action stopAction = new Notification.Action.Builder(null, "STOP", stopPendingIntent).build();
+            Notification.Action restartAction = new Notification.Action.Builder(null, "RESTART", restartPendingIntent).build();
             Notification.Action dismissAction = new Notification.Action.Builder(null, "DISMISS", dismissPendingIntent).build();
 
             builder.addAction(stopAction)
+                    .addAction(restartAction)
                     .addAction(dismissAction);
         }
 

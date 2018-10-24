@@ -53,7 +53,7 @@ public class ContactDBHelper extends SQLiteOpenHelper {
         // TODO Auto-generated method stub
         db.execSQL(
                 "create table contacts " +
-                        "(id integer primary key, name text, phone text, email text, street text, place text, createdAt integer)"
+                        "(id integer primary key, name text, phone integer, email text, street text, place text, createdAt integer)"
         );
     }
 
@@ -64,13 +64,13 @@ public class ContactDBHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public boolean insertContact(String name, String phone, String email, String street, String place) {
+    public boolean insertContact(String name, Integer phone, String email, String street, String place) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put("name", name);
-        contentValues.put("phone", phone);
-        contentValues.put("email", email);
-        contentValues.put("street", street);
+        contentValues.put(CONTACTS_COLUMN_NAME, name);
+        contentValues.put(CONTACTS_COLUMN_PHONE, phone);
+        contentValues.put(CONTACTS_COLUMN_EMAIL, email);
+        contentValues.put(CONTACTS_COLUMN_STREET, street);
         contentValues.put("place", place);
         contentValues.put(CONTACTS_CREATED_AT, Calendar.getInstance().getTimeInMillis());
         db.insert("contacts", null, contentValues);

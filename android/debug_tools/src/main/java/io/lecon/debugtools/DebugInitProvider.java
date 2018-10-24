@@ -19,7 +19,6 @@ public class DebugInitProvider extends ContentProvider {
 
     @Override
     public boolean onCreate() {
-        Constants.init(getContext());
         DebugTools.initialize(getContext());
         return true;
     }
@@ -55,7 +54,7 @@ public class DebugInitProvider extends ContentProvider {
             throw new NullPointerException("DebugInitProvider ProviderInfo cannot be null.");
         }
         // So if the authorities equal the library internal ones, the developer forgot to set his applicationId
-        if ("cn.liucl.debugtools.DebugInitProvider".equals(providerInfo.authority)) {
+        if ("io.lecon.debugtools.DebugInitProvider".equals(providerInfo.authority)) {
             throw new IllegalStateException("Incorrect provider authority in manifest. Most likely due to a "
                     + "missing applicationId variable in application\'s build.gradle.");
         }

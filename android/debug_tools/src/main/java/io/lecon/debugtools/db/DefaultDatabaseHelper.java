@@ -118,7 +118,7 @@ public class DefaultDatabaseHelper implements DatabaseHelper {
     }
 
     @Override
-    public String queryData(String dbName, String tableName, Map<String, String> condition, String limit, String offset) {
+    public String queryData(String dbName, String tableName, Map<String, Object> condition, String limit, String offset) {
         File dbFile = listAllDatabase().get(dbName);
         if (dbFile == null) {
             throw new IllegalArgumentException("Cannot find dbName :" + dbName);
@@ -141,7 +141,7 @@ public class DefaultDatabaseHelper implements DatabaseHelper {
                 }
                 sql.append(con);
                 sql.append("=?");
-                ion.add(condition.get(con));
+                ion.add(String.valueOf(condition.get(con)));
                 if (i != keySet.size()) {
                     sql.append(" and ");
                 }
@@ -240,7 +240,7 @@ public class DefaultDatabaseHelper implements DatabaseHelper {
     }
 
     @Override
-    public String countData(String dbName, String tableName, Map<String, String> where) {
+    public String countData(String dbName, String tableName, Map<String, Object> where) {
         String data = queryData(dbName, tableName, where);
         JSONObject jsonObject = new JSONObject();
         try {
@@ -268,12 +268,12 @@ public class DefaultDatabaseHelper implements DatabaseHelper {
     }
 
     @Override
-    public String queryData(String dbName, String tableName, Map<String, String> condition) throws SQLException {
+    public String queryData(String dbName, String tableName, Map<String, Object> condition) throws SQLException {
         return queryData(dbName, tableName, condition, "0", "0");
     }
 
     @Override
-    public void updateData(String dbName, String tableName, Map<String, String> condition, Map<String, String> newValue) throws SQLException {
+    public void updateData(String dbName, String tableName, Map<String, Object> condition, Map<String, Object> newValue) throws SQLException {
         File dbFile = listAllDatabase().get(dbName);
         if (dbFile == null) {
             throw new IllegalArgumentException("Cannot find dbName :" + dbName);
@@ -281,7 +281,7 @@ public class DefaultDatabaseHelper implements DatabaseHelper {
         SQLiteDatabase db =
                 SQLiteDatabase.openOrCreateDatabase(dbFile.getAbsolutePath(), null);
         StringBuilder sql = new StringBuilder("UPDATE " + tableName);
-        List<String> ion = new ArrayList<>();
+        List<Object> ion = new ArrayList<>();
         if (newValue != null) {
             sql.append(" SET ");
             Set<String> keySet = newValue.keySet();
@@ -322,11 +322,11 @@ public class DefaultDatabaseHelper implements DatabaseHelper {
             }
         }
         Log.i(TAG, "执行SQL: " + sql.toString());
-        db.execSQL(sql.toString(), ion.toArray(new String[ion.size()]));
+        db.execSQL(sql.toString(), ion.toArray(new Object[ion.size()]));
     }
 
     @Override
-    public void insertData(String dbName, String tableName, Map<String, String> newValue) throws SQLException {
+    public void insertData(String dbName, String tableName, Map<String, Object> newValue) throws SQLException {
         File dbFile = listAllDatabase().get(dbName);
         if (dbFile == null) {
             throw new IllegalArgumentException("Cannot find dbName :" + dbName);
@@ -334,7 +334,7 @@ public class DefaultDatabaseHelper implements DatabaseHelper {
         SQLiteDatabase db =
                 SQLiteDatabase.openOrCreateDatabase(dbFile.getAbsolutePath(), null);
         StringBuilder sql = new StringBuilder("INSERT INTO " + tableName);
-        List<String> ion = new ArrayList<>();
+        List<Object> ion = new ArrayList<>();
         if (newValue != null) {
             sql.append(" (");
             Set<String> keySet = newValue.keySet();
@@ -361,11 +361,11 @@ public class DefaultDatabaseHelper implements DatabaseHelper {
             sql.append(")");
         }
         Log.i(TAG, "执行SQL: " + sql.toString());
-        db.execSQL(sql.toString(), ion.toArray(new String[ion.size()]));
+        db.execSQL(sql.toString(), ion.toArray(new Object[ion.size()]));
     }
 
     @Override
-    public void deleteData(String dbName, String tableName, Map<String, String> condition) throws SQLException {
+    public void deleteData(String dbName, String tableName, Map<String, Object> condition) throws SQLException {
         File dbFile = listAllDatabase().get(dbName);
         if (dbFile == null) {
             throw new IllegalArgumentException("Cannot find dbName :" + dbName);
@@ -373,7 +373,7 @@ public class DefaultDatabaseHelper implements DatabaseHelper {
         SQLiteDatabase db =
                 SQLiteDatabase.openOrCreateDatabase(dbFile.getAbsolutePath(), null);
         StringBuilder sql = new StringBuilder("DELETE FROM " + tableName);
-        List<String> ion = new ArrayList<>();
+        List<Object> ion = new ArrayList<>();
         if (condition != null) {
             sql.append(" WHERE ");
             Set<String> keySet = condition.keySet();
@@ -394,7 +394,7 @@ public class DefaultDatabaseHelper implements DatabaseHelper {
             }
         }
         Log.i(TAG, "执行SQL: " + sql.toString());
-        db.execSQL(sql.toString(), ion.toArray(new String[ion.size()]));
+        db.execSQL(sql.toString(), ion.toArray(new Object[ion.size()]));
     }
 
     @Override

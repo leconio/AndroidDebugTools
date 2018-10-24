@@ -186,6 +186,16 @@ public class HttpParamsParser {
             return bodyParamterMap.get(name);
         }
 
+        /**
+         * 获得指定名称的参数
+         *
+         * @param name
+         * @return
+         */
+        public String getPosStringtParameter(String name) {
+            return bodyParamterMap.get(name).toString();
+        }
+
 
         /**
          * 获得所有的参数名称

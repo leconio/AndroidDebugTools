@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
         if (contactDBHelper.count() == 0) {
             for (int i = 0; i < 100; i++) {
                 String name = "name_" + i;
-                String phone = "phone_" + i;
+                Integer phone = i;
                 String email = "email_" + i;
                 String street = "street_" + i;
                 String place = "place_" + i;
@@ -91,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void queryTest(View view) {
         DefaultDatabaseHelper ddh = new DefaultDatabaseHelper(this);
-        Map<String, String> condition = new HashMap<>();
+        Map<String, Object> condition = new HashMap<>();
         condition.put("phone", "phone_1");
         condition.put("name", "name_1");
         String contacts = ddh.queryData("Contact.db", "contacts", condition);
@@ -100,17 +100,17 @@ public class MainActivity extends AppCompatActivity {
 
     public void updateTest(View view) {
         DefaultDatabaseHelper ddh = new DefaultDatabaseHelper(this);
-        Map<String, String> condition = new HashMap<>();
+        Map<String, Object> condition = new HashMap<>();
         condition.put("phone", "phone_1");
         condition.put("name", "name_1");
 
-        Map<String, String> newValue = new HashMap<>();
+        Map<String, Object> newValue = new HashMap<>();
         newValue.put("phone", "phone_10000");
         newValue.put("name", "name_10000");
         ddh.updateData("Contact.db", "contacts", condition, newValue);
 
 
-        Map<String, String> queryCondition = new HashMap<>();
+        Map<String, Object> queryCondition = new HashMap<>();
         queryCondition.put("phone", "phone_10000");
         queryCondition.put("name", "name_10000");
         String contacts = ddh.queryData("Contact.db", "contacts", queryCondition);
@@ -119,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void insertTest(View view) {
         DefaultDatabaseHelper ddh = new DefaultDatabaseHelper(this);
-        Map<String, String> condition = new HashMap<>();
+        Map<String, Object> condition = new HashMap<>();
         condition.put("phone", "phone_9999");
         condition.put("name", "name_9999");
         condition.put("email", "email_9999");
@@ -127,7 +127,7 @@ public class MainActivity extends AppCompatActivity {
         ddh.insertData("Contact.db", "contacts", condition);
 
 
-        Map<String, String> queryCondition = new HashMap<>();
+        Map<String, Object> queryCondition = new HashMap<>();
         queryCondition.put("phone", "phone_9999");
         queryCondition.put("name", "name_9999");
         String contacts = ddh.queryData("Contact.db", "contacts", queryCondition);
@@ -136,13 +136,13 @@ public class MainActivity extends AppCompatActivity {
 
     public void deleteTest(View view) {
         DefaultDatabaseHelper ddh = new DefaultDatabaseHelper(this);
-        Map<String, String> condition = new HashMap<>();
+        Map<String, Object> condition = new HashMap<>();
         condition.put("phone", "phone_9999");
         condition.put("name", "name_9999");
         ddh.deleteData("Contact.db", "contacts", condition);
 
 
-        Map<String, String> queryCondition = new HashMap<>();
+        Map<String, Object> queryCondition = new HashMap<>();
         queryCondition.put("phone", "phone_9999");
         queryCondition.put("name", "name_9999");
         String contacts = ddh.queryData("Contact.db", "contacts", queryCondition);
