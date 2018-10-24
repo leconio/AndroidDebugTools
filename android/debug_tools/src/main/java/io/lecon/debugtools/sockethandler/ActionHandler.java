@@ -3,19 +3,19 @@ package io.lecon.debugtools.sockethandler;
 import android.content.Context;
 import android.util.Log;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.net.Socket;
 
-import io.lecon.debugtools.utils.Utils;
 import io.lecon.debugtools.route.RouteDispatcher;
 import io.lecon.debugtools.server.HttpParamsParser;
 import io.lecon.debugtools.server.resp.Response;
+import io.lecon.debugtools.utils.Utils;
 
 import static io.lecon.debugtools.DebugTools.TAG;
-import static io.lecon.debugtools.route.RouteDispatcher.WEB_FOLDER;
 
 /**
  * Created by spawn on 17-9-28.
@@ -115,7 +115,11 @@ public class ActionHandler implements Handler {
         String contentType = "Content-Type: application/json";
         String[] split = route.split("/");
         if (route.contains("file")) {
-            output.println("Content-Disposition: attachment; filename=" + route.substring(route.lastIndexOf("/") + 1) + ".zip");
+            if (new File(route.split("file")[1]).isDirectory()) {
+                output.println("Content-Disposition: attachment; filename=" + route.substring(route.lastIndexOf("/") + 1) + ".zip");
+            } else {
+                output.println("Content-Disposition: attachment; filename=" + route.substring(route.lastIndexOf("/") + 1));
+            }
             contentType = "Content-Type: application/octet-stream";
         } else if (split[split.length - 1].contains(".")) {
             contentType = "Content-Type: " + Utils.getMimeType(route);
