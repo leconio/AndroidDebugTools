@@ -5,7 +5,7 @@ It's work！
 
 # Demo
 see [Release](https://github.com/leconio/AndroidDebugTools/releases)
-## How to use
+### How to use
 1. Download Apk and install it.
 2. Open it,click '数据库添加数据' for import datas and click '获取SD卡权限' for request the SD permissions.
 3. Open browser and enter ***youip:youport***.(You can find it on Notifitation)
