@@ -31,6 +31,15 @@
             </intent-filter>
         </activity>
 
+        <receiver android:name=".DebugBroadcast" >
+            <intent-filter>
+                <action android:name="io.lecon.stop_server" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="io.lecon.dissmiss_notificaton" />
+            </intent-filter>
+        </receiver>
+
         <service android:name="io.lecon.debugtools.ConnectionServices" />
     </application>
 
