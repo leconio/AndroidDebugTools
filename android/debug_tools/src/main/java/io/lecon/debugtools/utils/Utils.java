@@ -16,6 +16,8 @@ import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.util.Enumeration;
 
+import static io.lecon.debugtools.route.RouteDispatcher.WEB_FOLDER;
+
 /**
  * Created by spawn on 17-9-28.
  */
@@ -94,7 +96,7 @@ public class Utils {
             output.flush();
             return output.toByteArray();
         } catch (FileNotFoundException e) {
-            return null;
+            return loadAssetContent(WEB_FOLDER + "/index.html",assetManager);
         } finally {
             try {
                 if (null != input) {

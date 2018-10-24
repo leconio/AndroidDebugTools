@@ -9,6 +9,7 @@ import {QueryBeanResp} from './pojo/QueryBeanResp';
 import {BaseResponse} from './pojo/BaseResponse';
 import {FileListObj} from './pojo/FileListObj';
 import {VersionObj} from './pojo/VersionObj';
+import {environment} from '../../environments/environment';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -17,7 +18,7 @@ const httpOptions = {
 };
 
 export class Urls {
-  static baseUrl = 'http://127.0.0.1:8089/';
+  static baseUrl = environment.production ? 'http://' + window.location.host + '/' : 'http://127.0.0.1:8089/';
   static dbUrl = Urls.baseUrl + 'db/';
   static diskUrl = Urls.baseUrl + 'disk/';
   static LIST_DATABSE = Urls.dbUrl + 'listDatabase';
