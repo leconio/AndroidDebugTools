@@ -3,6 +3,7 @@ import {ActivatedRoute} from '@angular/router';
 import {ApiServices, Urls} from '../../services/api-services.service';
 import {FileListBean} from '../../services/pojo/FileListObj';
 import {NzModalService} from 'ng-zorro-antd';
+import {delay} from 'rxjs/operators';
 
 @Component({
   selector: 'app-disk-content',
@@ -33,11 +34,12 @@ export class DiskContentComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.route.params.subscribe((params) => {
-      this.type = params['type'];
-      this.folder = [];
-      this.getFileList(this.folder.join('/'));
-    });
+    this.route.params
+      .subscribe((params) => {
+        this.type = params['type'];
+        this.folder = [];
+        this.getFileList(this.folder.join('/'));
+      });
   }
 
   getFileList(path: string) {

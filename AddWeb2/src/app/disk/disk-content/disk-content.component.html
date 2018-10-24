@@ -7,8 +7,9 @@
   <nz-divider></nz-divider>
 
   <nz-breadcrumb nz-col class="disk-folder">
-    <nz-breadcrumb-item (click)="rootClick()">Root</nz-breadcrumb-item>
-    <nz-breadcrumb-item *ngFor="let f of folder;let index = index" (click)="folderClick(index)">{{f}}
+    <nz-breadcrumb-item (click)="rootClick()"><a href="javascript:void(0)">Root</a></nz-breadcrumb-item>
+    <nz-breadcrumb-item *ngFor="let f of folder;let index = index" (click)="folderClick(index)"><a
+      href="javascript:void(0)">{{f}}</a>
     </nz-breadcrumb-item>
   </nz-breadcrumb>
 
@@ -36,7 +37,7 @@
             (nzCheckedChange)="refreshStatus()"></td>
         <td (click)="nextLevel(data.filename,data.isFolder)"><i class="anticon anticon-folder" *ngIf="data.isFolder"><i
           class="anticon anticon-file"
-          *ngIf="!data.isFolder"></i></i>&nbsp;&nbsp;{{data.filename}}
+          *ngIf="!data.isFolder"></i></i>&nbsp;&nbsp;<a href="javascript:void(0)">{{data.filename}}</a>
         </td>
         <td>{{data.permission}}</td>
         <td>{{bytesToSize(data.size)}}</td>
