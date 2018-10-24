@@ -79,6 +79,7 @@ export class DatabaseContentComponent implements OnInit {
     this.apiServices.queryByPage(this.dbName, this.tableName, page)
       .subscribe((result) => {
         if (result.success) {
+          console.log(result);
           this.dataSet = result.obj.list;
           this.columns = result.obj.columns;
           this.columns.forEach((colInfo) => {
@@ -125,7 +126,7 @@ export class DatabaseContentComponent implements OnInit {
   saveEdit(id: string): void {
     const index = this.dataSet.findIndex(item => item[this.pk] === id);
     Object.assign(this.dataSet[index], this.editCache[id].data);
-    this.apiServices.update(this.dbName, this.tableName, this.getUpdateBody(id, this.toCondition(this.dataSet[index])))
+    this.apiServices.update(this.dbName, this.tableName, this.getUpdateBody(id, index))
       .subscribe((result) => {
         this.editCache[id].edit = false;
       });
@@ -149,30 +150,34 @@ export class DatabaseContentComponent implements OnInit {
    * 把item变成访问数据库的condition，（除了key）
    * @param body item
    */
-  private toCondition(body: any): string {
-    let cond = '';
+  private toBody(body: any): any {
+    console.log(body);
+    const cond = [];
     this.columns.forEach((col) => {
-      if (!col.isPrimary) {
-        let content;
-        if (body[col.columnName]) {
-          content = body[col.columnName];
-        } else {
-          content = '';
-        }
-        cond += (col.columnName + '靐龘' + content + '驫羴');
+      if (!col.isPrimary && body[col.columnName]) {
+        cond.push({
+          'k': col.columnName,
+          'v': body[col.columnName]
+        });
       }
     });
     return cond;
   }
 
   private getDelCondition(pk: string) {
-    return this.pk + '靐龘' + pk;
+    return [{
+      'k': this.pk,
+      'v': pk
+    }];
   }
 
-  private getUpdateBody(pk: string, newVal: string) {
+  private getUpdateBody(pk: string, index: number) {
     return {
-      'condition': this.pk + '靐龘' + pk,
-      'newValue': newVal
+      'condition': [{
+        'k': this.pk,
+        'v': pk
+      }],
+      'newValue': this.toBody(this.dataSet[index])
     };
   }
 

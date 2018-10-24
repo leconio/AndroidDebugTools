@@ -39,10 +39,10 @@
       <tbody>
       <tr *ngFor="let data of basicTable.data">
         <td *ngFor="let label of columns">
-          <ng-container *ngIf="!editCache[data[this.pk]].edit">
+          <ng-container *ngIf="!editCache[data[this.pk]].edit || label.isPrimary">
             {{data[label.columnName]}}
           </ng-container>
-          <ng-container *ngIf="editCache[data[this.pk]].edit">
+          <ng-container *ngIf="editCache[data[this.pk]].edit && !label.isPrimary">
             <input type="text" nz-input [(ngModel)]="editCache[data[this.pk]].data[label.columnName]">
           </ng-container>
         </td>

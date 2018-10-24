@@ -4,6 +4,7 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
@@ -40,12 +41,12 @@ public class DbRoute implements Route {
                 case "update":
                     String dbName = request.getGetParameter("dbName");
                     String tableName = request.getGetParameter("tableName");
-                    String condition = (String) request.getPostParameter("condition");
-                    String newValue = (String) request.getPostParameter("newValue");
+                    String condition = request.getPosStringtParameter("condition");
+                    String newValue = request.getPosStringtParameter("newValue");
                     helper.updateData(dbName, tableName, buildParamMap(condition), buildParamMap(newValue));
                     break;
                 case "insert":
-                    newValue = (String) request.getPostParameter("newValue");
+                    newValue = request.getPosStringtParameter("newValue");
                     dbName = request.getGetParameter("dbName");
                     tableName = request.getGetParameter("tableName");
                     helper.insertData(dbName, tableName, buildParamMap(newValue));
@@ -117,24 +118,27 @@ public class DbRoute implements Route {
 
     /**
      * 把字符串分割成map
+     * (改用Json)
      */
-    private Map<String, String> buildParamMap(String condition) {
+    private Map<String, Object> buildParamMap(String condition) {
         if (TextUtils.isEmpty(condition) || "null".equals(condition)) {
             return null;
         }
-        Map<String, String> condMap = new HashMap<>();
-        // 字段与字段
-        String[] conditionOne = condition.split("驫羴");
-        for (String cond : conditionOne) {
-            // 字段内
-            String[] split = cond.split("靐龘");
-            String key = split[0];
-            String val = "";
-            if (split.length != 1) {
-                val = split[1];
+        Map<String, Object> condMap = new HashMap<>();
+        try {
+            /*
+            [key:String -> val:Object]
+             */
+            JSONArray jsonArray = new JSONArray(condition);
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject jsonObject = jsonArray.optJSONObject(i);
+                String key = jsonObject.optString("k");
+                Object val = jsonObject.opt("v");
+                condMap.put(key, val);
             }
-            condMap.put(key, val);
 
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
         return condMap;
     }

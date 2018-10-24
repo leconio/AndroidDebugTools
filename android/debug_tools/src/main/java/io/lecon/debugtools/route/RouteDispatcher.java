@@ -48,7 +48,7 @@ public class RouteDispatcher {
         }
 
         String[] urlSplit = requestURI.split("/");
-        if (urlSplit.length == 1 || urlSplit[1].contains("debug")) {
+        if (urlSplit.length == 1 || "debug".equals(urlSplit[1])) {
             if ("OPTIONS".equals(request.getMethod())) {
                 return new Response() {
                     @Override
@@ -60,21 +60,21 @@ public class RouteDispatcher {
         }
 
         // error-demo
-        if (urlSplit[1].contains("error")) {
+        if ("error".equals(urlSplit[1])) {
             Route errorRoute = new ErrorRoute();
             Result process = errorRoute.process(request);
             response = new JsonResponse(process);
             return response;
         }
 
-        if (urlSplit[1].contains("db")) {
+        if ("db".equals(urlSplit[1])) {
             Route dbRoute = new DbRoute(mContext);
             Result process = dbRoute.process(request);
             response = new JsonResponse(process);
             return response;
         }
 
-        if (urlSplit[1].contains("disk")) {
+        if ("disk".equals(urlSplit[1])) {
             Route diskRoute = new DiskRoute(mContext);
             Result process = diskRoute.process(request);
             response = new JsonResponse(process);
@@ -82,7 +82,7 @@ public class RouteDispatcher {
         }
 
         //SimpleHTTPServer
-        if (urlSplit[1].contains("file")) {
+        if ("file".equals(urlSplit[1])) {
             return new ByteResponse(Utils.loadFileContent(requestURI.split("file")[1]));
         }
 

@@ -36,7 +36,7 @@ public interface DatabaseHelper {
      * @param where     查询条件
      * @return 返回结果 json格式
      */
-    String queryData(String dbName, String tableName, Map<String, String> where);
+    String queryData(String dbName, String tableName, Map<String, Object> where);
 
     /**
      * 更新
@@ -47,7 +47,7 @@ public interface DatabaseHelper {
      * @param newValue  新值
      * @return 返回结果 json格式
      */
-    void updateData(String dbName, String tableName, Map<String, String> where, Map<String, String> newValue);
+    void updateData(String dbName, String tableName, Map<String, Object> where, Map<String, Object> newValue);
 
     /**
      * 插入一条数据
@@ -57,7 +57,7 @@ public interface DatabaseHelper {
      * @param newValue  新值
      * @return 返回结果 json格式
      */
-    void insertData(String dbName, String tableName, Map<String, String> newValue);
+    void insertData(String dbName, String tableName, Map<String, Object> newValue);
 
     /**
      * 删除一条数据
@@ -67,7 +67,7 @@ public interface DatabaseHelper {
      * @param where     查询条件
      * @return 返回结果 json格式
      */
-    void deleteData(String dbName, String tableName, Map<String, String> where);
+    void deleteData(String dbName, String tableName, Map<String, Object> where);
 
     /**
      * 直接对数据库执行sql
@@ -86,7 +86,7 @@ public interface DatabaseHelper {
      * @param where     查询条件
      * @return 返回结果 json格式
      */
-    String queryData(String dbName, String tableName, Map<String, String> where, String limit, String offset);
+    String queryData(String dbName, String tableName, Map<String, Object> where, String limit, String offset);
 
     /**
      * 此表有多少条数据
@@ -104,7 +104,7 @@ public interface DatabaseHelper {
      * @param where     查询条件
      * @return 返回结果 json格式
      */
-    String countData(String dbName, String tableName, Map<String, String> where);
+    String countData(String dbName, String tableName, Map<String, Object> where);
 
     /**
      * 查询数据库版本

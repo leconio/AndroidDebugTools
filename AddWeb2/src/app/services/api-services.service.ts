@@ -3,15 +3,12 @@ import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {HandleError, HttpErrorHandler} from '../http-error-handler.service';
 import {Observable} from 'rxjs';
 import {DatabaseListObj} from './pojo/DatabaseListObj';
-import {catchError, filter, map} from 'rxjs/operators';
+import {catchError, map} from 'rxjs/operators';
 import {TableListObj} from './pojo/TableListObj';
 import {QueryBeanResp} from './pojo/QueryBeanResp';
 import {BaseResponse} from './pojo/BaseResponse';
 import {FileListObj} from './pojo/FileListObj';
 import {VersionObj} from './pojo/VersionObj';
-import {from} from 'rxjs';
-import {subscribeTo} from 'rxjs/internal-compatibility';
-import {async} from 'rxjs/internal/scheduler/async';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -110,10 +107,10 @@ export class ApiServices {
       );
   }
 
-  delete(dbName: string, tableName: string, condition: string): Observable<BaseResponse> {
+  delete(dbName: string, tableName: string, condition: any): Observable<BaseResponse> {
     const params = new HttpParams()
       .set('dbName', dbName)
-      .set('condition', condition)
+      .set('condition', JSON.stringify(condition))
       .set('tableName', tableName);
     return this.http.get<BaseResponse>(Urls.DELETE, {params})
       .pipe(

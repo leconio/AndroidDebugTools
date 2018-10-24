@@ -38,6 +38,9 @@
             <intent-filter>
                 <action android:name="io.lecon.dissmiss_notificaton" />
             </intent-filter>
+            <intent-filter>
+                <action android:name="io.lecon.restart_server" />
+            </intent-filter>
         </receiver>
 
         <service android:name="io.lecon.debugtools.ConnectionServices" />
