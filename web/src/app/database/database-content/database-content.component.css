@@ -30,6 +30,15 @@
   color: #f50;
 }
 
+.edit-input {
+  width: 100%;
+}
+
+.search-input {
+  min-width: 300px;
+  margin-right: 20px;
+}
+
 th, td {
   overflow: hidden;
   text-overflow: ellipsis;

@@ -5,7 +5,7 @@
       <nz-breadcrumb-item>{{tableName}}</nz-breadcrumb-item>
     </nz-breadcrumb>
     <div nz-col class="db-version">
-      <input nz-input placeholder="Query Search" (input)="onQuerySearch($event.target?.value)">
+      <input class="search-input" nz-input placeholder="Query Search" (input)="onQuerySearch($event.target?.value)">
       <span>Version:{{version}}</span>
       <button nz-button nzType="primary" (click)="downloadClick(dbPath)">Export</button>
     </div>
@@ -43,7 +43,8 @@
             {{data[label.columnName]}}
           </ng-container>
           <ng-container *ngIf="editCache[data[this.pk]].edit && !label.isPrimary">
-            <input type="text" nz-input [(ngModel)]="editCache[data[this.pk]].data[label.columnName]">
+            <input class="edit-input" type="text" nz-input
+                   [(ngModel)]="editCache[data[this.pk]].data[label.columnName]">
           </ng-container>
         </td>
         <td nzRight="0px">
@@ -69,5 +70,4 @@
       </tbody>
     </nz-table>
   </div>
-
 </nz-card>
