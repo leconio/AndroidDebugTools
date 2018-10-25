@@ -18,7 +18,7 @@ const httpOptions = {
 };
 
 export class Urls {
-  static baseUrl = environment.production ? 'http://' + window.location.host + '/' : 'http://127.0.0.1:8089/';
+  static baseUrl = environment.production ? 'http://' + window.location.host + '/' : 'http://127.0.0.1:8080/';
   static dbUrl = Urls.baseUrl + 'db/';
   static diskUrl = Urls.baseUrl + 'disk/';
   static LIST_DATABSE = Urls.dbUrl + 'listDatabase';

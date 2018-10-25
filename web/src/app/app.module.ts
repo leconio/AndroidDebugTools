@@ -35,7 +35,7 @@ const diskRoutes: Routes = [
 const routes: Routes = [
   {path: '', redirectTo: 'database', pathMatch: 'full'},
   {path: 'database', component: DatabaseMainComponent, children: databaseRoutes},
-  {path: 'disk', component: DiskMainComponent, children: diskRoutes},
+  {path: 'storage', component: DiskMainComponent, children: diskRoutes},
 ];
 
 @NgModule({
