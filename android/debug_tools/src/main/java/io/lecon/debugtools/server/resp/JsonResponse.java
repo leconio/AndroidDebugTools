@@ -10,34 +10,28 @@ import io.lecon.debugtools.server.Result;
  * Created by spawn on 17-9-28.
  */
 
-public class JsonResponse implements Response {
-
-    private final JSONObject mJsonObject;
+public class JsonResponse extends BaseResponse {
 
     public JsonResponse(Result result) {
-        mJsonObject = new JSONObject();
+        JSONObject jsonObject = new JSONObject();
         try {
-            mJsonObject.put("success", result.isSuccessful());
-            mJsonObject.put("message", result.getMessage());
-            mJsonObject.put("obj", result.getObj() == null ? "null" : new JSONObject(result.getObj()));
+            jsonObject.put("success", result.isSuccessful());
+            jsonObject.put("message", result.getMessage());
+            jsonObject.put("obj", result.getObj() == null ? "null" : new JSONObject(result.getObj()));
         } catch (JSONException e) {
             try {
-                mJsonObject.put("obj", new JSONArray(result.getObj()));
+                jsonObject.put("obj", new JSONArray(result.getObj()));
             } catch (JSONException e1) {
                 e1.printStackTrace();
                 try {
-                    mJsonObject.put("success", false);
-                    mJsonObject.put("message", "JsonResponse 错误");
+                    jsonObject.put("success", false);
+                    jsonObject.put("message", "JsonResponse 错误");
                 } catch (JSONException e2) {
                     e2.printStackTrace();
                 }
             }
         }
 
-    }
-
-    @Override
-    public byte[] getContent() {
-        return mJsonObject.toString().getBytes();
+        bytes = jsonObject.toString().getBytes();
     }
 }

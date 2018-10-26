@@ -38,11 +38,13 @@ public class ActionHandler implements Handler {
             is = socket.getInputStream();
             byte[] bytes = readStream(is);
             String body = new String(bytes);
+
             output = new PrintStream(socket.getOutputStream());
             HttpParamsParser.Request parse = HttpParamsParser.parse(body);
             Log.i(TAG, "Url: " + parse);
             Response resp = RouteDispatcher.getInstance(mContext).dispatch(parse);
-            writeContent(output, resp, parse.getRequestURI());
+            output.write(resp.getContent());
+
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -73,66 +75,5 @@ public class ActionHandler implements Handler {
         byte[] b = new byte[count];
         inStream.read(b);
         return b;
-    }
-
-    /**
-     * 主动模式使用
-     * //FIXME
-     *
-     * @param os  写回去
-     * @param url actionUrl
-     */
-    public void handle(OutputStream os, String url) throws IOException {
-        PrintStream output = new PrintStream(os);
-        HttpParamsParser.Request parse = HttpParamsParser.parse(url);
-        Log.i(TAG, "Url: " + parse);
-        Response resp = RouteDispatcher.getInstance(mContext).dispatch(parse);
-        writeContent(output, resp, parse.getRequestURI());
-    }
-
-    /**
-     * 写入响应报文
-     *
-     * @param output 写入流
-     * @param resp   写入内容
-     * @param route  访问路由信息
-     */
-    private void writeContent(PrintStream output, Response resp, String route) throws IOException {
-        byte[] bytes = null;
-        if (resp == null || null == (bytes = resp.getContent())) {
-            writeServerError(output);
-            return;
-        }
-        // Send out the content.
-        output.println("HTTP/1.0 200 OK");
-        output.println("Access-Control-Allow-Origin: *");
-        output.println("Access-Control-Allow-Credentials: true");
-        output.println("Access-Control-Allow-Methods: *");
-        output.println("Access-Control-Allow-Headers: Content-Type,Access-Token");
-        output.println("Access-Control-Expose-Headers: *");
-
-
-        String contentType = "Content-Type: application/json";
-        String[] split = route.split("/");
-        if (route.contains("file")) {
-            if (new File(route.split("file")[1]).isDirectory()) {
-                output.println("Content-Disposition: attachment; filename=" + route.substring(route.lastIndexOf("/") + 1) + ".zip");
-            } else {
-                output.println("Content-Disposition: attachment; filename=" + route.substring(route.lastIndexOf("/") + 1));
-            }
-            contentType = "Content-Type: application/octet-stream";
-        } else if (split[split.length - 1].contains(".")) {
-            contentType = "Content-Type: " + Utils.getMimeType(route);
-        }
-
-        output.println(contentType);
-        output.println();
-        output.write(bytes);
-        output.flush();
-    }
-
-    private void writeServerError(PrintStream output) throws IOException {
-        output.println("HTTP/1.0 404 Not Found");
-        output.flush();
     }
 }

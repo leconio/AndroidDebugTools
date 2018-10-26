@@ -17,12 +17,11 @@ import io.lecon.debugtools.utils.Utils;
 /**
  * Created by spawn on 15/11/16.
  */
-public class ClientServer implements Runnable {
+public class ClientServer implements Runnable,Server {
 
     private static final String TAG = "ClientServer";
 
     private final int mPort;
-    private final Context mContext;
 
     private boolean mIsRunning;
 
@@ -30,24 +29,27 @@ public class ClientServer implements Runnable {
 
     private final ActionHandler mRequestHandler;
 
-    private static ExecutorService cachedThreadPool = Executors.newCachedThreadPool();
+    private ExecutorService tp = Executors.newCachedThreadPool();
+
 
     public ClientServer(Context context, int port) {
-        mContext = context;
         mRequestHandler = new ActionHandler(context);
         mPort = port;
     }
 
+    @Override
     public void start() {
         mIsRunning = true;
-        cachedThreadPool.submit(this);
+        new Thread(this).start();
     }
 
+    @Override
     public void stop() {
         try {
             mIsRunning = false;
             if (null != mServerSocket) {
                 mServerSocket.close();
+                tp.shutdown();
                 mServerSocket = null;
             }
         } catch (Exception e) {
@@ -61,9 +63,18 @@ public class ClientServer implements Runnable {
             mServerSocket = new ServerSocket(mPort);
             Log.i(TAG, "StartServer Ip: http://" + Utils.getIP() + ":" + mPort);
             while (mIsRunning) {
-                Socket socket = mServerSocket.accept();
-                mRequestHandler.handle(socket);
-                socket.close();
+                final Socket socket = mServerSocket.accept();
+                tp.submit(new Runnable() {
+                    @Override
+                    public void run() {
+                        mRequestHandler.handle(socket);
+                        try {
+                            socket.close();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
             }
         } catch (SocketException e) {
             // The server was stopped; ignore.

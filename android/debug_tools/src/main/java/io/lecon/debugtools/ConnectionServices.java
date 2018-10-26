@@ -131,7 +131,7 @@ public class ConnectionServices extends IntentService {
         HttpParamsParser.Request parse = HttpParamsParser.parse(action);
         Log.i(TAG, "Url: " + parse);
         try {
-            Response resp = RouteDispatcher.getInstance(this).dispatch(parse);
+            Response resp = RouteDispatcher.getInstance(this).preDispatch(parse);
             return new String(resp.getContent());
         } catch (IOException e) {
             e.printStackTrace();

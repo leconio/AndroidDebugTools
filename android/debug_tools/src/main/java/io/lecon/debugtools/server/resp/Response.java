@@ -12,4 +12,9 @@ public interface Response {
      */
     byte[] getContent();
 
+    /**
+     * 追加内容
+     */
+    void appendHead(byte[] content);
+
 }
