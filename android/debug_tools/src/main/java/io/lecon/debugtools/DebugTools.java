@@ -13,6 +13,8 @@ import android.os.Build;
 import android.util.Log;
 
 import io.lecon.debugtools.server.ClientServer;
+import io.lecon.debugtools.server.Server;
+import io.lecon.debugtools.server.nio.NIOServer;
 import io.lecon.debugtools.utils.Utils;
 
 /**
@@ -25,7 +27,7 @@ public class DebugTools {
 
     public static final String TAG = DebugTools.class.getSimpleName();
     private static final int DEFAULT_PORT = 8080;
-    private static ClientServer clientServer;
+    private static Server clientServer;
     private static int portNumber;
 
     private static Context context;
@@ -108,9 +110,4 @@ public class DebugTools {
         }
         cleanNotification();
     }
-
-    public static boolean isServerRunning() {
-        return clientServer != null && clientServer.isRunning();
-    }
-
 }
