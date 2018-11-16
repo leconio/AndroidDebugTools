@@ -5,10 +5,6 @@ MIT
 date-fns is licensed under the [MIT license](http://kossnocorp.mit-license.org).
 Read more about MIT at [TLDRLegal](https://tldrlegal.com/license/mit-license).
 
-@angular/common@6.1.10
-MIT
-MIT
-
 rxjs@6.2.2
 Apache-2.0
 Apache License
@@ -212,6 +208,10 @@ Apache License
  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  See the License for the specific language governing permissions and
  limitations under the License.
+
+@angular/common@6.1.10
+MIT
+MIT
 
 core-js@2.5.7
 MIT
