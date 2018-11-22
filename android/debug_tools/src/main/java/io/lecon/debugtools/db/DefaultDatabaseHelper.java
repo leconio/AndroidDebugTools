@@ -179,7 +179,7 @@ public class DefaultDatabaseHelper implements DatabaseHelper {
                                 break;
                             case Cursor.FIELD_TYPE_INTEGER:
                                 jsonObject.put(cursor.getColumnName(j),
-                                        cursor.getInt(cursor.getColumnIndex(cursor.getColumnName(j))));
+                                        cursor.getLong(cursor.getColumnIndex(cursor.getColumnName(j))));
                                 break;
                             case Cursor.FIELD_TYPE_STRING:
                             default:
