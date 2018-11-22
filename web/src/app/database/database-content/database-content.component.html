@@ -19,6 +19,7 @@
               [nzPageSize]="pageSize"
               [nzLoading]="isLoading"
               [nzTotal]="count"
+              nzBordered
               [nzScroll]="{ x:'130%' }"
               [nzShowQuickJumper]="true"
               (nzPageIndexChange)="pageIndexChange($event)">
@@ -40,7 +41,10 @@
       <tr *ngFor="let data of basicTable.data">
         <td *ngFor="let label of columns">
           <ng-container *ngIf="!editCache[data[this.pk]].edit || label.isPrimary">
-            {{data[label.columnName]}}
+            <ng-container *ngIf="data[label.columnName] && data[label.columnName].length > 200">
+              <app-table-text-format [text]="data[label.columnName]"></app-table-text-format>
+            </ng-container>
+            <ng-container *ngIf="!data[label.columnName] || data[label.columnName].length <= 200">{{data[label.columnName]}}</ng-container>
           </ng-container>
           <ng-container *ngIf="editCache[data[this.pk]].edit && !label.isPrimary">
             <input class="edit-input" type="text" nz-input

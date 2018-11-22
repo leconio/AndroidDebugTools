@@ -19,6 +19,7 @@ import {DatabaseMainComponent} from './database/database-main/database-main.comp
 import {DiskMainComponent} from './disk/disk-main/disk-main.component';
 import {DiskSiderComponent} from './disk/disk-sider/disk-sider.component';
 import {DiskContentComponent} from './disk/disk-content/disk-content.component';
+import { TableTextFormatComponent } from './database/table-text-fomart/table-text-format.component';
 
 registerLocaleData(zh);
 
@@ -51,6 +52,7 @@ const routes: Routes = [
     DiskMainComponent,
     DiskSiderComponent,
     DiskContentComponent,
+    TableTextFormatComponent,
   ],
   imports: [
     BrowserModule,

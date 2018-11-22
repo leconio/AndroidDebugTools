@@ -1,0 +1,7 @@
+.line-text {
+  height: auto;
+  word-wrap:break-word;
+  word-break:break-all;
+  overflow: hidden;
+  width: 800px;
+}
