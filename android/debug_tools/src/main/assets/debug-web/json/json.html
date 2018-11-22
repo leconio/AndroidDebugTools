@@ -80,6 +80,7 @@ var shown_flag = false;
 $(document).ready(function () {
     $('#json-src').val(window.localStorage.getItem("json"));
     $('#json-src').keyup();
+    window.localStorage.removeItem("json");
 });
 $('.tip').tooltip();
 function init(){
