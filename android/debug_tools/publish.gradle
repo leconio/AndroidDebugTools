@@ -4,7 +4,7 @@ publish {
     userOrg = 'leconio'//bintray.com你的用户名
     groupId = 'io.lecon.debugtools'//jcenter上的路径
     artifactId = 'debugtools'//项目名称
-    publishVersion = '1.0.4.2'//版本号
+    publishVersion = '1.0.5'//版本号
     desc = 'Tools help you ez code'//描述，不重要
     website = 'https://github.com/leconio/AndroidDebugTools.git'
 }
