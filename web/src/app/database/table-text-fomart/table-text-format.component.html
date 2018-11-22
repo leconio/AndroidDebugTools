@@ -1,4 +1,10 @@
-<div class="line-text">
+<div class="line-text" [nzContent]="contentTemplate" nz-popover>
   {{text}}
 </div>
 
+<ng-template #contentTemplate><i nz-icon type="check"></i>
+  <nz-button-group>
+    <button nz-button nzType="default" ngxClipboard [cbContent]="text" (cbOnSuccess)="successFun()">复制</button>
+    <button *ngIf="isJson(text)" nz-button nzType="default" (click)="parseJson(text)" >解析JSON</button>
+  </nz-button-group>
+</ng-template>

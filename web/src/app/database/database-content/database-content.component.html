@@ -39,12 +39,15 @@
       </thead>
       <tbody>
       <tr *ngFor="let data of basicTable.data">
-        <td *ngFor="let label of columns">
+        <td *ngFor="let label of columns" >
           <ng-container *ngIf="!editCache[data[this.pk]].edit || label.isPrimary">
-            <ng-container *ngIf="data[label.columnName] && data[label.columnName].length > 200">
+
+            <ng-container *ngIf="data[label.columnName] && data[label.columnName].length > 50">
               <app-table-text-format [text]="data[label.columnName]"></app-table-text-format>
             </ng-container>
-            <ng-container *ngIf="!data[label.columnName] || data[label.columnName].length <= 200">{{data[label.columnName]}}</ng-container>
+
+            <ng-container *ngIf="!data[label.columnName] || data[label.columnName].length <= 50">{{data[label.columnName]}}</ng-container>
+
           </ng-container>
           <ng-container *ngIf="editCache[data[this.pk]].edit && !label.isPrimary">
             <input class="edit-input" type="text" nz-input

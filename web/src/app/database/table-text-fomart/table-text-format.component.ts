@@ -1,4 +1,6 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnInit, Output} from '@angular/core';
+import {NzMessageService} from 'ng-zorro-antd';
+import {Urls} from '../../services/api-services.service';
 
 @Component({
   selector: 'app-table-text-format',
@@ -8,12 +10,25 @@ import {Component, Input, OnInit} from '@angular/core';
 export class TableTextFormatComponent implements OnInit {
 
   @Input()
+  @Output()
   text: string;
 
-  constructor() {
+  constructor(private message: NzMessageService) {
   }
 
   ngOnInit() {
   }
 
+  successFun() {
+    this.message.success('复制成功', {nzDuration: 3000});
+  }
+
+  parseJson(json: string) {
+    window.localStorage.setItem('json', json);
+    window.open(Urls.baseUrl + 'json/json.html');
+  }
+
+  isJson(text: string) {
+    return text.startsWith('{') && text.endsWith('}');
+  }
 }
