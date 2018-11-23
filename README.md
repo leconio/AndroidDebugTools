@@ -21,7 +21,7 @@ Android 端无任何依赖，全部原生代码完成。
 
 #### 集成
 `Android Debug工具`完全无代码侵入性，意味着你只需添加依赖，无需编写任何代码即可以体验基础功能。
-- 添加依赖 `debugImplementation 'io.lecon.debugtools:debugtools:1.0.4.2'`
+- 添加依赖 `debugImplementation 'io.lecon.debugtools:debugtools:1.0.5'`
 
 ## 接口开放
 ### 本地接口
