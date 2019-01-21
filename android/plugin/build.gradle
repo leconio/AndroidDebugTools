@@ -1,0 +1,22 @@
+buildscript {
+    ext.kotlin_version = '1.2.50'
+    repositories {
+        jcenter()
+        maven { url "http://nexus.sf-express.com/nexus/content/groups/public/" }
+    }
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.2.71"
+        classpath "com.android.tools.build:gradle:3.3.0"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+allprojects {
+    repositories {
+        jcenter()
+        maven {
+            url "http://nexus.sf-express.com/nexus/content/groups/public/"
+        }
+    }
+
+}
+

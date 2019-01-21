@@ -11,3 +11,12 @@ if (environment.production) {
 
 platformBrowserDynamic().bootstrapModule(AppModule)
   .catch(err => console.error(err));
+
+
+console.log('\n' +
+  '    __                    \n' +
+  '   / /__  _________  ____ \n' +
+  '  / / _ \\/ ___/ __ \\/ __ \\\n' +
+  ' / /  __/ /__/ /_/ / / / /\n' +
+  '/_/\\___/\\___/\\____/_/ /_/ \n' +
+  '                          \n');

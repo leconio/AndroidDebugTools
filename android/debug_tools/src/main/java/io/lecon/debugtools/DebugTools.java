@@ -17,16 +17,13 @@ import io.lecon.debugtools.server.Server;
 import io.lecon.debugtools.server.nio.NIOServer;
 import io.lecon.debugtools.utils.Utils;
 
-/**
- * Created by amitshekhar on 15/11/16.
- */
 
 public class DebugTools {
 
     private static final int NOTIFICATION_ID = 458;
 
     public static final String TAG = DebugTools.class.getSimpleName();
-    private static final int DEFAULT_PORT = 8080;
+    private static final int DEFAULT_PORT = 8089;
     private static Server clientServer;
     private static int portNumber;
 

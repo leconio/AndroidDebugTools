@@ -1,8 +1,8 @@
 apply plugin: 'com.android.application'
+apply plugin: 'io.lecon.debug_tools.plugin'
 
 android {
     compileSdkVersion 26
-    buildToolsVersion '27.0.3'
     defaultConfig {
         applicationId "cn.liucl.unitedebugtoolsclient"
         minSdkVersion 15
@@ -15,6 +15,14 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+debug_tools {
+    database {
+        services {
+            path '/sdcard/services.db'
         }
     }
 }

@@ -1,0 +1,70 @@
+import org.gradle.internal.jvm.Jvm
+
+apply plugin: 'java-gradle-plugin'
+apply plugin: 'kotlin'
+apply plugin: 'java-library'
+apply plugin: 'maven'
+apply plugin: 'groovy'
+
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
+
+compileKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
+compileTestKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
+
+configurations {
+    fixtureClasspath
+}
+
+kotlin {
+    experimental {
+        coroutines "enable"
+    }
+}
+
+
+sourceSets {
+    main {
+        groovy {
+            srcDirs = ['src/main/groovy']
+        }
+        kotlin {
+            srcDirs = ['src/main/java']
+        }
+
+    }
+}
+
+// groovy 与 kotlin 混编
+compileGroovy.dependsOn = []
+compileKotlin.dependsOn compileGroovy
+compileKotlin.classpath += files(compileGroovy.destinationDir)
+classes.dependsOn compileKotlin
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    compileOnly 'com.google.android:android:4.1.1.4'
+    compileOnly localGroovy()
+    compileOnly files(Jvm.current().getToolsJar())
+
+    implementation 'com.android.tools.build:gradle:3.3.0'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    implementation 'com.squareup:javapoet:1.11.1'
+
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            //设置插件的GAV参数
+            pom.groupId = 'io.lecon.debug_tools.plugin'
+            pom.version = '1.0.0'
+            //文件发布到下面目录
+            repository(url: uri('../repo'))
+        }
+    }
+}
