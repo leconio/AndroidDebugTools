@@ -6,5 +6,6 @@
   <nz-button-group>
     <button nz-button nzType="default" ngxClipboard [cbContent]="text" (cbOnSuccess)="successFun()">复制</button>
     <button *ngIf="isJson(text)" nz-button nzType="default" (click)="parseJson(text)" >解析JSON</button>
+    <button nz-button nzType="default" (click)="openNew(text)" >从新窗口打开</button>
   </nz-button-group>
 </ng-template>

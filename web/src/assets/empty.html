@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Html</title>
+</head>
+<body>
+  <div id="content"></div>
+</body>
+<script>
+  document.getElementById("content").innerText = window.localStorage.getItem("content");
+  window.localStorage.removeItem("content");
+
+</script>
+</html>

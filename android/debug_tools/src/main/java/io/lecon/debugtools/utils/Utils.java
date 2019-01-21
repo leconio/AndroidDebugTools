@@ -14,6 +14,7 @@ import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
+import java.net.URLDecoder;
 import java.util.Enumeration;
 
 import static io.lecon.debugtools.route.RouteDispatcher.WEB_FOLDER;
@@ -50,6 +51,7 @@ public class Utils {
             // 文件
             InputStream input = null;
             try {
+                filePath = URLDecoder.decode(filePath, "UTF-8");
                 ByteArrayOutputStream output = new ByteArrayOutputStream();
                 input = new BufferedInputStream(new FileInputStream(filePath));
                 byte[] buffer = new byte[1024];

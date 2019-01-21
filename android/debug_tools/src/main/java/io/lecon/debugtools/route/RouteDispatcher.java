@@ -122,8 +122,8 @@ public class RouteDispatcher {
             writer.append("Access-Control-Allow-Methods: *\n");
             writer.append("Access-Control-Allow-Headers: Content-Type,Access-Token\n");
             writer.append("Access-Control-Expose-Headers: *\n");
-            String contentType = "Content-Type: application/json\n";
             String[] split = route.split("/");
+            String contentType;
             if (route.contains("file")) {
                 if (new File(route.split("file")[1]).isDirectory()) {
                     writer.append("Content-Disposition: attachment; filename=").append(route.substring(route.lastIndexOf("/") + 1)).append(".zip").append("\r\n");
@@ -133,6 +133,10 @@ public class RouteDispatcher {
                 contentType = "Content-Type: application/octet-stream\r\n";
             } else if (split[split.length - 1].contains(".")) {
                 contentType = "Content-Type: " + Utils.getMimeType(route) + "\r\n";
+            } else if (split[0].contains("storage") || split[0].contains("database")) {
+                contentType = "Content-Type: application/json\n";
+            } else {
+                contentType = "Content-Type: " + "text/html" + "\r\n";
             }
 
             writer.append(contentType);

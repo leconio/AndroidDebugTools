@@ -25,10 +25,15 @@ export class TableTextFormatComponent implements OnInit {
 
   parseJson(json: string) {
     window.localStorage.setItem('json', json);
-    window.open(Urls.baseUrl + 'json/json.html');
+    window.open(Urls.baseUrl + 'assets/json/json.html');
   }
 
   isJson(text: string) {
     return text.startsWith('{') && text.endsWith('}');
+  }
+
+  openNew(text: string) {
+    window.localStorage.setItem('content', text);
+    window.open(Urls.baseUrl + 'assets/empty.html');
   }
 }
