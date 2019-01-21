@@ -1,13 +1,15 @@
 package io.lecon.debugtools.plugin
 
 import com.android.build.gradle.AppExtension
+import com.android.build.gradle.api.BaseVariant
+import com.android.build.gradle.internal.res.GenerateLibraryRFileTask
+import com.android.build.gradle.internal.res.LinkApplicationAndroidResourcesTask
 import com.squareup.javapoet.ClassName
 import com.squareup.javapoet.JavaFile
 import com.squareup.javapoet.MethodSpec
 import com.squareup.javapoet.TypeSpec
-import groovy.lang.Closure
+import groovy.util.XmlSlurper
 import io.lecon.debugtools.plugin.domain.DebugTools
-import io.lecon.debugtools.plugin.g.getG
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.plugins.ExtensionContainer
@@ -50,10 +52,10 @@ class PluginMain : Plugin<Project> {
                 .addModifiers(Modifier.PUBLIC, Modifier.STATIC)
                 .returns(HashMap::class.java)
 
-        getExtraDatabases.addStatement("HashMap<String, \$T> map = new HashMap()",file)
+        getExtraDatabases.addStatement("HashMap<String, \$T> map = new HashMap()", file)
         debugTools.databases.all { database ->
             if (database.path != null && database.name != null) {
-                getExtraDatabases.addStatement("map.put(\"${database.name}\",new \$T(\"${database.path}\"))",file)
+                getExtraDatabases.addStatement("map.put(\"${database.name}\",new \$T(\"${database.path}\"))", file)
             }
         }
         getExtraDatabases.addStatement("return map")
@@ -67,22 +69,31 @@ class PluginMain : Plugin<Project> {
                 .build()
 
         project.extensions[AppExtension::class].apply {
-            var file = File(project.buildDir, "debug_tools")
-            file = File(file, "java")
-            file.mkdirs()
-            javaFile.writeTo(file)
-            sourceSets.register("debug_tools") {
-                it.java(getG(file) as Closure<*>?)
-            }
-
-            sourceSets.all {
-                if (it.name == "main") {
-                    it.java.srcDirs(file)
+            this.applicationVariants.all { variant->
+                val outputDir = project.buildDir.resolve(
+                        "generated/source/debug_tools/${variant.dirName}")
+                javaFile.writeTo(outputDir)
+                variant.outputs.all {
+                    project.tasks.create("generate${variant.name.capitalize()}ExtraDatabaseBuilder") {
+                        variant.registerJavaGeneratingTask(it, outputDir)
+                    }
                 }
+
             }
         }
 
     }
+
+    private fun getPackageName(variant : BaseVariant) : String {
+        val slurper = XmlSlurper(false, false)
+        val list = variant.sourceSets.map { it.manifestFile }
+
+        // According to the documentation, the earlier files in the list are meant to be overridden by the later ones.
+        // So the first file in the sourceSets list should be main.
+        val result = slurper.parse(list[0])
+        return result.getProperty("@package").toString()
+    }
+
 
     companion object {
         const val CONFIG_NAME = "debug_tools"

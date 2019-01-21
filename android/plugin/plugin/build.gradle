@@ -51,7 +51,7 @@ dependencies {
     compileOnly localGroovy()
     compileOnly files(Jvm.current().getToolsJar())
 
-    implementation 'com.android.tools.build:gradle:3.3.0'
+    implementation 'com.android.tools.build:gradle:3.1.4'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     implementation 'com.squareup:javapoet:1.11.1'
 
@@ -68,3 +68,16 @@ uploadArchives {
         }
     }
 }
+
+//添加
+apply plugin: 'com.novoda.bintray-release'
+publish {
+    userOrg = 'leconio'//bintray.com你的用户名
+    groupId = 'io.lecon.debugtools.plugin'//jcenter上的路径
+    artifactId = 'debugtoolsplugin'//项目名称
+    publishVersion = '1.0.6'//版本号
+    desc = 'Tools help you ez code'//描述，不重要
+    website = 'https://github.com/leconio/AndroidDebugTools.git'
+}
+
+// ./gradlew clean build bintrayUpload -PbintrayUser=$BINTRAY_USER -PbintrayKey=$BINTRAY_API_KEY -PdryRun=false

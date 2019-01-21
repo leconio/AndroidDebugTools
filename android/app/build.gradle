@@ -1,5 +1,5 @@
 apply plugin: 'com.android.application'
-apply plugin: 'io.lecon.debug_tools.plugin'
+//apply plugin: 'io.lecon.debug_tools.plugin'
 
 android {
     compileSdkVersion 26
@@ -19,13 +19,13 @@ android {
     }
 }
 
-debug_tools {
-    database {
-        services {
-            path '/sdcard/services.db'
-        }
-    }
-}
+//debug_tools {
+//    database {
+//        services {
+//            path '/sdcard/services.db'
+//        }
+//    }
+//}
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
@@ -36,4 +36,13 @@ dependencies {
     implementation 'com.android.support.constraint:constraint-layout:1.1.2'
     testImplementation 'junit:junit:4.12'
     implementation project(':debug_tools')
+//    implementation 'io.lecon.debugtools:debugtools:1.0.5'
 }
+
+//debug_tools {
+//    database {
+//        services {
+//            path '/sdcard/services.db'
+//        }
+//    }
+//}

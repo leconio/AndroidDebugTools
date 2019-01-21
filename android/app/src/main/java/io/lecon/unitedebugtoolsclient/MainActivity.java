@@ -15,7 +15,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import io.lecon.debug_tools.ExtraDatabaseBuilder;
 import io.lecon.debugtools.DebugTools;
 import io.lecon.debugtools.db.DefaultDatabaseHelper;
 import io.lecon.unitedebugtoolsclient.database.CarDBHelper;
@@ -31,8 +30,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 //        startActivity(new Intent(this, SettingActivity.class));
-        new ExtraDatabaseBuilder();
-
     }
 
     @Override
