@@ -23,6 +23,17 @@ Android 端无任何依赖，全部原生代码完成。
 `Android Debug工具`完全无代码侵入性，意味着你只需添加依赖，无需编写任何代码即可以体验基础功能。
 - 添加依赖 `debugImplementation 'io.lecon.debugtools:debugtools:1.0.5'`
 
+#### 配置外部数据库
+``` groovy
+debug_tools {
+    database {
+        [数据库名] {
+            path '[路径]'
+        }
+    }
+}
+```
+
 ## 接口开放
 ### 本地接口
 Android端微型服务器使用Json方式传递数据，内置静态服务器，非常适合前后端分离。内置功能包含：
