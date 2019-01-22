@@ -2,7 +2,6 @@ package io.lecon.debugtools.db;
 
 import org.json.JSONObject;
 
-import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,7 +17,7 @@ public interface DatabaseHelper {
      *
      * @return
      */
-    HashMap<String, File> listAllDatabase();
+    HashMap<String, DbBean> listAllDatabase();
 
     /**
      * 列出数据库所有表名

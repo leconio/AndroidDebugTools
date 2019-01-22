@@ -7,6 +7,8 @@ import android.content.pm.ProviderInfo;
 import android.database.Cursor;
 import android.net.Uri;
 
+import net.sqlcipher.database.SQLiteDatabase;
+
 /**
  * Created by spawn on 16/11/16.
  */
@@ -19,6 +21,7 @@ public class DebugInitProvider extends ContentProvider {
 
     @Override
     public boolean onCreate() {
+        SQLiteDatabase.loadLibs(getContext());
         DebugTools.initialize(getContext());
         return true;
     }

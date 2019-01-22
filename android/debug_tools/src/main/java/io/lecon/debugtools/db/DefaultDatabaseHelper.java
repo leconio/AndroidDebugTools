@@ -3,14 +3,14 @@ package io.lecon.debugtools.db;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
-import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
+
+import net.sqlcipher.database.SQLiteDatabase;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -59,12 +59,12 @@ public class DefaultDatabaseHelper implements DatabaseHelper {
     }
 
     @Override
-    public HashMap<String, File> listAllDatabase() {
-        HashMap<String, File> databaseFiles = new HashMap<>();
+    public HashMap<String, DbBean> listAllDatabase() {
+        HashMap<String, DbBean> databaseFiles = new HashMap<>();
         try {
             for (String databaseName : mContext.databaseList()) {
                 if (!databaseName.contains("journal")) {
-                    databaseFiles.put(databaseName, mContext.getDatabasePath(databaseName));
+                    databaseFiles.put(databaseName, new DbBean(databaseName,null,mContext.getDatabasePath(databaseName)));
                 }
             }
             if (extraDatabase != null) {
@@ -78,12 +78,12 @@ public class DefaultDatabaseHelper implements DatabaseHelper {
 
     @Override
     public List<String> listAllTables(String dbName) throws SQLException {
-        File dbFile = listAllDatabase().get(dbName);
+        DbBean dbFile = listAllDatabase().get(dbName);
         if (dbFile == null) {
             throw new IllegalArgumentException("Cannot find dbName :" + dbName);
         }
         SQLiteDatabase db =
-                SQLiteDatabase.openDatabase(dbFile.getAbsolutePath(), null,SQLiteDatabase.NO_LOCALIZED_COLLATORS | SQLiteDatabase.OPEN_READWRITE);
+                SQLiteDatabase.openDatabase(dbFile.getFile().getAbsolutePath(),dbFile.getPassword(), null,SQLiteDatabase.NO_LOCALIZED_COLLATORS | SQLiteDatabase.OPEN_READWRITE);
         List<String> tableName = new ArrayList<>();
         Cursor c = db.rawQuery("SELECT name FROM sqlite_master WHERE type='table' OR type='view'", null);
         if (c.moveToFirst()) {
@@ -146,12 +146,12 @@ public class DefaultDatabaseHelper implements DatabaseHelper {
 
     @Override
     public String queryData(String dbName, String tableName, Map<String, Object> condition, String limit, String offset) {
-        File dbFile = listAllDatabase().get(dbName);
+        DbBean dbFile = listAllDatabase().get(dbName);
         if (dbFile == null) {
             throw new IllegalArgumentException("Cannot find dbName :" + dbName);
         }
         SQLiteDatabase db =
-                SQLiteDatabase.openDatabase(dbFile.getAbsolutePath(), null,SQLiteDatabase.NO_LOCALIZED_COLLATORS | SQLiteDatabase.OPEN_READWRITE);
+                SQLiteDatabase.openDatabase(dbFile.getFile().getAbsolutePath(),dbFile.getPassword(), null,SQLiteDatabase.NO_LOCALIZED_COLLATORS | SQLiteDatabase.OPEN_READWRITE);
 
         StringBuilder sql = new StringBuilder("SELECT * FROM " + tableName);
         List<String> ion = new ArrayList<>();
@@ -244,12 +244,12 @@ public class DefaultDatabaseHelper implements DatabaseHelper {
 
     @Override
     public JSONObject countTableData(String dbName, String tableName) {
-        File dbFile = listAllDatabase().get(dbName);
+        DbBean dbFile = listAllDatabase().get(dbName);
         if (dbFile == null) {
             throw new IllegalArgumentException("Cannot find dbName :" + dbName);
         }
         SQLiteDatabase db =
-                SQLiteDatabase.openDatabase(dbFile.getAbsolutePath(), null,SQLiteDatabase.NO_LOCALIZED_COLLATORS | SQLiteDatabase.OPEN_READWRITE);
+                SQLiteDatabase.openDatabase(dbFile.getFile().getAbsolutePath(),dbFile.getPassword(), null,SQLiteDatabase.NO_LOCALIZED_COLLATORS | SQLiteDatabase.OPEN_READWRITE);
         StringBuilder sql = new StringBuilder("SELECT count(*) FROM " + tableName);
         Log.i(TAG, "执行SQL: " + sql.toString());
         Cursor cursor = db.rawQuery(sql.toString(), new String[]{});
@@ -283,12 +283,12 @@ public class DefaultDatabaseHelper implements DatabaseHelper {
     @Override
     public int version(String dbName) {
         int version = -1;
-        File dbFile = listAllDatabase().get(dbName);
+        DbBean dbFile = listAllDatabase().get(dbName);
         if (dbFile == null) {
             throw new IllegalArgumentException("Cannot find dbName :" + dbName);
         }
         SQLiteDatabase db =
-                SQLiteDatabase.openDatabase(dbFile.getAbsolutePath(), null,SQLiteDatabase.NO_LOCALIZED_COLLATORS | SQLiteDatabase.OPEN_READWRITE);
+                SQLiteDatabase.openDatabase(dbFile.getFile().getAbsolutePath(),dbFile.getPassword(), null,SQLiteDatabase.NO_LOCALIZED_COLLATORS | SQLiteDatabase.OPEN_READWRITE);
         version = db.getVersion();
         db.close();
         return version;
@@ -301,12 +301,12 @@ public class DefaultDatabaseHelper implements DatabaseHelper {
 
     @Override
     public void updateData(String dbName, String tableName, Map<String, Object> condition, Map<String, Object> newValue) throws SQLException {
-        File dbFile = listAllDatabase().get(dbName);
+        DbBean dbFile = listAllDatabase().get(dbName);
         if (dbFile == null) {
             throw new IllegalArgumentException("Cannot find dbName :" + dbName);
         }
         SQLiteDatabase db =
-                SQLiteDatabase.openDatabase(dbFile.getAbsolutePath(), null,SQLiteDatabase.NO_LOCALIZED_COLLATORS | SQLiteDatabase.OPEN_READWRITE);
+                SQLiteDatabase.openDatabase(dbFile.getFile().getAbsolutePath(),dbFile.getPassword(), null,SQLiteDatabase.NO_LOCALIZED_COLLATORS | SQLiteDatabase.OPEN_READWRITE);
         StringBuilder sql = new StringBuilder("UPDATE " + tableName);
         List<Object> ion = new ArrayList<>();
         if (newValue != null) {
@@ -354,12 +354,12 @@ public class DefaultDatabaseHelper implements DatabaseHelper {
 
     @Override
     public void insertData(String dbName, String tableName, Map<String, Object> newValue) throws SQLException {
-        File dbFile = listAllDatabase().get(dbName);
+        DbBean dbFile = listAllDatabase().get(dbName);
         if (dbFile == null) {
             throw new IllegalArgumentException("Cannot find dbName :" + dbName);
         }
         SQLiteDatabase db =
-                SQLiteDatabase.openDatabase(dbFile.getAbsolutePath(), null,SQLiteDatabase.NO_LOCALIZED_COLLATORS | SQLiteDatabase.OPEN_READWRITE);
+                SQLiteDatabase.openDatabase(dbFile.getFile().getAbsolutePath(),dbFile.getPassword(), null,SQLiteDatabase.NO_LOCALIZED_COLLATORS | SQLiteDatabase.OPEN_READWRITE);
         StringBuilder sql = new StringBuilder("INSERT INTO " + tableName);
         List<Object> ion = new ArrayList<>();
         if (newValue != null) {
@@ -393,12 +393,12 @@ public class DefaultDatabaseHelper implements DatabaseHelper {
 
     @Override
     public void deleteData(String dbName, String tableName, Map<String, Object> condition) throws SQLException {
-        File dbFile = listAllDatabase().get(dbName);
+        DbBean dbFile = listAllDatabase().get(dbName);
         if (dbFile == null) {
             throw new IllegalArgumentException("Cannot find dbName :" + dbName);
         }
         SQLiteDatabase db =
-                SQLiteDatabase.openDatabase(dbFile.getAbsolutePath(), null,SQLiteDatabase.NO_LOCALIZED_COLLATORS | SQLiteDatabase.OPEN_READWRITE);
+                SQLiteDatabase.openDatabase(dbFile.getFile().getAbsolutePath(),dbFile.getPassword(), null,SQLiteDatabase.NO_LOCALIZED_COLLATORS | SQLiteDatabase.OPEN_READWRITE);
         StringBuilder sql = new StringBuilder("DELETE FROM " + tableName);
         List<Object> ion = new ArrayList<>();
         if (condition != null) {
@@ -426,12 +426,12 @@ public class DefaultDatabaseHelper implements DatabaseHelper {
 
     @Override
     public void sql(String dbName, String sql) throws SQLException {
-        File dbFile = listAllDatabase().get(dbName);
+        DbBean dbFile = listAllDatabase().get(dbName);
         if (dbFile == null) {
             throw new IllegalArgumentException("Cannot find dbName :" + dbName);
         }
         SQLiteDatabase db =
-                SQLiteDatabase.openDatabase(dbFile.getAbsolutePath(), null,SQLiteDatabase.NO_LOCALIZED_COLLATORS | SQLiteDatabase.OPEN_READWRITE);
+                SQLiteDatabase.openDatabase(dbFile.getFile().getAbsolutePath(),dbFile.getPassword(), null,SQLiteDatabase.NO_LOCALIZED_COLLATORS | SQLiteDatabase.OPEN_READWRITE);
         Log.i(TAG, "执行SQL: " + sql);
         db.execSQL(sql);
     }

@@ -13,6 +13,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import io.lecon.debugtools.db.DbBean;
 import io.lecon.debugtools.db.DefaultDatabaseHelper;
 import io.lecon.debugtools.server.HttpParamsParser;
 import io.lecon.debugtools.server.Result;
@@ -83,14 +84,14 @@ public class DbRoute implements Route {
                     result.setObj(jsonArray.toString());
                     break;
                 case "listDatabase":
-                    HashMap<String, File> databases = helper.listAllDatabase();
+                    HashMap<String, DbBean> databases = helper.listAllDatabase();
                     Iterator<String> iterator = databases.keySet().iterator();
                     jsonArray = new JSONArray();
                     while (iterator.hasNext()) {
                         JSONObject object = new JSONObject();
                         String next = iterator.next();
                         object.put("name", next);
-                        object.put("path", databases.get(next).getPath());
+                        object.put("path", databases.get(next).getFile().getPath());
                         jsonArray.put(object);
                     }
                     result.setObj(jsonArray.toString());

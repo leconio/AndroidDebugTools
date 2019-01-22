@@ -44,5 +44,9 @@ dependencies {
 //        services {
 //            path '/sdcard/services.db'
 //        }
+//        extra {
+//            path '/sdcard/.fxg_waybill_rule/waybill_rule.db'
+////            password '"fengxiaoge123456"'
+//        }
 //    }
 //}

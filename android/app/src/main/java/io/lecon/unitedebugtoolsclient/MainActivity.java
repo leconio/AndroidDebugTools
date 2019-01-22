@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 import io.lecon.debugtools.DebugTools;
+import io.lecon.debugtools.db.DbBean;
 import io.lecon.debugtools.db.DefaultDatabaseHelper;
 import io.lecon.unitedebugtoolsclient.database.CarDBHelper;
 import io.lecon.unitedebugtoolsclient.database.ContactDBHelper;
@@ -85,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void queryDatabase(View view) {
         DefaultDatabaseHelper ddh = new DefaultDatabaseHelper(this);
-        HashMap<String, File> map = ddh.listAllDatabase();
+        HashMap<String, DbBean> map = ddh.listAllDatabase();
         Log.i(TAG, "queryDatabase: " + map);
     }
 

@@ -2,8 +2,6 @@ package io.lecon.debugtools.plugin
 
 import com.android.build.gradle.AppExtension
 import com.android.build.gradle.api.BaseVariant
-import com.android.build.gradle.internal.res.GenerateLibraryRFileTask
-import com.android.build.gradle.internal.res.LinkApplicationAndroidResourcesTask
 import com.squareup.javapoet.ClassName
 import com.squareup.javapoet.JavaFile
 import com.squareup.javapoet.MethodSpec
@@ -15,7 +13,6 @@ import org.gradle.api.Project
 import org.gradle.api.plugins.ExtensionContainer
 import org.gradle.internal.reflect.Instantiator
 import org.gradle.invocation.DefaultGradle
-import java.io.File
 import java.util.*
 import javax.lang.model.element.Modifier
 import kotlin.reflect.KClass
@@ -46,16 +43,17 @@ class PluginMain : Plugin<Project> {
     }
 
     private fun genJavaCode(debugTools: DebugTools) {
+        val dbBean: ClassName = ClassName.get("io.lecon.debugtools.db", "DbBean")
         val file: ClassName = ClassName.get("java.io", "File")
 
         val getExtraDatabases = MethodSpec.methodBuilder("getExtraDatabases")
                 .addModifiers(Modifier.PUBLIC, Modifier.STATIC)
                 .returns(HashMap::class.java)
 
-        getExtraDatabases.addStatement("HashMap<String, \$T> map = new HashMap()", file)
+        getExtraDatabases.addStatement("HashMap<String, \$T> map = new HashMap()", dbBean)
         debugTools.databases.all { database ->
             if (database.path != null && database.name != null) {
-                getExtraDatabases.addStatement("map.put(\"${database.name}\",new \$T(\"${database.path}\"))", file)
+                getExtraDatabases.addStatement("map.put(\"${database.name}\",new \$T(\"${database.name}\",${database.password},new \$T(\"${database.path}\")))", dbBean, file)
             }
         }
         getExtraDatabases.addStatement("return map")
@@ -69,7 +67,7 @@ class PluginMain : Plugin<Project> {
                 .build()
 
         project.extensions[AppExtension::class].apply {
-            this.applicationVariants.all { variant->
+            this.applicationVariants.all { variant ->
                 val outputDir = project.buildDir.resolve(
                         "generated/source/debug_tools/${variant.dirName}")
                 javaFile.writeTo(outputDir)
@@ -84,7 +82,7 @@ class PluginMain : Plugin<Project> {
 
     }
 
-    private fun getPackageName(variant : BaseVariant) : String {
+    private fun getPackageName(variant: BaseVariant): String {
         val slurper = XmlSlurper(false, false)
         val list = variant.sourceSets.map { it.manifestFile }
 

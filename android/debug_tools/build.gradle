@@ -23,5 +23,6 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'net.zetetic:android-database-sqlcipher:4.0.1@aar'
 }
 apply from: 'publish.gradle'
