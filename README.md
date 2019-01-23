@@ -21,14 +21,19 @@ Android 端无任何依赖，全部原生代码完成。
 
 #### 集成
 `Android Debug工具`完全无代码侵入性，意味着你只需添加依赖，无需编写任何代码即可以体验基础功能。
-- 添加依赖 `debugImplementation 'io.lecon.debugtools:debugtools:1.0.5'`
+- 添加依赖 `debugImplementation 'io.lecon.debugtools:debugtools:1.0.8'`
 
 #### 配置外部数据库
+1. classpath 添加 `classpath 'io.lecon.debugtools.plugin:debugtoolsplugin:1.0.8'`
+2. 添加依赖 `debugImplementation 'io.lecon.debugtools:debugtools:1.0.8'`
+3. gradle 配置
 ``` groovy
+apply plugin: 'io.lecon.debug_tools.plugin'
 debug_tools {
     database {
         [数据库名] {
             path '[路径]'
+            password '"[密码]"'
         }
     }
 }
