@@ -18,7 +18,7 @@ public class ResponseWrapper {
     }
 
     /**
-     * 拼接 HTTP Response
+     * 为资源写头
      *
      * @param resp  写入内容
      * @param fileName 文件名称
@@ -37,6 +37,10 @@ public class ResponseWrapper {
         resp.appendHead(bytes);
     }
 
+    /**
+     * 为Json写头
+     * @param resp 响应体
+     */
     public static void writeJson(Response resp) {
         StringBuilder writer = new StringBuilder();
         writeCommonRespHeader(writer);
@@ -46,13 +50,12 @@ public class ResponseWrapper {
         resp.appendHead(bytes);
     }
 
-    /*
-    if (new File(route.split("file")[1]).isDirectory()) {
-        writer.append("Content-Disposition: attachment; filename=").append(route.substring(route.lastIndexOf("/") + 1)).append(".zip").append("\r\n");
-    } else {
-        writer.append("Content-Disposition: attachment; filename=").append(route.substring(route.lastIndexOf("/") + 1)).append("\r\n");
-    }*/
-
+    /**
+     * 为文件写头
+     * @param resp 相应体
+     * @param isFolder 是否文件夹
+     * @param fileName 文件名
+     */
     public static void writeFile(Response resp, boolean isFolder, String fileName) {
         StringBuilder writer = new StringBuilder();
         writeCommonRespHeader(writer);

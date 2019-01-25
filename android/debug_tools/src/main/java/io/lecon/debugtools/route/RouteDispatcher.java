@@ -57,6 +57,7 @@ public class RouteDispatcher {
             request.setRequestURI(requestURI);
         }
 
+        // 解决跨域
         String[] urlSplit = requestURI.split("/");
         if (urlSplit.length == 1 || "debug".equals(urlSplit[1])) {
             if ("OPTIONS".equals(request.getMethod())) {
