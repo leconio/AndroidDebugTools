@@ -50,7 +50,8 @@ public class DefaultDiskHelper implements DiskHelper {
     }
 
     private File getFromInner(String path) throws DiskException {
-        return new File(mContext.getFilesDir(), path);
+        File baseFile = mContext.getFilesDir().getParentFile();
+        return new File(baseFile, path);
     }
 
     private File getFromSDCard(String path) throws DiskException {

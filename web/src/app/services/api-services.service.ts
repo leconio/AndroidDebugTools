@@ -131,29 +131,30 @@ export class ApiServices {
   }
 
   downloadFile(isFolder: boolean, path: string, callback: any) {
-    const aPath = path.split('/');
-    const fileName = aPath[aPath.length - 1];
-    this.http.get(Urls.baseUrl + 'file' + path, {
-      responseType: 'blob'
-    }).subscribe((data) => {
-      const blob: Blob = new Blob([data], {
-        type: 'application/octet-stream'
-      });
-      const url: string = URL.createObjectURL(blob);
-      const link: HTMLElement = document.createElement('a');
-      link.setAttribute('href', url);
-      if (isFolder) {
-        link.setAttribute('download', fileName + '.zip');
-      } else {
-        link.setAttribute('download', fileName);
-      }
-      link.style.visibility = 'hidden';
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      callback();
-    });
-
+    // const aPath = path.split('/');
+    // const fileName = aPath[aPath.length - 1];
+    // this.http.get(Urls.baseUrl + 'file' + path, {
+    //   responseType: 'blob'
+    // }).subscribe((data) => {
+    //   const blob: Blob = new Blob([data], {
+    //     type: 'application/octet-stream'
+    //   });
+    //   const url: string = URL.createObjectURL(blob);
+    //   const link: HTMLElement = document.createElement('a');
+    //   link.setAttribute('href', url);
+    //   if (isFolder) {
+    //     link.setAttribute('download', fileName + '.zip');
+    //   } else {
+    //     link.setAttribute('download', fileName);
+    //   }
+    //   link.style.visibility = 'hidden';
+    //   document.body.appendChild(link);
+    //   link.click();
+    //   document.body.removeChild(link);
+    //   callback();
+    // });
+    window.open(Urls.baseUrl + 'file' + path);
+    callback();
   }
 
   version(dbName: string) {
