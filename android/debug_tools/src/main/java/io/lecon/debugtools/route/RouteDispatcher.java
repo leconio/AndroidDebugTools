@@ -10,6 +10,7 @@ import io.lecon.debugtools.server.Result;
 import io.lecon.debugtools.server.resp.ByteResponse;
 import io.lecon.debugtools.server.resp.JsonResponse;
 import io.lecon.debugtools.server.resp.Response;
+import io.lecon.debugtools.server.resp.ResponseWrapper;
 import io.lecon.debugtools.utils.Utils;
 
 /**
@@ -69,6 +70,11 @@ public class RouteDispatcher {
                     public void appendHead(byte[] content) {
 
                     }
+
+                    @Override
+                    public ResponseWrapper.ResponseType getType() {
+                        return null;
+                    }
                 };
             }
         }
@@ -97,52 +103,34 @@ public class RouteDispatcher {
 
             //SimpleHTTPServer
             if ("file".equals(urlSplit[1])) {
-                return new ByteResponse(Utils.loadFileContent(requestURI.split("file")[1]));
+                return new ByteResponse(false, Utils.loadFileContent(requestURI.split("file")[1]));
             }
         }
         //资源处理
-        return new ByteResponse(Utils.loadAssetContent(WEB_FOLDER + requestURI, mContext.getAssets()));
+        return new ByteResponse(true, Utils.loadAssetContent(WEB_FOLDER + requestURI, mContext.getAssets()));
     }
 
     /**
-     * 拼接 HTTP Response
+     * 拼接头和body
+     * 以后考虑用工厂实现
      *
-     * @param resp  写入内容
-     * @param route 访问路由信息
+     * @param resp
+     * @param route
      */
     private void writeContent(Response resp, String route) {
-        StringBuilder writer = new StringBuilder();
-        if (null == resp.getContent()) {
-            resp.appendHead("HTTP/1.0 404 Not Found\r\n".getBytes());
-        } else {
-            // Send out the content.
-            writer.append("HTTP/1.0 200 OK\n");
-            writer.append("Access-Control-Allow-Origin: *\n");
-            writer.append("Access-Control-Allow-Credentials: true\n");
-            writer.append("Access-Control-Allow-Methods: *\n");
-            writer.append("Access-Control-Allow-Headers: Content-Type,Access-Token\n");
-            writer.append("Access-Control-Expose-Headers: *\n");
-            String[] split = route.split("/");
-            String contentType;
-            if (route.contains("file")) {
-                if (new File(route.split("file")[1]).isDirectory()) {
-                    writer.append("Content-Disposition: attachment; filename=").append(route.substring(route.lastIndexOf("/") + 1)).append(".zip").append("\r\n");
-                } else {
-                    writer.append("Content-Disposition: attachment; filename=").append(route.substring(route.lastIndexOf("/") + 1)).append("\r\n");
-                }
-                contentType = "Content-Type: application/octet-stream\r\n";
-            } else if (split[split.length - 1].contains(".")) {
-                contentType = "Content-Type: " + Utils.getMimeType(route) + "\r\n";
-            } else if (split[0].contains("storage") || split[0].contains("database")) {
-                contentType = "Content-Type: application/json\n";
-            } else {
-                contentType = "Content-Type: " + "text/html" + "\r\n";
-            }
+        switch (resp.getType()) {
+            case JSON:
+                ResponseWrapper.writeJson(resp);
+                break;
+            case FILE:
+                boolean isFolder = new File(route.split("file")[1]).isDirectory();
+                String fileName = route.substring(route.lastIndexOf("/") + 1);
+                ResponseWrapper.writeFile(resp, isFolder, fileName);
+                break;
+            case ASSETS:
+            default:
+                ResponseWrapper.writeAssets(resp, route);
 
-            writer.append(contentType);
-            writer.append("\r\n");
         }
-        byte[] bytes = writer.toString().getBytes();
-        resp.appendHead(bytes);
     }
 }

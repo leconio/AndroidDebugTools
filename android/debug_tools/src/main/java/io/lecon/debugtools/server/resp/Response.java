@@ -17,4 +17,6 @@ public interface Response {
      */
     void appendHead(byte[] content);
 
+    ResponseWrapper.ResponseType getType();
+
 }

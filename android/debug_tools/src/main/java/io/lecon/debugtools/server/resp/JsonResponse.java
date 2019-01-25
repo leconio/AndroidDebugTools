@@ -34,4 +34,9 @@ public class JsonResponse extends BaseResponse {
 
         bytes = jsonObject.toString().getBytes();
     }
+
+    @Override
+    public ResponseWrapper.ResponseType getType() {
+        return ResponseWrapper.ResponseType.JSON;
+    }
 }

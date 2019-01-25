@@ -6,7 +6,19 @@ package io.lecon.debugtools.server.resp;
 
 public class ByteResponse extends BaseResponse {
 
-    public ByteResponse(byte[] bytes) {
+    private boolean isAssets;
+
+    public ByteResponse(boolean isAssets,byte[] bytes) {
         this.bytes = bytes;
+        this.isAssets = isAssets;
+    }
+
+    @Override
+    public ResponseWrapper.ResponseType getType() {
+        if (isAssets) {
+            return ResponseWrapper.ResponseType.ASSETS;
+        } else {
+            return ResponseWrapper.ResponseType.FILE;
+        }
     }
 }
