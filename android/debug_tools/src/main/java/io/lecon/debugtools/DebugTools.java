@@ -33,7 +33,6 @@ public class DebugTools {
     }
 
     public static void initialize(Context context) {
-        Constants.init(context);
         DebugTools.context = context;
         try {
             portNumber = Integer.valueOf(context.getString(R.string.PORT_NUMBER));
