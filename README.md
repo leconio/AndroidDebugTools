@@ -12,6 +12,10 @@ Android 端无任何依赖，全部原生代码完成。
 - Android：使用Java通过Socket方式实现HTTP协议的服务端。
 - Web：使用Angular。
 
+### 预览
+![database](pics/database.png)
+![storage](pics/storage.png)
+
 ### 使用方法
 #### 体验
 1. 下载apk安装包，安装到手机。
