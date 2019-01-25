@@ -29,7 +29,7 @@ export class TableTextFormatComponent implements OnInit {
   }
 
   isJson(text: string) {
-    return text.startsWith('{') && text.endsWith('}');
+    return (text.startsWith('{') && text.endsWith('}')) || (text.startsWith('[') && text.endsWith(']'));
   }
 
   openNew(text: string) {

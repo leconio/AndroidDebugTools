@@ -8,6 +8,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
@@ -30,7 +31,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-//        startActivity(new Intent(this, SettingActivity.class));
     }
 
     @Override
@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
                 String email = "email_" + i;
                 String street = "street_" + i;
                 String place = "place_" + i;
-                contactDBHelper.insertContact(name, phone, "{\"taskVo\":{\"id\":\"0001OnFE7tp7_acz0gpAe=lQOrZsyXIS000\",\"region\":\"886EA\",\"status\":\"COMPLETED\",\"subStatus\":\"\",\"dispatchStatus\":\"\",\"transferStatus\":\"\",\"operator\":\"708317\",\"owner\":\"708317\",\"bizCatg\":\"\",\"taskType\":\"P\",\"startTime\":1542769200000,\"completeTime\":1542783810000,\"limitTime\":1542770266000,\"remark\":\"\",\"createdTime\":1542766666000,\"taskListTag\":\"C\",\"modifyTime\":1542783811368,\"timeForPopup\":1542766666000,\"pickupDraftOpId\":\"708317\",\"markExceptionBefore54\":false},\"orderDetail\":{\"orderInfo\":{\"orderId\":\"CX1457832774033408\",\"orderCreateTm\":1542766665000,\"orderCityCode\":\"852\",\"orderDeptCode\":\"886EA\",\"scheduleBookTime\":\"\",\"scheduleLastTime\":\"\",\"deliveryTel\":\"52664647\",\"deliveryMobile\":\"52664647\",\"deliveryContact\":\"HK Sender\",\"deliveryAddr\":\"香港南區石澳伟业街161号德胜广场25-26FSLG ASIA TEST LABSSERVICELtd\",\"simpleDeliveryAddr\":\"香港南區石澳伟业街161号德胜广场25-26FSLG ASIA TEST LABSSERVICELtd\",\"deliveryCompany\":\"\",\"consigneeTel\":\"92466666\",\"consigneeMobile\":\"92466666\",\"consigneeContact\":\"Emma\",\"consigneeAddr\":\"New York NEW YORK NEW YORK The Statue of Liberty\",\"simpleConsigneeAddr\":\"New York NEW YORK NEW YORK The Statue of Liberty\",\"consigneeCompany\":\"guess it\",\"pkgName\":\"書籍\",\"pkgNumber\":107,\"pkgWeight\":0.5,\"realWeight\":0.5,\"pkgFreight\":1050,\"payMethod\":\"7\",\"originPayMethod\":\"1\",\"destCityCode\":\"001\",\"productType\":\"S5 Plus B类\",\"productTypeHHT\":\"C921\",\"productTypeName\":\"標快十(國際)- B類包裹\",\"waybillNo\":\"086358641240\",\"employeeTel\":\"15278885405\",\"isHhtWaybill\":\"1\",\"originId\":\"CX1457832774033408\",\"proName\":\"標快十(國際)- B類包裹\",\"gisResult\":{\"gisFlag\":\"1\"},\"selfSendFlg\":false,\"pickupType\":\"3\",\"orderSourceType\":\"1\",\"specialShaped\":false,\"selfPickFlag\":false,\"omsSelfPickFlag\":false,\"riskIndicator\":-1,\"interType\":\"2\",\"orderChannel\":\"11\",\"deliveryCustomerId\":\"45567\",\"consigneeCustomerId\":\"45567\",\"addresseePostCode\":\"45678\",\"declareCurrency\":\"HKD\",\"declareWeight\":0.5,\"declareType\":0,\"taxPaymethod\":2,\"hmtDeclareValue\":2138.93,\"hmtCargoList\":[{\"name\":\"書籍\",\"uom\":\"本\",\"quantity\":107,\"price\":\"19.99\",\"origin\":\"HK\",\"englishName\":\"book\",\"englishUom\":\"piece\"}],\"englishDeliveryContact\":\"HK Sender\",\"englishDeliveryAddr\":\"Hong Kong Hong Kong Southern District Shek O WeiYeJie161HaoDeShengGuangChang25-26FSLG ASIA TEST LABSSERVICELtd\",\"pickupTaskType\":3,\"picUrl\":[null],\"isStoreGoods\":false,\"printFlag\":false},\"serviceList\":[]},\"labels\":[{\"displayName\":\"印\",\"code\":\"DZD\",\"labelType\":\"D\"}],\"currentTime\":1542783817114,\"textView\":\"<html>\\n<body bgcolor=\\\"#efefef\\\" style=\\\"word-wrap:break-word\\\">\\n\\n<font color=\\\"#c07a1b\\\">原始訂單號:CX1457832774033408<\\/font>\\n\\n\\n\\n<table width=\\\"100%\\\">\\n<\\/table>\\n<\\/body>\\n<\\/html>\",\"version\":5,\"handoverToStore\":false,\"bagStatus\":0,\"urgeCount\":0,\"extend\":\"{\\\"a\\\":false,\\\"authentication\\\":false,\\\"customsClearanceBatch\\\":\\\"TPE0400JFK\\\",\\\"destinationCurrencyName\\\":\\\"USD\\\",\\\"exchangeRate\\\":0.033094,\\\"extend\\\":\\\"1\\\",\\\"hideExchange\\\":true,\\\"isElecSignFlag\\\":false,\\\"isReplace\\\":false,\\\"originCurrencyName\\\":\\\"NTD\\\",\\\"secret\\\":0,\\\"specialShaped\\\":false}\",\"specialWareHouseFlag\":false,\"previewOneKeyPickup\":true,\"deliveryChgOmsLst\":[],\"waybillDetail\":{\"waybill\":{\"waybillNo\":\"086358641240\",\"deliveryTel\":\"52664647\",\"deliveryMobile\":\"52664647\",\"deliveryContact\":\"HK Sender\",\"deliveryAddr\":\"香港南區石澳伟业街161号德胜广场25-26FSLG ASIA TEST LABSSERVICELtd\",\"simpleDeliveryAddr\":\"香港南區石澳伟业街161号德胜广场25-26FSLG ASIA TEST LABSSERVICELtd\",\"deliveryCompany\":\"\",\"consigneeTel\":\"92466666\",\"consigneeMobile\":\"92466666\",\"consigneeContact\":\"Emma\",\"consigneeAddr\":\"New York NEW YORK NEW YORK The Statue of Liberty\",\"simpleConsigneeAddr\":\"New York NEW YORK NEW YORK The Statue of Liberty\",\"consigneeCompany\":\"guess it\",\"addresseePostCode\":\"45678\",\"declaredValue\":0,\"identityAuthentication\":false},\"waybillFee\":[{\"feeTypeCode\":\"1\",\"feeAmt\":1050,\"paymentTypeCode\":\"7\",\"settlementTypeCode\":\"1\",\"waybillFeeName\":\"運費\"}],\"childList\":[]},\"examineCargo\":false}", street, null);
+                contactDBHelper.insertContact(name, phone, "[{\"name\":\"王小二\",\"age\":25.2,\"birthday\":\"1990-01-01\",\"school\":\"蓝翔\",\"major(技能)\":[\"理发\",\"挖掘机\"],\"has_girlfriend\":false,\"car\":null,\"house\":null,\"comment\":\"这是一个注释\"},{\"name\":\"王小二\",\"age\":25.2,\"birthday\":\"1990-01-01\",\"school\":\"蓝翔\",\"major(技能)\":[\"理发\",\"挖掘机\"],\"has_girlfriend\":false,\"car\":null,\"house\":null,\"comment\":\"这是一个注释\"},{\"name\":\"王小二\",\"age\":25.2,\"birthday\":\"1990-01-01\",\"school\":\"蓝翔\",\"major(技能)\":[\"理发\",\"挖掘机\"],\"has_girlfriend\":false,\"car\":null,\"house\":null,\"comment\":\"这是一个注释\"}]", street, null);
             }
         }
 
@@ -78,77 +78,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void queryTableName(View view) {
-        DefaultDatabaseHelper ddh = new DefaultDatabaseHelper(this);
-        List<String> list = ddh.listAllTables("Car.db");
-        Log.i(TAG, "queryTableName: " + list);
-    }
-
-    public void queryDatabase(View view) {
-        DefaultDatabaseHelper ddh = new DefaultDatabaseHelper(this);
-        HashMap<String, DbBean> map = ddh.listAllDatabase();
-        Log.i(TAG, "queryDatabase: " + map);
-    }
-
-    public void queryTest(View view) {
-        DefaultDatabaseHelper ddh = new DefaultDatabaseHelper(this);
-        Map<String, Object> condition = new HashMap<>();
-        condition.put("phone", "phone_1");
-        condition.put("name", "name_1");
-        String contacts = ddh.queryData("Contact.db", "contacts", condition);
-        Log.i(TAG, "queryTest: " + contacts);
-    }
-
-    public void updateTest(View view) {
-        DefaultDatabaseHelper ddh = new DefaultDatabaseHelper(this);
-        Map<String, Object> condition = new HashMap<>();
-        condition.put("phone", "phone_1");
-        condition.put("name", "name_1");
-
-        Map<String, Object> newValue = new HashMap<>();
-        newValue.put("phone", "phone_10000");
-        newValue.put("name", "name_10000");
-        ddh.updateData("Contact.db", "contacts", condition, newValue);
-
-
-        Map<String, Object> queryCondition = new HashMap<>();
-        queryCondition.put("phone", "phone_10000");
-        queryCondition.put("name", "name_10000");
-        String contacts = ddh.queryData("Contact.db", "contacts", queryCondition);
-        Log.i(TAG, "updateTest: " + contacts);
-    }
-
-    public void insertTest(View view) {
-        DefaultDatabaseHelper ddh = new DefaultDatabaseHelper(this);
-        Map<String, Object> condition = new HashMap<>();
-        condition.put("phone", "phone_9999");
-        condition.put("name", "name_9999");
-        condition.put("email", "email_9999");
-        condition.put("street", "street_9999");
-        ddh.insertData("Contact.db", "contacts", condition);
-
-
-        Map<String, Object> queryCondition = new HashMap<>();
-        queryCondition.put("phone", "phone_9999");
-        queryCondition.put("name", "name_9999");
-        String contacts = ddh.queryData("Contact.db", "contacts", queryCondition);
-        Log.i(TAG, "insertTest: " + contacts);
-    }
-
-    public void deleteTest(View view) {
-        DefaultDatabaseHelper ddh = new DefaultDatabaseHelper(this);
-        Map<String, Object> condition = new HashMap<>();
-        condition.put("phone", "phone_9999");
-        condition.put("name", "name_9999");
-        ddh.deleteData("Contact.db", "contacts", condition);
-
-
-        Map<String, Object> queryCondition = new HashMap<>();
-        queryCondition.put("phone", "phone_9999");
-        queryCondition.put("name", "name_9999");
-        String contacts = ddh.queryData("Contact.db", "contacts", queryCondition);
-        Log.i(TAG, "insertTest: " + contacts);
-    }
 
     public void reqPermission(View view) {
         int permissionCheck1 = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE);
@@ -160,5 +89,25 @@ public class MainActivity extends AppCompatActivity {
                     124);
 
         }
+    }
+
+    public void initThis(View view) {
+        reqPermission(null);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                addToDatabase(null);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        TextView view1 = findViewById(R.id.tips);
+                        view1.setText("初始化完成！\n" +
+                                "1. 连接数据线到计算机 \n" +
+                                "2. 打开adb命令行 adb forward tcp:8089 tcp:8089 \n" +
+                                "3. 计算机浏览器打开 http://127.0.0.1:8089");
+                    }
+                });
+            }
+        }).start();
     }
 }
