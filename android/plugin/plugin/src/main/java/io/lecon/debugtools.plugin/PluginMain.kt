@@ -1,7 +1,8 @@
 package io.lecon.debugtools.plugin
 
-import com.android.build.gradle.AppExtension
+import com.android.build.gradle.*
 import com.android.build.gradle.api.BaseVariant
+import com.android.build.gradle.api.LibraryVariant
 import com.squareup.javapoet.ClassName
 import com.squareup.javapoet.JavaFile
 import com.squareup.javapoet.MethodSpec
@@ -10,6 +11,7 @@ import groovy.util.XmlSlurper
 import io.lecon.debugtools.plugin.domain.DebugTools
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.UnknownDomainObjectException
 import org.gradle.api.plugins.ExtensionContainer
 import org.gradle.internal.reflect.Instantiator
 import org.gradle.invocation.DefaultGradle
@@ -23,8 +25,12 @@ import kotlin.reflect.KClass
  */
 class PluginMain : Plugin<Project> {
 
-    private operator fun <T : Any> ExtensionContainer.get(type: KClass<T>): T {
-        return getByType(type.java)
+    private operator fun <T : Any> ExtensionContainer.get(type: KClass<T>): T? {
+        try {
+            return getByType(type.java)
+        } catch (_ : UnknownDomainObjectException) {
+            return null
+        }
     }
 
     private lateinit var project: Project
@@ -66,20 +72,32 @@ class PluginMain : Plugin<Project> {
         val javaFile = JavaFile.builder("io.lecon.debug_tools", helloWorld)
                 .build()
 
-        project.extensions[AppExtension::class].apply {
-            this.applicationVariants.all { variant ->
-                val outputDir = project.buildDir.resolve(
-                        "generated/source/debug_tools/${variant.dirName}")
-                javaFile.writeTo(outputDir)
-                variant.outputs.all {
-                    project.tasks.create("generate${variant.name.capitalize()}ExtraDatabaseBuilder") {
-                        variant.registerJavaGeneratingTask(it, outputDir)
-                    }
-                }
-
+        project.extensions[AppExtension::class].let {
+            it?.let { extension ->
+                extension.applicationVariants.all { variant->
+                  getConfig(variant,javaFile)
+              }
             }
         }
 
+        project.extensions[LibraryExtension::class].let {
+            it?.let { extension ->
+                extension.libraryVariants.all { variant ->
+                    getConfig(variant,javaFile)
+                }
+            }
+        }
+    }
+
+    private fun getConfig(variant: BaseVariant,javaFile: JavaFile) {
+        val outputDir = project.buildDir.resolve(
+                "generated/source/debug_tools/${variant.dirName}")
+        javaFile.writeTo(outputDir)
+        variant.outputs.all {
+            project.tasks.create("generate${variant.name.capitalize()}ExtraDatabaseBuilder") {
+                variant.registerJavaGeneratingTask(it, outputDir)
+            }
+        }
     }
 
     private fun getPackageName(variant: BaseVariant): String {

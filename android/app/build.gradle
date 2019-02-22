@@ -1,5 +1,5 @@
 apply plugin: 'com.android.application'
-//apply plugin: 'io.lecon.debug_tools.plugin'
+apply plugin: 'io.lecon.debug_tools.plugin'
 
 android {
     compileSdkVersion 26
@@ -15,6 +15,18 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    flavorDimensions "default"
+
+    productFlavors {
+        sit {
+
+        }
+
+        prod {
+
         }
     }
 }
@@ -39,14 +51,14 @@ dependencies {
 //    implementation 'io.lecon.debugtools:debugtools:1.0.5'
 }
 
-//debug_tools {
-//    database {
-//        services {
-//            path '/sdcard/services.db'
-//        }
-//        extra {
-//            path '/sdcard/.fxg_waybill_rule/waybill_rule.db'
-////            password '"fengxiaoge123456"'
-//        }
-//    }
-//}
+debug_tools {
+    database {
+        services {
+            path '/sdcard/services.db'
+        }
+        extra {
+            path '/sdcard/.fxg_waybill_rule/waybill_rule.db'
+//            password '"fengxiaoge123456"'
+        }
+    }
+}
