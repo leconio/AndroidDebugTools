@@ -57,12 +57,16 @@ dependencies {
 
 }
 
+version '1.0.0'
+group 'debugtools'
+
 uploadArchives {
     repositories {
         mavenDeployer {
             //设置插件的GAV参数
             pom.groupId = 'io.lecon.debug_tools.plugin'
             pom.version = '1.0.0'
+            pom.artifactId = 'debugtoolsplugin'
             //文件发布到下面目录
             repository(url: uri('../repo'))
         }
@@ -75,7 +79,7 @@ publish {
     userOrg = 'leconio'//bintray.com你的用户名
     groupId = 'io.lecon.debugtools.plugin'//jcenter上的路径
     artifactId = 'debugtoolsplugin'//项目名称
-    publishVersion = '1.0.9'//版本号
+    publishVersion = '1.1.0'//版本号
     desc = 'Tools help you ez code'//描述，不重要
     website = 'https://github.com/leconio/AndroidDebugTools.git'
 }

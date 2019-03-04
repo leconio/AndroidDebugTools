@@ -94,20 +94,12 @@ class PluginMain : Plugin<Project> {
                 "generated/source/debug_tools/${variant.dirName}")
         javaFile.writeTo(outputDir)
         variant.outputs.all {
-            project.tasks.create("generate${variant.name.capitalize()}ExtraDatabaseBuilder") {
-                variant.registerJavaGeneratingTask(it, outputDir)
+            if (variant.name.contains("debug",true)) {
+                project.tasks.create("generate${variant.name.capitalize()}ExtraDatabaseBuilder") {
+                    variant.registerJavaGeneratingTask(it, outputDir)
+                }
             }
         }
-    }
-
-    private fun getPackageName(variant: BaseVariant): String {
-        val slurper = XmlSlurper(false, false)
-        val list = variant.sourceSets.map { it.manifestFile }
-
-        // According to the documentation, the earlier files in the list are meant to be overridden by the later ones.
-        // So the first file in the sourceSets list should be main.
-        val result = slurper.parse(list[0])
-        return result.getProperty("@package").toString()
     }
 
 

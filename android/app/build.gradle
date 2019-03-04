@@ -31,13 +31,13 @@ android {
     }
 }
 
-//debug_tools {
-//    database {
-//        services {
-//            path '/sdcard/services.db'
-//        }
-//    }
-//}
+debug_tools {
+    database {
+        services {
+            path '/sdcard/services.db'
+        }
+    }
+}
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
@@ -47,7 +47,8 @@ dependencies {
     implementation 'com.android.support:appcompat-v7:26.1.0'
     implementation 'com.android.support.constraint:constraint-layout:1.1.2'
     testImplementation 'junit:junit:4.12'
-    implementation project(':debug_tools')
+    debugImplementation 'io.lecon.debugtools:debugtools:1.0.8'
+//    implementation project(':debug_tools')
 //    implementation 'io.lecon.debugtools:debugtools:1.0.5'
 }
 
@@ -55,10 +56,6 @@ debug_tools {
     database {
         services {
             path '/sdcard/services.db'
-        }
-        extra {
-            path '/sdcard/.fxg_waybill_rule/waybill_rule.db'
-//            password '"fengxiaoge123456"'
         }
     }
 }

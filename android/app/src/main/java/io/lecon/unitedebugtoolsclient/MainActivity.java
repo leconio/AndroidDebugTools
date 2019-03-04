@@ -16,16 +16,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import io.lecon.debugtools.DebugTools;
-import io.lecon.debugtools.db.DbBean;
-import io.lecon.debugtools.db.DefaultDatabaseHelper;
+
 import io.lecon.unitedebugtoolsclient.database.CarDBHelper;
 import io.lecon.unitedebugtoolsclient.database.ContactDBHelper;
 import io.lecon.unitedebugtoolsclient.database.ExtTestDBHelper;
 
 public class MainActivity extends AppCompatActivity {
-
-    public static final String TAG = DebugTools.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -1,1 +1,1 @@
-include ':app', ':debug_tools'
+include ':app', ':debug_tools', ':databaseviewer'
