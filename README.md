@@ -43,7 +43,3 @@ debug_tools {
     }
 }
 ```
-
-#### 最新版本
-1. plugin `'io.lecon.debugtools.plugin:debugtoolsplugin:1.0.8'`
-2. debug_tools `'io.lecon.debugtools:debugtools:1.0.9`
